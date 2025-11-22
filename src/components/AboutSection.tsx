@@ -1,260 +1,253 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { useRef, useEffect, useState } from 'react'
 import profileImage from '@/assets/about-section/profile-photo.png'
 import workingImage from '@/assets/about-section/working-at-desk.png'
 import mountainImage from '@/assets/about-section/mountain-landscape.png'
-import newSunsetImage from '@/assets/about-section/sunset-view.png'
+import presentacion42Image from '@/assets/about-section/presentacion_42.jpg'
+import innomakersImage from '@/assets/about-section/innomakers.jpg'
+import madrid42PresImage from '@/assets/about-section/42madrid_pres.jpg'
+
+// Configuración de las capas parallax - 5 fotos contenidas en su sección
+// Las capas más lejanas son más pequeñas para crear sensación de profundidad 3D
+const parallaxLayers = [
+  {
+    id: 'madrid42pres',
+    image: madrid42PresImage,
+    alt: '42 Madrid presentation event',
+    depth: 0.4,
+    zIndex: 15,
+    initialPosition: { x: '50%', y: '20%' },
+    size: 'w-44 lg:w-[240px]'
+  },
+  {
+    id: 'mountain',
+    image: mountainImage,
+    alt: 'Woman with sunglasses by the lake and mountains',
+    depth: 0.55,
+    zIndex: 20,
+    initialPosition: { x: '78%', y: '30%' },
+    size: 'w-48 lg:w-[260px]'
+  },
+  {
+    id: 'innomakers',
+    image: innomakersImage,
+    alt: 'Innomakers project',
+    depth: 0.7,
+    zIndex: 25,
+    initialPosition: { x: '70%', y: '65%' },
+    size: 'w-64 lg:w-[360px]' // Agrandada
+  },
+  {
+    id: 'working',
+    image: workingImage,
+    alt: 'Working on laptop in office',
+    depth: 0.85,
+    zIndex: 30,
+    initialPosition: { x: '30%', y: '70%' },
+    size: 'w-60 lg:w-[340px]'
+  },
+  {
+    id: 'profile',
+    image: profileImage,
+    alt: 'Digital Product Manager working on laptop with code',
+    depth: 1.0, // Capa más cercana - se mueve mucho más
+    zIndex: 40,
+    initialPosition: { x: '18%', y: '50%' },
+    size: 'w-64 lg:w-[380px]'
+  }
+]
 
 export function AboutSection() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [scrollY, setScrollY] = useState(0)
+  const [rotatingWord, setRotatingWord] = useState(0) // Índice de la palabra rotando
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  })
+  const rotatingWords = ['builder', 'coder', 'maker']
 
-  // Animation progress for images expansion
-  const imageProgress = useTransform(scrollYProgress, [0, 1], [0, 1])
-  
-  // Top Left (Profile Image) - starts at center, expands to top-left
-  const profileX = useTransform(imageProgress, [0, 1], ['0vw', '-35vw'])
-  const profileY = useTransform(imageProgress, [0, 1], ['0vh', '-30vh'])
-  const profileRotate = useTransform(imageProgress, [0, 1], [0, -15])
-  
-  // Top Right (Mountain Image) - starts at center, expands to top-right  
-  const mountainX = useTransform(imageProgress, [0, 1], ['0vw', '35vw'])
-  const mountainY = useTransform(imageProgress, [0, 1], ['0vh', '-30vh'])
-  const mountainRotate = useTransform(imageProgress, [0, 1], [0, 12])
-  
-  // Bottom Left (Working Image) - starts at center, expands to bottom-left
-  const workingX = useTransform(imageProgress, [0, 1], ['0vw', '-35vw'])
-  const workingY = useTransform(imageProgress, [0, 1], ['0vh', '30vh'])
-  const workingRotate = useTransform(imageProgress, [0, 1], [0, 18])
-  
-  // Bottom Right (Sunset Image) - starts at center, expands to bottom-right
-  const sunsetX = useTransform(imageProgress, [0, 1], ['0vw', '35vw'])
-  const sunsetY = useTransform(imageProgress, [0, 1], ['0vh', '30vh'])
-  const sunsetRotate = useTransform(imageProgress, [0, 1], [0, -10])
+  // Hook para rotar las palabras cada 2 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRotatingWord((prev) => (prev + 1) % rotatingWords.length)
+    }, 2000)
 
-  // Scale and opacity for images - start visible and stacked
-  const imageScale = useTransform(imageProgress, [0, 1], [0.7, 1])
-  const imageOpacity = useTransform(imageProgress, [0, 0.1], [1, 1])
-  
-  // Initial stacking positions - slight offsets to create visible stack effect
-  const profileInitialX = useTransform(imageProgress, [0, 1], ['-15px', '-35vw'])
-  const profileInitialY = useTransform(imageProgress, [0, 1], ['-20px', '-30vh'])
-  const profileInitialRotate = useTransform(imageProgress, [0, 1], [-8, -15])
-  
-  const mountainInitialX = useTransform(imageProgress, [0, 1], ['20px', '35vw'])
-  const mountainInitialY = useTransform(imageProgress, [0, 1], ['-15px', '-30vh'])
-  const mountainInitialRotate = useTransform(imageProgress, [0, 1], [6, 12])
-  
-  const workingInitialX = useTransform(imageProgress, [0, 1], ['-10px', '-35vw'])
-  const workingInitialY = useTransform(imageProgress, [0, 1], ['25px', '30vh'])
-  const workingInitialRotate = useTransform(imageProgress, [0, 1], [12, 18])
-  
-  const sunsetInitialX = useTransform(imageProgress, [0, 1], ['15px', '35vw'])
-  const sunsetInitialY = useTransform(imageProgress, [0, 1], ['10px', '30vh'])
-  const sunsetInitialRotate = useTransform(imageProgress, [0, 1], [-5, -10])
+    return () => clearInterval(interval)
+  }, [])
+
+  // Hook para trackear el scroll y calcular el offset de parallax
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return
+
+      // Obtener la posición de la sección relativa al viewport
+      const rect = containerRef.current.getBoundingClientRect()
+      const sectionTop = rect.top
+      const sectionHeight = rect.height
+
+      // Calcular scroll solo cuando la sección está visible
+      if (sectionTop < window.innerHeight && sectionTop + sectionHeight > 0) {
+        // Scroll relativo a la sección (negativo cuando scrolleamos hacia abajo)
+        setScrollY(-sectionTop)
+      }
+    }
+
+    handleScroll() // Ejecutar al montar
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative"
-      style={{ height: '200vh' }} // Double height for scroll space
-    >
-      <div className="sticky top-0 h-screen">
-        <section 
-          id="about"
-          className="relative flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 bg-white h-full"
-        >
-          {/* Centered Text */}
-          <motion.div
-            className="relative z-30 flex items-center justify-center"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true, margin: "-100px" }}
+    <>
+      {/* Sección de Texto */}
+      <section
+        id="about"
+        className="relative overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: 'transparent' }}
+      >
+        <div className="relative flex flex-col items-center justify-center gap-6">
+          {/* Título principal con palabra rotando */}
+          <h2
+            className="text-black text-center leading-tight max-w-3xl mx-auto px-4"
+            style={{
+              fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+              fontWeight: 700,
+              fontSize: 'clamp(28px, 5vw, 48px)',
+              lineHeight: 1.2
+            }}
           >
-            <motion.p 
-              className="text-black text-center leading-relaxed max-w-2xl sm:max-w-3xl lg:max-w-6xl mx-auto px-4 sm:px-8 lg:px-16"
-              style={{ 
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 400,
-                fontSize: 'clamp(24px, 4vw, 42px)',
-                lineHeight: 1.1
+            I'm a Product Manager becoming a{' '}
+            <span
+              className="inline-block"
+              style={{
+                minWidth: '200px',
+                textAlign: 'left',
+                color: '#6366f1' // Color accent para la palabra rotando
               }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              viewport={{ once: true }}
             >
-              I am a Peruvian Digital Product Manager based in Madrid who transforms complex ideas into scalable solutions that create lasting value for users & businesses.
-            </motion.p>
-          </motion.div>
+              <span
+                key={rotatingWord}
+                style={{
+                  animation: 'fadeInOut 2s ease-in-out',
+                  display: 'inline-block'
+                }}
+              >
+                {rotatingWords[rotatingWord]}
+              </span>
+            </span>
+          </h2>
 
-          {/* Four Images - Starting from center, expanding to corners with rotation */}
-          
-          {/* Profile Image - Top Left (AGRANDADA) - starts visible in stack */}
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-64 lg:w-[350px] h-auto z-20 pointer-events-none hidden md:block"
+          {/* Párrafos descriptivos */}
+          <div
+            className="text-black text-left leading-relaxed max-w-2xl mx-auto px-4 space-y-4"
             style={{
-              x: profileInitialX,
-              y: profileInitialY,
-              rotate: profileInitialRotate,
-              scale: imageScale,
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
+              fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+              fontWeight: 400,
+              fontSize: 'clamp(16px, 2.5vw, 20px)',
+              lineHeight: 1.6
             }}
           >
-            <img
-              src={profileImage}
-              alt="Digital Product Manager working on laptop with code"
-              className="w-full h-auto object-cover rounded-2xl shadow-2xl -translate-x-1/2 -translate-y-1/2"
-            />
-          </motion.div>
+            <p>
+              I started in product strategy and UX, now I'm learning to code (42 Madrid) and automate with AI (n8n, Python, LLMs). I don't want to just spec products—I want to prototype them, validate them, and ship them myself.
+            </p>
+            <p>
+              <strong>Currently:</strong> 42 Madrid (systems programming) + AI automation projects at Núcleo Studio
+            </p>
+          </div>
+        </div>
 
-          {/* Mountain Image - Top Right - starts visible in stack */}
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-56 lg:w-72 h-auto z-19 pointer-events-none hidden md:block"
-            style={{
-              x: mountainInitialX,
-              y: mountainInitialY,
-              rotate: mountainInitialRotate,
-              scale: imageScale,
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
-            <img
-              src={mountainImage}
-              alt="Woman with sunglasses by the lake and mountains"
-              className="w-full h-auto object-cover rounded-2xl shadow-2xl -translate-x-1/2 -translate-y-1/2"
-            />
-          </motion.div>
+        <style>
+          {`
+            @keyframes fadeInOut {
+              0% { opacity: 0; transform: translateY(-10px); }
+              10% { opacity: 1; transform: translateY(0); }
+              90% { opacity: 1; transform: translateY(0); }
+              100% { opacity: 0; transform: translateY(10px); }
+            }
+          `}
+        </style>
+      </section>
 
-          {/* Working Image - Bottom Left (AGRANDADA) - starts visible in stack */}
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-64 lg:w-[350px] h-auto z-18 pointer-events-none hidden md:block"
-            style={{
-              x: workingInitialX,
-              y: workingInitialY,
-              rotate: workingInitialRotate,
-              scale: imageScale,
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
-            <img
-              src={workingImage}
-              alt="Working on laptop in office"
-              className="w-full h-auto object-cover rounded-2xl shadow-2xl -translate-x-1/2 -translate-y-1/2"
-            />
-          </motion.div>
+      {/* Sección de Imágenes Parallax - Completamente independiente */}
+      <section
+        ref={containerRef}
+        className="relative w-full overflow-hidden"
+        style={{ height: '150vh', backgroundColor: 'transparent' }}
+      >
+        {/* Capas parallax 3D - Desktop */}
+        <div className="relative w-full h-full hidden md:block">
+          {parallaxLayers.map((layer) => {
+            // Calcular el desplazamiento parallax basado en scrollY y depth
+            const parallaxOffset = scrollY * layer.depth
 
-          {/* Sunset Image - Bottom Right (REDUCIDA) - starts visible in stack */}
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-44 lg:w-[250px] 6 h-auto z-17 pointer-events-none hidden md:block"
-            style={{
-              x: sunsetInitialX,
-              y: sunsetInitialY,
-              rotate: sunsetInitialRotate,
-              scale: imageScale,
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
-            <img
-              src={newSunsetImage}
-              alt="Woman enjoying sunset view from balcony overlooking city"
-              className="w-full h-auto object-cover rounded-2xl shadow-2xl -translate-x-1/2 -translate-y-1/2"
-            />
-          </motion.div>
+            return (
+              <div
+                key={layer.id}
+                className={`absolute pointer-events-none ${layer.size} h-auto`}
+                style={{
+                  left: layer.initialPosition.x,
+                  top: layer.initialPosition.y,
+                  zIndex: layer.zIndex,
+                  transform: `translate(-50%, calc(-50% + ${parallaxOffset}px))`,
+                  transition: 'transform 0.05s linear' // Transición suave del parallax
+                }}
+              >
+                <img
+                  src={layer.image}
+                  alt={layer.alt}
+                  className="w-full h-auto object-cover shadow-2xl"
+                />
+              </div>
+            )
+          })}
+        </div>
 
-          {/* Mobile & Tablet Images - Start visible in stack, expand to corners */}
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-36 sm:w-44 h-auto z-20 pointer-events-none md:hidden"
-            style={{ 
-              x: useTransform(imageProgress, [0, 1], ['-10px', '-40vw']),
-              y: useTransform(imageProgress, [0, 1], ['-15px', '-35vh']),
-              rotate: useTransform(imageProgress, [0, 1], [-6, -10]),
-              scale: useTransform(imageProgress, [0, 1], [0.6, 1]),
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
+        {/* Versión mobile sin parallax - 5 imágenes estáticas */}
+        <div className="absolute inset-0 md:hidden">
+          <div className="absolute left-[45%] top-[50%] w-36 sm:w-44 h-auto z-40 pointer-events-none -translate-x-1/2 -translate-y-1/2">
             <img
               src={profileImage}
               alt="Digital Product Manager"
-              className="w-full h-auto object-cover rounded-lg shadow-md -translate-x-1/2 -translate-y-1/2"
+              className="w-full h-auto object-cover shadow-md"
             />
-          </motion.div>
-
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-32 sm:w-40 h-auto z-19 pointer-events-none md:hidden"
-            style={{ 
-              x: useTransform(imageProgress, [0, 1], ['15px', '40vw']),
-              y: useTransform(imageProgress, [0, 1], ['-10px', '-35vh']),
-              rotate: useTransform(imageProgress, [0, 1], [4, 8]),
-              scale: useTransform(imageProgress, [0, 1], [0.6, 1]),
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
+          </div>
+          <div className="absolute left-[65%] top-[42%] w-32 sm:w-40 h-auto z-30 pointer-events-none -translate-x-1/2 -translate-y-1/2">
             <img
               src={mountainImage}
               alt="Mountain landscape"
-              className="w-full h-auto object-cover rounded-lg shadow-md -translate-x-1/2 -translate-y-1/2"
+              className="w-full h-auto object-cover shadow-md"
             />
-          </motion.div>
-
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-36 sm:w-44 h-auto z-18 pointer-events-none md:hidden"
-            style={{ 
-              x: useTransform(imageProgress, [0, 1], ['-5px', '-40vw']),
-              y: useTransform(imageProgress, [0, 1], ['20px', '35vh']),
-              rotate: useTransform(imageProgress, [0, 1], [8, 12]),
-              scale: useTransform(imageProgress, [0, 1], [0.6, 1]),
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
+          </div>
+          <div className="absolute left-[50%] top-[50%] w-40 sm:w-48 h-auto z-25 pointer-events-none -translate-x-1/2 -translate-y-1/2">
+            <img
+              src={innomakersImage}
+              alt="Innomakers project"
+              className="w-full h-auto object-cover shadow-md"
+            />
+          </div>
+          <div className="absolute left-[35%] top-[58%] w-36 sm:w-44 h-auto z-20 pointer-events-none -translate-x-1/2 -translate-y-1/2">
             <img
               src={workingImage}
               alt="Working on laptop"
-              className="w-full h-auto object-cover rounded-lg shadow-md -translate-x-1/2 -translate-y-1/2"
+              className="w-full h-auto object-cover shadow-md"
             />
-          </motion.div>
-
-          <motion.div
-            className="absolute left-1/2 top-1/2 w-28 sm:w-34 h-auto z-17 pointer-events-none md:hidden"
-            style={{ 
-              x: useTransform(imageProgress, [0, 1], ['10px', '40vw']),
-              y: useTransform(imageProgress, [0, 1], ['8px', '35vh']),
-              rotate: useTransform(imageProgress, [0, 1], [-3, -6]),
-              scale: useTransform(imageProgress, [0, 1], [0.6, 1]),
-              opacity: imageOpacity,
-              transformOrigin: 'center center'
-            }}
-          >
-            <img
-              src={newSunsetImage}
-              alt="Woman enjoying sunset from balcony"
-              className="w-full h-auto object-cover rounded-lg shadow-lg -translate-x-1/2 -translate-y-1/2"
-            />
-          </motion.div>
-
-          {/* Subtle grain texture overlay */}
-          <div className="absolute inset-0 opacity-5 pointer-events-none z-5">
-            <div className="w-full h-full" style={{ 
-              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0)`,
-              backgroundSize: '20px 20px'
-            }} />
           </div>
-        </section>
-      </div>
-    </div>
+          <div className="absolute left-[55%] top-[32%] w-28 sm:w-36 h-auto z-12 pointer-events-none -translate-x-1/2 -translate-y-1/2">
+            <img
+              src={madrid42PresImage}
+              alt="42 Madrid presentation event"
+              className="w-full h-auto object-cover shadow-lg"
+            />
+          </div>
+        </div>
+
+        {/* Grain texture overlay */}
+        <div className="absolute inset-0 opacity-5 pointer-events-none z-5">
+          <div className="w-full h-full" style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.15) 1px, transparent 0)`,
+            backgroundSize: '20px 20px'
+          }} />
+        </div>
+      </section>
+    </>
   )
 }

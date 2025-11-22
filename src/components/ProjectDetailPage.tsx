@@ -97,7 +97,19 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <a
-                href={project.id === 1 ? 'https://shift.example.com' : project.id === 3 ? 'https://invoinet.com' : '#'}
+                href={
+                  project.id === 1
+                    ? 'https://shift.pe'
+                    : project.id === 2
+                    ? 'https://worthit.vc'
+                    : project.id === 3
+                    ? 'https://invoinet.com'
+                    : project.id === 4
+                    ? 'https://ngrowth.com'
+                    : project.id === 5
+                    ? 'https://juntoz.com'
+                    : '#'
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 border border-white/30 rounded hover:bg-white hover:text-black transition-all duration-300"

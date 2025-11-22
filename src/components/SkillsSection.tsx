@@ -152,23 +152,23 @@ export function SkillsSection() {
   const skills = [
     {
       emoji: "🧠",
-      title: "AI Product Strategy",
-      description: "IA aplicada + ciclos de validación"
+      title: "Product Thinking",
+      description: "Discovery, research, positioning, go-to-market strategy"
     },
     {
-      emoji: "🎨",
-      title: "UX & Product Design",
-      description: "Diseño centrado en usuario + research"
-    },
-    {
-      emoji: "⚙️",
-      title: "No-Code / Full-Stack",
-      description: "Prototipado rápido y desarrollo escalable para validar productos."
+      emoji: "⚡",
+      title: "Technical Execution",
+      description: "Prototyping (React, Python), AI integrations, hands-on validation"
     },
     {
       emoji: "🤖",
-      title: "AI Automation",
-      description: "Integración IA + sistemas automáticos"
+      title: "AI Product Development",
+      description: "LLM workflows (Claude, GPT), n8n, automation for product efficiency"
+    },
+    {
+      emoji: "📊",
+      title: "Data-Driven Decisions",
+      description: "User research, A/B testing, product analytics"
     }
   ]
 
@@ -176,9 +176,10 @@ export function SkillsSection() {
   const allLogos = ['JavaScript', 'HTML5', 'React', 'Notion', 'Figma', 'GitHub', 'Claude', 'Git', 'Jira', 'Make', 'N8N', 'C', 'Linux', 'NextJS', 'NodeJS']
 
   return (
-    <section 
+    <section
       ref={containerRef}
-      className="relative min-h-screen bg-white pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      style={{ backgroundColor: 'transparent' }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
@@ -208,14 +209,14 @@ export function SkillsSection() {
           {skills.map((skill, index) => {
             // Seleccionar el icono apropiado según el título
             let IconComponent = null
-            if (skill.title === "AI Product Strategy") {
+            if (skill.title === "Product Thinking") {
               IconComponent = BrainLight
-            } else if (skill.title === "UX & Product Design") {
-              IconComponent = PuzzlePieceLight
-            } else if (skill.title === "No-Code / Full-Stack") {
+            } else if (skill.title === "Technical Execution") {
               IconComponent = CodeLight
-            } else if (skill.title === "AI Automation") {
+            } else if (skill.title === "AI Product Development") {
               IconComponent = CircuitryLight
+            } else if (skill.title === "Data-Driven Decisions") {
+              IconComponent = PuzzlePieceLight
             }
 
             return (

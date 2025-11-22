@@ -75,19 +75,19 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   }
 
   return (
-    <motion.footer 
+    <motion.footer
       id="footer"
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 py-16 overflow-hidden"
+      className="relative min-h-[60vh] flex flex-col justify-center px-6 py-16 overflow-hidden"
       style={{ backgroundColor: fixedColor || "#ffffff" }} // Use fixed color or start with white
-      animate={!fixedColor ? { 
+      animate={!fixedColor ? {
         backgroundColor: currentHeroColor // Animate to current hero color only if no fixed color
       } : undefined}
-      transition={!fixedColor ? { 
-        backgroundColor: { 
-          duration: 1.5, 
-          ease: [0.22, 1, 0.36, 1] 
-        } 
+      transition={!fixedColor ? {
+        backgroundColor: {
+          duration: 1.5,
+          ease: [0.22, 1, 0.36, 1]
+        }
       } : undefined}
     >
       {/* Main LET'S TALK Section - Takes most of the space */}
@@ -134,11 +134,12 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <p 
-            className="text-sm sm:text-base tracking-wider"
-            style={{ 
+          <p
+            className="tracking-wider"
+            style={{
               fontFamily: 'Space Grotesk, sans-serif',
               fontWeight: 400,
+              fontSize: '18px',
               color: '#212121'
             }}
           >
@@ -156,10 +157,11 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
         >
           <motion.button
             onClick={handleWorkClick}
-            className="text-base sm:text-lg tracking-wide hover:scale-105 transition-all duration-200"
-            style={{ 
+            className="tracking-wide hover:scale-105 transition-all duration-200"
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
+              fontSize: '18px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -170,10 +172,11 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
 
           <motion.button
             onClick={handleAboutClick}
-            className="text-base sm:text-lg tracking-wide hover:scale-105 transition-all duration-200"
-            style={{ 
+            className="tracking-wide hover:scale-105 transition-all duration-200"
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
+              fontSize: '18px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -184,10 +187,11 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
 
           <motion.button
             onClick={handleContactClick}
-            className="text-base sm:text-lg tracking-wide hover:scale-105 transition-all duration-200"
-            style={{ 
+            className="tracking-wide hover:scale-105 transition-all duration-200"
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
+              fontSize: '18px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -198,10 +202,11 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
 
           <motion.button
             onClick={handleResumeClick}
-            className="text-base sm:text-lg tracking-wide hover:scale-105 transition-all duration-200"
-            style={{ 
+            className="tracking-wide hover:scale-105 transition-all duration-200"
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
+              fontSize: '18px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -212,10 +217,11 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
 
           <motion.button
             onClick={handleLinkedInClick}
-            className="text-base sm:text-lg tracking-wide hover:scale-105 transition-all duration-200"
-            style={{ 
+            className="tracking-wide hover:scale-105 transition-all duration-200"
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
+              fontSize: '18px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}

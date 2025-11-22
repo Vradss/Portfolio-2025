@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { motion } from 'motion/react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { Button } from './ui/button'
@@ -38,7 +39,8 @@ interface ProjectItemProps {
 }
 
 function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: ProjectItemProps) {
-  
+  const [isHovered, setIsHovered] = React.useState(false)
+
   return (
     <div className="relative h-screen">
       <motion.div
@@ -135,11 +137,12 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                 transition={{ duration: 0.6, delay: 0.5 }}
                 viewport={{ once: true }}
               >
-                <span 
-                  className="text-white/60 text-xl lg:text-2xl"
+                <span
+                  className="text-white/60"
                   style={{
                     fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 300
+                    fontWeight: 300,
+                    fontSize: '18px'
                   }}
                 >
                   /{project.year}
@@ -165,7 +168,10 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
 
               {/* Description */}
               <motion.p
-                className="text-white/80 text-lg lg:text-xl leading-relaxed max-w-lg"
+                className="text-white/80 leading-relaxed max-w-lg"
+                style={{
+                  fontSize: '18px'
+                }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
@@ -183,28 +189,32 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                   transition={{ duration: 0.6, delay: 0.75 }}
                   viewport={{ once: true }}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ 
-                      type: "spring", 
-                      stiffness: 400, 
-                      damping: 17,
-                      duration: 0.2
+                  <Button
+                    onClick={() => onViewProject(project.id)}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-3 rounded-full transform relative"
+                    style={{
+                      fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                      fontWeight: 500,
+                      fontSize: '16px'
                     }}
                   >
-                    <Button
-                      onClick={() => onViewProject(project.id)}
-                      className="bg-white text-black hover:bg-white/90 hover:shadow-lg transition-all duration-300 px-8 py-3 rounded-full transform"
-                      style={{
-                        fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                        fontWeight: 500,
-                        fontSize: '16px'
-                      }}
-                    >
+                    <span className="inline-flex items-center gap-2">
                       View Project
-                    </Button>
-                  </motion.div>
+                      <motion.span
+                        initial={{ x: -10, opacity: 0 }}
+                        animate={{
+                          x: isHovered ? 0 : -10,
+                          opacity: isHovered ? 1 : 0
+                        }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="inline-block"
+                      >
+                        →
+                      </motion.span>
+                    </span>
+                  </Button>
                 </motion.div>
               )}
             </motion.div>

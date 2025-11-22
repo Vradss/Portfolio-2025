@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence, LayoutGroup } from 'motion/react'
 import { HeroSection } from './components/HeroSection'
 import { AboutSection } from './components/AboutSection'
@@ -9,13 +9,69 @@ import { WorkSection } from './components/WorkSection'
 import { CTASection } from './components/CTASection'
 import { Footer } from './components/Footer'
 import { ProjectDetailPage } from './components/ProjectDetailPage'
-import { HeroStateProvider } from './contexts/HeroStateContext'
+import { HeroStateProvider, useHeroState } from './contexts/HeroStateContext'
 import { useLenis } from './hooks/useLenis'
 import { projects } from './data/projects'
 
-export default function App() {
-  useLenis()
+// Función para interpolar linealmente entre dos colores RGB
+function lerpColor(fromRGB: [number, number, number], toRGB: [number, number, number], t: number): string {
+  const r = Math.round(fromRGB[0] + (toRGB[0] - fromRGB[0]) * t)
+  const g = Math.round(fromRGB[1] + (toRGB[1] - fromRGB[1]) * t)
+  const b = Math.round(fromRGB[2] + (toRGB[2] - fromRGB[2]) * t)
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+// Componente interno que tiene acceso al contexto del Hero
+function AppContent() {
+  const { getCurrentColor } = useHeroState()
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
+  // Color inicial debe ser el color actual del hero
+  const [bgColor, setBgColor] = useState<string>(getCurrentColor())
+  const heroRef = useRef<HTMLDivElement>(null)
+
+  // useEffect para escuchar el scroll y cambiar el color de fondo
+  useEffect(() => {
+    // Función para convertir hex a RGB
+    const hexToRgb = (hex: string): [number, number, number] => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+      return result
+        ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
+        : [255, 255, 255]
+    }
+
+    const handleScroll = () => {
+      // Obtener la altura real del Hero
+      const heroHeight = heroRef.current?.offsetHeight || window.innerHeight
+
+      // Calcular scroll raw (0 a 1 a través del Hero)
+      const scrollRaw = Math.min(window.scrollY / heroHeight, 1)
+
+      // Ajustar el progreso: mantener color original hasta 50%, luego transicionar rápidamente
+      // Esto hace que el color predominante sea blanco cuando la segunda sección aparece
+      let progress = 0
+      if (scrollRaw > 0.5) {
+        // De 0.5 a 1.0 → mapear a 0 a 1 para la interpolación
+        progress = (scrollRaw - 0.5) / 0.5
+      }
+
+      // Colores: desde el color actual del hero hasta blanco
+      const currentHeroColor = getCurrentColor()
+      const fromRGB = hexToRgb(currentHeroColor)
+      const toRGB: [number, number, number] = [255, 255, 255] // Blanco
+
+      // Interpolar el color
+      const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
+
+      // Aplicar el color de fondo
+      setBgColor(interpolatedColor)
+    }
+
+    // Ejecutar al montar y en cada scroll
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [getCurrentColor])
 
   // Handler to view project details
   const handleViewProject = (projectId: number) => {
@@ -46,37 +102,54 @@ export default function App() {
     const selectedProject = projects.find(p => p.id === selectedProjectId)
     if (selectedProject) {
       return (
-        <HeroStateProvider>
-          <LayoutGroup>
-            <div className="antialiased">
-              <ProjectDetailPage 
-                project={selectedProject} 
-                onBack={handleBackToPortfolio} 
-              />
-            </div>
-          </LayoutGroup>
-        </HeroStateProvider>
+        <LayoutGroup>
+          <div className="antialiased">
+            <ProjectDetailPage
+              project={selectedProject}
+              onBack={handleBackToPortfolio}
+            />
+          </div>
+        </LayoutGroup>
       )
     }
   }
 
   return (
-    <HeroStateProvider>
-      <LayoutGroup>
-        <div className="antialiased">
-          <div className="relative">
+    <LayoutGroup>
+      {/* Contenedor principal con el color de fondo interpolado - transición smooth entre colores */}
+      <div
+        className="antialiased"
+        style={{
+          backgroundColor: bgColor,
+          transition: 'background-color 0.05s linear' // Transición muy rápida para que el scroll se sienta smooth
+        }}
+      >
+        <div className="relative">
+          {/* Hero con ref para obtener su altura */}
+          <div ref={heroRef}>
             <HeroSection />
-            <div id="about-section">
-              <AboutSection />
-            </div>
-            <SkillsSection />
-            <div id="work-section">
-              <WorkSection onViewProject={handleViewProject} />
-            </div>
-            <Footer />
           </div>
+          <div id="about-section">
+            <AboutSection />
+          </div>
+          <SkillsSection />
+          <div id="work-section">
+            <WorkSection onViewProject={handleViewProject} />
+          </div>
+          <Footer />
         </div>
-      </LayoutGroup>
+      </div>
+    </LayoutGroup>
+  )
+}
+
+// Export por defecto que envuelve en el Provider
+export default function App() {
+  useLenis()
+
+  return (
+    <HeroStateProvider>
+      <AppContent />
     </HeroStateProvider>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { MadridTime } from './MadridTime'
 import { MadeInPeru } from './MadeInPeru'
@@ -116,28 +116,8 @@ export function HeroSection() {
   const [transitionKey, setTransitionKey] = useState(0) // Force unique keys
   const imageCounter = useRef(0)
   const lastMouseMove = useRef(0)
-  const sectionRef = useRef<HTMLElement>(null)
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  })
-
-  // Transform scroll progress to create smooth color transition to white
   const currentColor = getCurrentColor()
-  const backgroundColor = useTransform(
-    scrollYProgress,
-    [0, 0.5, 0.8, 1],
-    [
-      currentColor, 
-      currentColor, 
-      clickState === 0 ? "#ddd9fe" : clickState === 1 ? "#f7fdc4" : "#ffc4a1", 
-      "#ffffff"
-    ]
-  )
-
-  // Fade out navigation and branding elements as user scrolls out of hero section
-  const elementsOpacity = useTransform(scrollYProgress, [0, 0.3, 0.6], [1, 1, 0])
 
   // Trigger text animation completion
   useEffect(() => {
@@ -237,21 +217,11 @@ export function HeroSection() {
 
 
   return (
-    <motion.section 
-      ref={sectionRef}
+    <section
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4"
-      style={{ 
+      style={{
         minHeight: '100dvh',
-        backgroundColor
-      }}
-      animate={{ 
-        backgroundColor: currentColor
-      }}
-      transition={{ 
-        backgroundColor: { 
-          duration: 1.5, 
-          ease: [0.22, 1, 0.36, 1] 
-        } 
+        backgroundColor: 'transparent'
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -372,20 +342,14 @@ export function HeroSection() {
         }} />
       </div>
 
-      {/* Navigation - Only visible in hero section */}
-      <motion.div style={{ opacity: elementsOpacity }}>
-        <Navigation />
-      </motion.div>
+      {/* Navigation */}
+      <Navigation />
 
       {/* Made In Peru - Bottom Left */}
-      <motion.div style={{ opacity: elementsOpacity }}>
-        <MadeInPeru />
-      </motion.div>
-      
+      <MadeInPeru />
+
       {/* Madrid Time - Bottom Right */}
-      <motion.div style={{ opacity: elementsOpacity }}>
-        <MadridTime />
-      </motion.div>
-    </motion.section>
+      <MadridTime />
+    </section>
   )
 }

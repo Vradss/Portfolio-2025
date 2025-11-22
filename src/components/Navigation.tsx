@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
 interface NavigationProps {
@@ -9,23 +9,6 @@ interface NavigationProps {
 
 export function Navigation({ isDark = false }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [lenis, setLenis] = useState<any>(null)
-
-  useEffect(() => {
-    // Get the Lenis instance from the window object
-    const initLenis = async () => {
-      const Lenis = (await import('lenis')).default
-      const lenisInstance = new Lenis({
-        duration: 1.2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        syncTouch: false,
-        touchMultiplier: 2
-      })
-      setLenis(lenisInstance)
-    }
-    initLenis()
-  }, [])
 
   const navItems = [
     { name: 'work', href: '#work-section' },
@@ -55,22 +38,22 @@ export function Navigation({ isDark = false }: NavigationProps) {
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isDownload?: boolean) => {
     e.preventDefault()
-    
+
     if (isDownload) {
       handleDownloadResume()
       return
     }
-    
+
     const targetId = href.replace('#', '')
     const targetElement = document.getElementById(targetId)
-    
-    if (targetElement && lenis) {
-      lenis.scrollTo(targetElement, {
-        duration: 2,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
       })
     }
-    
+
     closeMenu()
   }
 
