@@ -128,6 +128,41 @@ export function HeroSection() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Auto-generate floating images on mobile
+  useEffect(() => {
+    if (!textAnimationComplete || window.innerWidth >= 768) return
+
+    const interval = setInterval(() => {
+      const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
+      const now = Date.now()
+
+      const newImage: FloatingImage = {
+        id: imageCounter.current++,
+        image: randomImage,
+        x: Math.random() * 80 + 10, // 10-90% para evitar bordes
+        y: Math.random() * 80 + 10,
+        scale: Math.random() * 0.5 + 0.5,
+        rotation: Math.random() * 40 - 20,
+        timestamp: now
+      }
+
+      setFloatingImages(prev => {
+        const filtered = prev.filter(img => now - img.timestamp < 1500)
+        // Mantener máximo 3 imágenes en mobile
+        if (filtered.length >= 3) {
+          return [...filtered.slice(1), newImage]
+        }
+        return [...filtered, newImage]
+      })
+
+      setTimeout(() => {
+        setFloatingImages(prev => prev.filter(img => img.id !== newImage.id))
+      }, 1500)
+    }, 800) // Nueva imagen cada 800ms
+
+    return () => clearInterval(interval)
+  }, [textAnimationComplete])
+
   // Generate a single image on mouse move (only on desktop)
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!textAnimationComplete || window.innerWidth < 768) return
@@ -271,34 +306,38 @@ export function HeroSection() {
         </div>
       </motion.div>
 
-      {/* Floating images on mouse move - ABOVE TEXT (Desktop only) */}
+      {/* Floating images - ABOVE TEXT (Desktop + Mobile) */}
       <AnimatePresence>
         {floatingImages.map((item) => (
           <motion.div
             key={item.id}
-            className="absolute pointer-events-none z-20 hidden md:block"
+            className="absolute pointer-events-none z-20"
             style={{
               left: `${item.x}%`,
               top: `${item.y}%`,
             }}
-            initial={{ 
-              opacity: 0, 
-              scale: 0, 
+            initial={{
+              opacity: 0,
+              scale: 0,
               rotate: item.rotation,
               x: '-50%',
               y: '-50%'
             }}
-            animate={{ 
-              opacity: 0.9, 
+            animate={{
+              opacity: 0.9,
               scale: item.scale,
               rotate: item.rotation,
-              x: `calc(-50% + ${(mousePosition.x - 0.5) * 30}px)`,
-              y: `calc(-50% + ${(mousePosition.y - 0.5) * 30}px)`
+              x: window.innerWidth >= 768
+                ? `calc(-50% + ${(mousePosition.x - 0.5) * 30}px)`
+                : '-50%',
+              y: window.innerWidth >= 768
+                ? `calc(-50% + ${(mousePosition.y - 0.5) * 30}px)`
+                : '-50%'
             }}
-            exit={{ 
-              opacity: 0, 
-              scale: 0, 
-              rotate: item.rotation + 180 
+            exit={{
+              opacity: 0,
+              scale: 0,
+              rotate: item.rotation + 180
             }}
             transition={{
               duration: 0.8,

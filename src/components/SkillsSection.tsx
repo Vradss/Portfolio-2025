@@ -178,21 +178,23 @@ export function SkillsSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
-      style={{ backgroundColor: 'transparent' }}
+      className="relative min-h-screen pt-20 md:pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      style={{
+        backgroundColor: 'white'
+      }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true, margin: "-50px" }}
           className="text-center mb-20"
         >
-          <h2 
+          <h2
             className="mb-6"
-            style={{ 
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
               fontSize: 'clamp(48px, 8vw, 100px)',

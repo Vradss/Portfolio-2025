@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { AnimatePresence, LayoutGroup } from 'motion/react'
 import { HeroSection } from './components/HeroSection'
+import { AboutTextSection } from './components/AboutTextSection'
 import { AboutSection } from './components/AboutSection'
 import { SkillsSection } from './components/SkillsSection'
 import { WorkSection } from './components/WorkSection'
@@ -10,7 +11,7 @@ import { CTASection } from './components/CTASection'
 import { Footer } from './components/Footer'
 import { ProjectDetailPage } from './components/ProjectDetailPage'
 import { HeroStateProvider, useHeroState } from './contexts/HeroStateContext'
-import { useLenis } from './hooks/useLenis'
+import { useLenis, getLenis } from './hooks/useLenis'
 import { projects } from './data/projects'
 
 // Función para interpolar linealmente entre dos colores RGB
@@ -27,7 +28,9 @@ function AppContent() {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
   // Color inicial debe ser el color actual del hero
   const [bgColor, setBgColor] = useState<string>(getCurrentColor())
+  const [workBgColor, setWorkBgColor] = useState<string>('white')
   const heroRef = useRef<HTMLDivElement>(null)
+  const skillsRef = useRef<HTMLDivElement>(null)
 
   // useEffect para escuchar el scroll y cambiar el color de fondo
   useEffect(() => {
@@ -73,6 +76,36 @@ function AppContent() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [getCurrentColor])
 
+  // useEffect para interpolar color de Skills (blanco) a Work (negro)
+  useEffect(() => {
+    const handleScrollWork = () => {
+      const skillsSection = skillsRef.current
+      if (!skillsSection) return
+
+      const skillsRect = skillsSection.getBoundingClientRect()
+      const skillsHeight = skillsRect.height
+      const skillsTop = skillsRect.top
+
+      // Calcular el progreso del scroll a través de la sección Skills
+      // Empezar la transición cuando Skills está al 50% visible
+      const startTransition = window.innerHeight * 0.5
+      const scrollProgress = Math.max(0, startTransition - skillsTop) / (skillsHeight * 0.5)
+      const progress = Math.min(Math.max(scrollProgress, 0), 1)
+
+      // Interpolar de blanco (255,255,255) a negro (0,0,0)
+      const fromRGB: [number, number, number] = [255, 255, 255] // Blanco
+      const toRGB: [number, number, number] = [0, 0, 0] // Negro
+
+      const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
+      setWorkBgColor(interpolatedColor)
+    }
+
+    handleScrollWork()
+    window.addEventListener('scroll', handleScrollWork, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScrollWork)
+  }, [])
+
   // Handler to view project details
   const handleViewProject = (projectId: number) => {
     setSelectedProjectId(projectId)
@@ -93,7 +126,32 @@ function AppContent() {
   // Scroll to top when project is selected
   useEffect(() => {
     if (selectedProjectId !== null) {
-      window.scrollTo({ top: 0, behavior: 'instant' })
+      // Force immediate scroll to top using Lenis API
+      const lenis = getLenis()
+
+      const scrollToTop = () => {
+        // Use Lenis scrollTo if available
+        if (lenis) {
+          lenis.scrollTo(0, { immediate: true })
+        }
+
+        // Also force native scroll as backup
+        window.scrollTo(0, 0)
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+      }
+
+      // Execute immediately
+      scrollToTop()
+
+      // Also execute in next frames to ensure it sticks
+      requestAnimationFrame(() => {
+        scrollToTop()
+        requestAnimationFrame(() => {
+          scrollToTop()
+          setTimeout(scrollToTop, 100)
+        })
+      })
     }
   }, [selectedProjectId])
 
@@ -130,10 +188,19 @@ function AppContent() {
             <HeroSection />
           </div>
           <div id="about-section">
+            <AboutTextSection />
             <AboutSection />
           </div>
-          <SkillsSection />
-          <div id="work-section">
+          <div ref={skillsRef}>
+            <SkillsSection />
+          </div>
+          <div
+            id="work-section"
+            style={{
+              backgroundColor: workBgColor,
+              transition: 'background-color 0.1s linear'
+            }}
+          >
             <WorkSection onViewProject={handleViewProject} />
           </div>
           <Footer />

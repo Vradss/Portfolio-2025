@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
 
+let lenisInstance: any = null
+
 export function useLenis() {
   useEffect(() => {
-    let lenis: any
-
     const initLenis = async () => {
       const Lenis = (await import('lenis')).default
-      
-      lenis = new Lenis({
+
+      lenisInstance = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
@@ -16,7 +16,7 @@ export function useLenis() {
       })
 
       function raf(time: number) {
-        lenis.raf(time)
+        lenisInstance.raf(time)
         requestAnimationFrame(raf)
       }
 
@@ -26,9 +26,15 @@ export function useLenis() {
     initLenis()
 
     return () => {
-      if (lenis) {
-        lenis.destroy()
+      if (lenisInstance) {
+        lenisInstance.destroy()
+        lenisInstance = null
       }
     }
   }, [])
+}
+
+// Export function to get Lenis instance
+export function getLenis() {
+  return lenisInstance
 }

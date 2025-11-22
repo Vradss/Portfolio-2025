@@ -113,7 +113,7 @@ export function Navigation({ isDark = false }: NavigationProps) {
           {/* 3. Social Icons - Desktop */}
           <div className="hidden md:flex items-center gap-4">
             <motion.a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/vradisflorez/"
               target="_blank"
               rel="noopener noreferrer"
               className={`${hoverColor} transition-colors cursor-pointer`}
@@ -127,7 +127,7 @@ export function Navigation({ isDark = false }: NavigationProps) {
               </svg>
             </motion.a>
             <motion.a
-              href="https://github.com"
+              href="https://github.com/vradss"
               target="_blank"
               rel="noopener noreferrer"
               className={`${hoverColor} transition-colors cursor-pointer`}

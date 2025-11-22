@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from 'react'
 import profileImage from '@/assets/about-section/profile-photo.png'
 import workingImage from '@/assets/about-section/working-at-desk.png'
 import mountainImage from '@/assets/about-section/mountain-landscape.png'
-import presentacion42Image from '@/assets/about-section/presentacion_42.jpg'
 import innomakersImage from '@/assets/about-section/innomakers.jpg'
 import madrid42PresImage from '@/assets/about-section/42madrid_pres.jpg'
 
@@ -17,8 +16,8 @@ const parallaxLayers = [
     alt: '42 Madrid presentation event',
     depth: 0.4,
     zIndex: 15,
-    initialPosition: { x: '50%', y: '20%' },
-    size: 'w-44 lg:w-[240px]'
+    initialPosition: { x: '50%', y: '15%' },
+    size: 'w-48 lg:w-[260px]'
   },
   {
     id: 'mountain',
@@ -26,8 +25,8 @@ const parallaxLayers = [
     alt: 'Woman with sunglasses by the lake and mountains',
     depth: 0.55,
     zIndex: 20,
-    initialPosition: { x: '78%', y: '30%' },
-    size: 'w-48 lg:w-[260px]'
+    initialPosition: { x: '82%', y: '35%' },
+    size: 'w-52 lg:w-[280px]'
   },
   {
     id: 'innomakers',
@@ -35,8 +34,8 @@ const parallaxLayers = [
     alt: 'Innomakers project',
     depth: 0.7,
     zIndex: 25,
-    initialPosition: { x: '70%', y: '65%' },
-    size: 'w-64 lg:w-[360px]' // Agrandada
+    initialPosition: { x: '65%', y: '60%' },
+    size: 'w-68 lg:w-[380px]' // Agrandada
   },
   {
     id: 'working',
@@ -44,8 +43,8 @@ const parallaxLayers = [
     alt: 'Working on laptop in office',
     depth: 0.85,
     zIndex: 30,
-    initialPosition: { x: '30%', y: '70%' },
-    size: 'w-60 lg:w-[340px]'
+    initialPosition: { x: '28%', y: '70%' },
+    size: 'w-64 lg:w-[360px]'
   },
   {
     id: 'profile',
@@ -53,26 +52,14 @@ const parallaxLayers = [
     alt: 'Digital Product Manager working on laptop with code',
     depth: 1.0, // Capa más cercana - se mueve mucho más
     zIndex: 40,
-    initialPosition: { x: '18%', y: '50%' },
-    size: 'w-64 lg:w-[380px]'
+    initialPosition: { x: '15%', y: '28%' },
+    size: 'w-72 lg:w-[400px]'
   }
 ]
 
 export function AboutSection() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [scrollY, setScrollY] = useState(0)
-  const [rotatingWord, setRotatingWord] = useState(0) // Índice de la palabra rotando
-
-  const rotatingWords = ['builder', 'coder', 'maker']
-
-  // Hook para rotar las palabras cada 2 segundos
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRotatingWord((prev) => (prev + 1) % rotatingWords.length)
-    }, 2000)
-
-    return () => clearInterval(interval)
-  }, [])
 
   // Hook para trackear el scroll y calcular el offset de parallax
   useEffect(() => {
@@ -98,86 +85,31 @@ export function AboutSection() {
 
   return (
     <>
-      {/* Sección de Texto */}
-      <section
-        id="about"
-        className="relative overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen flex items-center justify-center"
-        style={{ backgroundColor: 'transparent' }}
-      >
-        <div className="relative flex flex-col items-center justify-center gap-6">
-          {/* Título principal con palabra rotando */}
-          <h2
-            className="text-black text-center leading-tight max-w-3xl mx-auto px-4"
-            style={{
-              fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-              fontWeight: 700,
-              fontSize: 'clamp(28px, 5vw, 48px)',
-              lineHeight: 1.2
-            }}
-          >
-            I'm a Product Manager becoming a{' '}
-            <span
-              className="inline-block"
-              style={{
-                minWidth: '200px',
-                textAlign: 'left',
-                color: '#6366f1' // Color accent para la palabra rotando
-              }}
-            >
-              <span
-                key={rotatingWord}
-                style={{
-                  animation: 'fadeInOut 2s ease-in-out',
-                  display: 'inline-block'
-                }}
-              >
-                {rotatingWords[rotatingWord]}
-              </span>
-            </span>
-          </h2>
-
-          {/* Párrafos descriptivos */}
-          <div
-            className="text-black text-left leading-relaxed max-w-2xl mx-auto px-4 space-y-4"
-            style={{
-              fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-              fontWeight: 400,
-              fontSize: 'clamp(16px, 2.5vw, 20px)',
-              lineHeight: 1.6
-            }}
-          >
-            <p>
-              I started in product strategy and UX, now I'm learning to code (42 Madrid) and automate with AI (n8n, Python, LLMs). I don't want to just spec products—I want to prototype them, validate them, and ship them myself.
-            </p>
-            <p>
-              <strong>Currently:</strong> 42 Madrid (systems programming) + AI automation projects at Núcleo Studio
-            </p>
-          </div>
-        </div>
-
-        <style>
-          {`
-            @keyframes fadeInOut {
-              0% { opacity: 0; transform: translateY(-10px); }
-              10% { opacity: 1; transform: translateY(0); }
-              90% { opacity: 1; transform: translateY(0); }
-              100% { opacity: 0; transform: translateY(10px); }
-            }
-          `}
-        </style>
-      </section>
-
-      {/* Sección de Imágenes Parallax - Completamente independiente */}
+      {/* Sección de Imágenes Parallax */}
       <section
         ref={containerRef}
-        className="relative w-full overflow-hidden"
-        style={{ height: '150vh', backgroundColor: 'transparent' }}
+        className="relative w-full overflow-hidden -mt-32 md:-mt-40 lg:-mt-48 z-20"
+        style={{ height: '140vh', backgroundColor: 'transparent' }}
       >
-        {/* Capas parallax 3D - Desktop */}
-        <div className="relative w-full h-full hidden md:block">
+        {/* Capas parallax 3D - Desktop y Mobile */}
+        <div className="relative w-full h-full">
           {parallaxLayers.map((layer) => {
             // Calcular el desplazamiento parallax basado en scrollY y depth
-            const parallaxOffset = scrollY * layer.depth
+            // En mobile usamos un efecto más sutil (50% del efecto desktop)
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+            const parallaxOffset = scrollY * layer.depth * (isMobile ? 0.5 : 1)
+
+            // Calcular blur y fade out basado en scrollY
+            // Las imágenes deben desaparecer ANTES de que aparezca el título SKILLS
+            // Sección es 140vh, las imágenes desaparecen al final
+            const fadeStart = window.innerHeight * 0.8  // Empieza a 80% de scroll (~112vh)
+            const fadeEnd = window.innerHeight * 1.2    // Termina a 120% de scroll (~168vh)
+            const fadeProgress = Math.min(Math.max((scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1)
+
+            // Blur: 0px → 30px (blur intenso)
+            const blurAmount = fadeProgress * 30
+            // Opacity: 1 → 0 (fade completo)
+            const imageOpacity = Math.max(1 - (fadeProgress * 1.3), 0) // Fade rápido, no negativo
 
             return (
               <div
@@ -188,7 +120,9 @@ export function AboutSection() {
                   top: layer.initialPosition.y,
                   zIndex: layer.zIndex,
                   transform: `translate(-50%, calc(-50% + ${parallaxOffset}px))`,
-                  transition: 'transform 0.05s linear' // Transición suave del parallax
+                  transition: 'transform 0.05s linear, filter 0.3s ease-out, opacity 0.3s ease-out',
+                  filter: `blur(${blurAmount}px)`,
+                  opacity: imageOpacity
                 }}
               >
                 <img
@@ -199,45 +133,6 @@ export function AboutSection() {
               </div>
             )
           })}
-        </div>
-
-        {/* Versión mobile sin parallax - 5 imágenes estáticas */}
-        <div className="absolute inset-0 md:hidden">
-          <div className="absolute left-[45%] top-[50%] w-36 sm:w-44 h-auto z-40 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={profileImage}
-              alt="Digital Product Manager"
-              className="w-full h-auto object-cover shadow-md"
-            />
-          </div>
-          <div className="absolute left-[65%] top-[42%] w-32 sm:w-40 h-auto z-30 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={mountainImage}
-              alt="Mountain landscape"
-              className="w-full h-auto object-cover shadow-md"
-            />
-          </div>
-          <div className="absolute left-[50%] top-[50%] w-40 sm:w-48 h-auto z-25 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={innomakersImage}
-              alt="Innomakers project"
-              className="w-full h-auto object-cover shadow-md"
-            />
-          </div>
-          <div className="absolute left-[35%] top-[58%] w-36 sm:w-44 h-auto z-20 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={workingImage}
-              alt="Working on laptop"
-              className="w-full h-auto object-cover shadow-md"
-            />
-          </div>
-          <div className="absolute left-[55%] top-[32%] w-28 sm:w-36 h-auto z-12 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-            <img
-              src={madrid42PresImage}
-              alt="42 Madrid presentation event"
-              className="w-full h-auto object-cover shadow-lg"
-            />
-          </div>
         </div>
 
         {/* Grain texture overlay */}

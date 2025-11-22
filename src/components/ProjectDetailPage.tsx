@@ -7,6 +7,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback'
 import { Navigation } from './Navigation'
 import { Footer } from './Footer'
 import { type Project } from '../data/projects'
+import { getLenis } from '../hooks/useLenis'
 import positioningFramework from '@/assets/projects/ngrowth/ngrowth-positioning-framework.png'
 import wireframeImage from '@/assets/other-assets/wireframe-generic.png'
 import competitiveResearchNgrowth from '@/assets/projects/ngrowth/ngrowth-competitive-research.png'
@@ -20,10 +21,35 @@ interface ProjectDetailPageProps {
 export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
   const [viewMode, setViewMode] = useState<'side-by-side' | 'before' | 'after'>('side-by-side')
   
-  // Scroll to top when component mounts
+  // Scroll to top when component mounts (force immediate)
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [])
+    const lenis = getLenis()
+
+    const scrollToTop = () => {
+      // Use Lenis scrollTo if available - this is the key!
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true })
+      }
+
+      // Also force native scroll as backup
+      window.scrollTo(0, 0)
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+    }
+
+    // Execute immediately
+    scrollToTop()
+
+    // Also execute in next frames to ensure it sticks
+    requestAnimationFrame(() => {
+      scrollToTop()
+      requestAnimationFrame(() => {
+        scrollToTop()
+        // One more time after a delay to override any Lenis animations
+        setTimeout(scrollToTop, 100)
+      })
+    })
+  }, [project.id])
 
   return (
     <div className="bg-white">
@@ -105,7 +131,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     : project.id === 3
                     ? 'https://invoinet.com'
                     : project.id === 4
-                    ? 'https://ngrowth.com'
+                    ? 'https://ngrowth.io'
                     : project.id === 5
                     ? 'https://juntoz.com'
                     : '#'
@@ -635,7 +661,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* USER RESEARCH & DISCOVERY Section - For JUNTOZ */}
       {project.id === 5 && (project.details?.userResearchImage || project.details?.competitiveAnalysisImage) && (
-        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[80px]">
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
             <motion.h2
@@ -822,7 +848,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* INFORMATION ARCHITECTURE Section - For JUNTOZ */}
       {project.id === 5 && project.details?.informationArchitectureImage && (
-        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[80px]">
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
             <motion.h2
@@ -948,7 +974,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* DESIGN & ITERATION Section - For JUNTOZ */}
       {project.id === 5 && (
-        <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[80px]">
+        <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
             <motion.h2
@@ -1342,7 +1368,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* JUNTOZ TRANSFORMATION - BEFORE & AFTER */}
       {project.id === 5 && Array.isArray(project.details?.beforeImage) && project.details?.afterImage && (
-        <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[80px]">
+        <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* BEFORE Section - 2 images in grid */}
             <motion.div
@@ -1462,7 +1488,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* IMPACT Section - For JUNTOZ */}
       {project.id === 5 && (
-        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[80px]">
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
             <motion.h2

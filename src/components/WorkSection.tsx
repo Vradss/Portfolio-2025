@@ -12,7 +12,7 @@ interface WorkSectionProps {
 
 export function WorkSection({ onViewProject }: WorkSectionProps) {
   return (
-    <section id="work" className="relative bg-black text-white overflow-hidden">
+    <section id="work" className="relative bg-transparent text-white overflow-hidden pt-20 md:pt-32 lg:pt-40">
       {/* Projects Stack Container */}
       <div className="relative">
         {projects.map((project, index) => (
@@ -56,18 +56,18 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
         }}
         viewport={{ once: true, margin: "-20%" }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-20">
           {/* Title for first project only */}
           {isFirst && (
             <motion.div
-              className="mb-16 lg:mb-20"
+              className="mb-12 md:mb-16 lg:mb-20"
               initial={{ opacity: 0, y: -50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
               viewport={{ once: true, margin: "-100px" }}
             >
               <h1
-                className="text-white pt-16 lg:pt-24"
+                className="text-white"
                 style={{
                   fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
                   fontWeight: 600,
@@ -80,12 +80,12 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
               </h1>
             </motion.div>
           )}
-          
-          <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center ${isFirst ? '' : ''}`}>
-            
+
+          <div className={`grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 md:gap-8 lg:gap-12 items-center ${isFirst ? '' : 'pt-12 md:pt-16 lg:pt-20'}`}>
+
             {/* Image - Left Side - 70% width */}
             <motion.div
-              className="relative order-1 lg:col-span-8"
+              className="relative order-1"
               initial={{ opacity: 0, x: -100 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
@@ -99,18 +99,18 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                 className="relative w-full"
                 layoutId={`project-image-${project.id}`}
               >
-                <div className="w-full aspect-[16/9] min-h-[400px] lg:min-h-[500px]">
+                <div className="w-full bg-black/5 rounded-lg overflow-hidden">
                   {typeof project.image === 'string' ? (
                     <ImageWithFallback
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -119,7 +119,7 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
 
             {/* Content - Right Side - 30% width */}
             <motion.div
-              className="space-y-6 order-2 lg:col-span-4"
+              className="space-y-6 order-2"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ 
