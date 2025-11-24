@@ -20,7 +20,7 @@ export function AboutTextSection() {
   return (
     <section
       id="about"
-      className="relative overflow-hidden px-4 sm:px-6 lg:px-8 min-h-[80vh] md:min-h-[80vh] flex items-center justify-center pt-32 md:pt-40 pb-32 md:pb-80 z-10"
+      className="relative px-4 sm:px-6 lg:px-8 min-h-[80vh] md:min-h-[80vh] flex items-center justify-center pt-32 md:pt-40 pb-32 md:pb-80 z-10"
       style={{ backgroundColor: 'transparent' }}
     >
       <div className="relative flex flex-col items-start justify-center gap-6 max-w-6xl w-full"> 
@@ -28,7 +28,7 @@ export function AboutTextSection() {
         <motion.div
           className="text-black text-left leading-relaxed space-y-6"
           style={{
-            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
             fontWeight: 500,
             fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
@@ -39,7 +39,7 @@ export function AboutTextSection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           viewport={{ once: true, margin: "-50px" }}
         >
-          <p>
+          <p style={{ fontSize: "40px" , fontFamily: 'Monument Grotesk', fontWeight: 500 }}>
             I'm a Product Manager becoming a{' '}
             <span
               className="inline-block"
@@ -66,7 +66,7 @@ export function AboutTextSection() {
         <motion.div
           className="text-black text-left leading-relaxed space-y-6"
           style={{
-            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
             fontWeight: 500,
             fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
@@ -77,7 +77,7 @@ export function AboutTextSection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
           viewport={{ once: true, margin: "-50px" }}
         >
-          <p>
+          <p style={{ fontSize: "40px", fontWeight: 500 }}>
             I started in product strategy and UX, now I'm learning to code (42 Madrid) and automate with AI (n8n, Python, LLMs). I don't want to just spec products—I want to prototype them, validate them, and ship them myself.
           </p>
         </motion.div>
@@ -85,7 +85,7 @@ export function AboutTextSection() {
         <motion.div
           className="text-black text-left leading-relaxed"
           style={{
-            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
             fontWeight: 500,
             fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
@@ -96,9 +96,6 @@ export function AboutTextSection() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
           viewport={{ once: true, margin: "-50px" }}
         >
-          <p>
-            Currently: 42 Madrid (systems programming) + AI automation projects at Núcleo Studio
-          </p>
         </motion.div>
       </div>
 

@@ -85,25 +85,29 @@ export function AboutSection() {
 
   return (
     <>
-      {/* Sección de Imágenes Parallax */}
+      {/* Sección de Imágenes Parallax - superpone 10% del AboutTextSection */}
       <section
         ref={containerRef}
-        className="relative w-full overflow-hidden -mt-32 md:-mt-40 lg:-mt-48 z-20"
-        style={{ height: '140vh', backgroundColor: 'transparent' }}
+        className="relative w-full overflow-hidden z-20"
+        style={{
+          height: '180vh',
+          backgroundColor: 'transparent',
+          marginTop: '-10vh' // Superpone aproximadamente 10% de la sección anterior
+        }}
       >
         {/* Capas parallax 3D - Desktop y Mobile */}
         <div className="relative w-full h-full">
           {parallaxLayers.map((layer) => {
             // Calcular el desplazamiento parallax basado en scrollY y depth
-            // En mobile usamos un efecto más sutil (50% del efecto desktop)
+            // En mobile usamos un efecto más sutil (80% del efecto desktop)
             const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
-            const parallaxOffset = scrollY * layer.depth * (isMobile ? 0.5 : 1)
+            const parallaxOffset = scrollY * layer.depth * (isMobile ? 0.8 : 1)
 
             // Calcular blur y fade out basado en scrollY
             // Las imágenes deben desaparecer ANTES de que aparezca el título SKILLS
-            // Sección es 140vh, las imágenes desaparecen al final
-            const fadeStart = window.innerHeight * 0.8  // Empieza a 80% de scroll (~112vh)
-            const fadeEnd = window.innerHeight * 1.2    // Termina a 120% de scroll (~168vh)
+            // Sección es 180vh, las imágenes desaparecen al final con más espacio en mobile
+            const fadeStart = window.innerHeight * 1.2  // Empieza a 120% de scroll
+            const fadeEnd = window.innerHeight * 1.6    // Termina a 160% de scroll
             const fadeProgress = Math.min(Math.max((scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1)
 
             // Blur: 0px → 30px (blur intenso)

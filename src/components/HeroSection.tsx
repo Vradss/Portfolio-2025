@@ -122,8 +122,24 @@ export function HeroSection() {
   const [transitionKey, setTransitionKey] = useState(0) // Force unique keys
   const imageCounter = useRef(0)
   const lastMouseMove = useRef(0)
+  const infinityT = useRef(0) // Parámetro t para la curva de infinito
 
   const currentColor = getCurrentColor()
+
+  // Función para generar posiciones en forma de infinito (lemniscata)
+  const getInfinityPosition = (t: number) => {
+    // Ecuación paramétrica de lemniscata (∞):
+    // x = a * cos(t) / (1 + sin²(t))
+    // y = a * sin(t) * cos(t) / (1 + sin²(t))
+    const a = 35 // Amplitud del infinito (% del viewport)
+    const denominator = 1 + Math.pow(Math.sin(t), 2)
+
+    // Calcular x e y centrados en 50%
+    const x = 50 + (a * Math.cos(t)) / denominator
+    const y = 50 + (a * Math.sin(t) * Math.cos(t)) / denominator
+
+    return { x, y }
+  }
 
   // Trigger text animation completion
   useEffect(() => {
@@ -134,7 +150,7 @@ export function HeroSection() {
     return () => clearTimeout(timer)
   }, [])
 
-  // Auto-generate floating images on mobile
+  // Auto-generate floating images on mobile siguiendo patrón de infinito
   useEffect(() => {
     if (!textAnimationComplete || window.innerWidth >= 768) return
 
@@ -142,11 +158,15 @@ export function HeroSection() {
       const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
       const now = Date.now()
 
+      // Incrementar t para seguir la curva de infinito
+      infinityT.current += 0.3 // Velocidad de recorrido del infinito
+      const position = getInfinityPosition(infinityT.current)
+
       const newImage: FloatingImage = {
         id: imageCounter.current++,
         image: randomImage,
-        x: Math.random() * 80 + 10, // 10-90% para evitar bordes
-        y: Math.random() * 80 + 10,
+        x: position.x,
+        y: position.y,
         scale: Math.random() * 0.5 + 0.5,
         rotation: Math.random() * 40 - 20,
         timestamp: now
@@ -169,7 +189,7 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [textAnimationComplete])
 
-  // Generate a single image on mouse move (only on desktop)
+  // Generate a single image on mouse move - posición del mouse (only on desktop)
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!textAnimationComplete || window.innerWidth < 768) return
 
@@ -181,7 +201,7 @@ export function HeroSection() {
     const now = Date.now()
     if (now - lastMouseMove.current > 80) { // 80ms para mayor separación entre imágenes
       lastMouseMove.current = now
-      
+
       const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
       const newImage: FloatingImage = {
         id: imageCounter.current++,
