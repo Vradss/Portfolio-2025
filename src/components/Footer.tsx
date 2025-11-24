@@ -139,7 +139,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Space Grotesk, sans-serif',
               fontWeight: 400,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
           >
@@ -161,7 +161,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -176,7 +176,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -191,7 +191,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -206,7 +206,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}
@@ -221,7 +221,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,
-              fontSize: '18px',
+              fontSize: '16px',
               color: '#212121'
             }}
             whileHover={{ y: -2 }}

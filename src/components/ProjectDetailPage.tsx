@@ -12,6 +12,7 @@ import positioningFramework from '@/assets/projects/ngrowth/ngrowth-positioning-
 import wireframeImage from '@/assets/other-assets/wireframe-generic.png'
 import competitiveResearchNgrowth from '@/assets/projects/ngrowth/ngrowth-competitive-research.png'
 import positioningNgrowth from '@/assets/projects/ngrowth/ngrowth-positioning.png'
+import competitiveAnalysisShift from '@/assets/projects/shift/competitive_analysis.png'
 
 interface ProjectDetailPageProps {
   project: Project
@@ -54,11 +55,11 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
   return (
     <div className="bg-white">
       {/* Navigation */}
-      <Navigation isDark={true} />
+      <Navigation isDark={true} onLogoClick={onBack} />
 
       {/* Hero Section - New Layout */}
       <section className="relative bg-[#1a1a1a] text-white pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
+        {/* View More Projects Button */}
         <div className="max-w-7xl mx-auto mb-12">
           <motion.button
             onClick={onBack}
@@ -73,7 +74,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
             }}
           >
             <ArrowLeft size={20} />
-            RETURN TO HOME
+            VIEW MORE PROJECTS
           </motion.button>
         </div>
 
@@ -108,14 +109,11 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {project.id === 3 
-              ? '2023 / Enterprise repositioning and website built from scratch in code (React/Node.js).'
-              : `${project.year} / ${Array.isArray(project.category) ? project.category.join(', ') : project.category}`
-            }
+            {project.details?.year && `${project.details.year} / `}{project.industry}
           </motion.p>
 
           {/* Live Link Button */}
-          {project.details && (
+          {project.details && project.id !== 5 && (
             <motion.div
               className="mb-16"
               initial={{ opacity: 0, y: 30 }}
@@ -176,13 +174,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <ImageWithFallback
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-lg"
                 />
               ) : (
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-lg"
                 />
               )}
             </div>
@@ -306,6 +304,95 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
         </section>
       )}
 
+      {/* PRODUCT RESEARCH & DISCOVERY Section - For SHIFT */}
+      {project.id === 1 && (
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
+          <div className="max-w-7xl mx-auto">
+            {/* Main Title */}
+            <motion.h2
+              className="text-black mb-4"
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 700,
+                fontSize: '48px',
+                lineHeight: 1.2
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              PRODUCT RESEARCH & DISCOVERY
+            </motion.h2>
+
+            {/* Description */}
+            <motion.p
+              className="text-black/60 mb-12 max-w-3xl"
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 400,
+                fontSize: '18px',
+                lineHeight: 1.7
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              Conducted competitive analysis to identify SHIFT's unique positioning opportunity in the innovation community market.
+            </motion.p>
+
+            {/* A) Competitive Analysis */}
+            <motion.div
+              className="mb-12"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h3
+                className="text-black mb-6"
+                style={{
+                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  fontWeight: 600,
+                  fontSize: '24px',
+                  lineHeight: 1.3
+                }}
+              >
+                A) Competitive Analysis
+              </h3>
+
+              <p
+                className="text-black mb-8"
+                style={{
+                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  fontWeight: 400,
+                  fontSize: '18px',
+                  lineHeight: 1.7
+                }}
+              >
+                Positioning opportunity: SHIFT could own the space of "corporate-startup bridge"—connecting established leaders with entrepreneurial ecosystem for mutual benefit, not limited by gender or industry vertical.
+              </p>
+
+              {/* Competitive Analysis Image */}
+              <motion.div
+                className="w-full rounded-lg overflow-hidden"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <img
+                  src={competitiveAnalysisShift}
+                  alt="SHIFT Competitive Analysis"
+                  className="w-full h-auto object-contain rounded-lg"
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* PRODUCT RESEARCH & DISCOVERY Section - For WORTHIT */}
       {project.id === 2 && project.details?.competitiveAnalysisImage && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
@@ -384,13 +471,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   <ImageWithFallback
                     src={project.details.competitiveAnalysisImage}
                     alt="Competitive Analysis"
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain rounded-lg"
                   />
                 ) : (
                   <img
                     src={project.details.competitiveAnalysisImage}
                     alt="Competitive Analysis"
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain rounded-lg"
                   />
                 )}
               </div>
@@ -477,7 +564,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <img
                   src={positioningFramework}
                   alt="Competitive Differentiation Framework"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain rounded-lg"
                 />
               </div>
             </motion.div>
@@ -521,7 +608,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <img
                   src={wireframeImage}
                   alt="Information Architecture Wireframe"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain rounded-lg"
                 />
               </div>
             </motion.div>
@@ -607,7 +694,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <img
                   src={competitiveResearchNgrowth}
                   alt="Competitive Research nGrowth"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain rounded-lg"
                 />
               </div>
             </motion.div>
@@ -651,7 +738,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <img
                   src={positioningNgrowth}
                   alt="Product Positioning Framework nGrowth"
-                  className="w-full h-auto object-contain"
+                  className="w-full h-auto object-contain rounded-lg"
                 />
               </div>
             </motion.div>
@@ -739,13 +826,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.userResearchImage}
                       alt="User Research"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.userResearchImage}
                       alt="User Research"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -802,13 +889,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                         <ImageWithFallback
                           src={project.details.competitiveAnalysisImage}
                           alt="Competitive Benchmarking Overview"
-                          className="w-full h-auto object-contain"
+                          className="w-full h-auto object-contain rounded-lg"
                         />
                       ) : (
                         <img
                           src={project.details.competitiveAnalysisImage}
                           alt="Competitive Benchmarking Overview"
-                          className="w-full h-auto object-contain"
+                          className="w-full h-auto object-contain rounded-lg"
                         />
                       )}
                     </motion.div>
@@ -827,13 +914,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                           <ImageWithFallback
                             src={image}
                             alt={`Competitive Benchmarking ${index + 1}`}
-                            className="w-full h-auto object-contain"
+                            className="w-full h-auto object-contain rounded-lg"
                           />
                         ) : (
                           <img
                             src={image}
                             alt={`Competitive Benchmarking ${index + 1}`}
-                            className="w-full h-auto object-contain"
+                            className="w-full h-auto object-contain rounded-lg"
                           />
                         )}
                       </motion.div>
@@ -974,7 +1061,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
       {/* DESIGN & ITERATION Section - For JUNTOZ */}
       {project.id === 5 && (
-        <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
+        <section className="relative bg-black pt-[60px] pb-[40px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
             <motion.h2
@@ -995,7 +1082,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
             {/* Description */}
             <motion.p
-              className="text-white mb-12 max-w-4xl"
+              className="text-white mb-8 max-w-4xl"
               style={{
                 fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
                 fontWeight: 400,
@@ -1059,13 +1146,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.wireframeImage}
                       alt="Wireframe Lo-fi"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.wireframeImage}
                       alt="Wireframe Lo-fi"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -1095,18 +1182,40 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.afterImage}
                       alt="Web Design Final"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.afterImage}
                       alt="Web Design Final"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
               </motion.div>
             </div>
+
+            {/* View More Projects Button - Inside wireframe section */}
+            <motion.div
+              className="flex justify-center mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <motion.button
+                onClick={onBack}
+                className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
+                style={{
+                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '18px'
+                }}
+                whileHover={{ scale: 1.05 }}
+              >
+                VIEW MORE PROJECTS
+              </motion.button>
+            </motion.div>
           </div>
         </section>
       )}
@@ -1143,13 +1252,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   <ImageWithFallback
                     src={project.details.afterImage}
                     alt={`${project.title} final result`}
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain rounded-lg"
                   />
                 ) : (
                   <img
                     src={project.details.afterImage}
                     alt={`${project.title} final result`}
-                    className="w-full h-auto object-contain"
+                    className="w-full h-auto object-contain rounded-lg"
                   />
                 )}
               </div>
@@ -1264,13 +1373,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                       <ImageWithFallback
                         src={project.details.beforeImage}
                         alt={`${project.title} before`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     ) : (
                       <img
                         src={project.details.beforeImage}
                         alt={`${project.title} before`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     )}
                   </div>
@@ -1299,13 +1408,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                       <ImageWithFallback
                         src={project.details.afterImage}
                         alt={`${project.title} after`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     ) : (
                       <img
                         src={project.details.afterImage}
                         alt={`${project.title} after`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     )}
                   </div>
@@ -1325,13 +1434,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.beforeImage}
                       alt={`${project.title} before`}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.beforeImage}
                       alt={`${project.title} before`}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -1350,18 +1459,40 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.afterImage}
                       alt={`${project.title} after`}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.afterImage}
                       alt={`${project.title} after`}
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
               </motion.div>
             )}
+
+            {/* View More Projects Button - Inside THE TRANSFORMATION section */}
+            <motion.div
+              className="flex justify-center mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <motion.button
+                onClick={onBack}
+                className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
+                style={{
+                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '18px'
+                }}
+                whileHover={{ scale: 1.05 }}
+              >
+                VIEW MORE PROJECTS
+              </motion.button>
+            </motion.div>
           </div>
         </section>
       )}
@@ -1390,7 +1521,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 BEFORE
               </h3>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="flex flex-col gap-8 max-w-5xl mx-auto">
                 {project.details.beforeImage.map((image, index) => (
                   <motion.div
                     key={index}
@@ -1404,13 +1535,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                       <ImageWithFallback
                         src={image}
                         alt={`Before ${index + 1}`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     ) : (
                       <img
                         src={image}
                         alt={`Before ${index + 1}`}
-                        className="w-full h-auto object-contain"
+                        className="w-full h-auto object-contain rounded-lg"
                       />
                     )}
                   </motion.div>
@@ -1438,7 +1569,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               </h3>
 
               {Array.isArray(project.details.afterImage) ? (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="flex flex-col gap-8 max-w-5xl mx-auto">
                   {project.details.afterImage.map((image, index) => (
                     <motion.div
                       key={index}
@@ -1452,13 +1583,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                         <ImageWithFallback
                           src={image}
                           alt={`After ${index + 1}`}
-                          className="w-full h-auto object-contain"
+                          className="w-full h-auto object-contain rounded-lg"
                         />
                       ) : (
                         <img
                           src={image}
                           alt={`After ${index + 1}`}
-                          className="w-full h-auto object-contain"
+                          className="w-full h-auto object-contain rounded-lg"
                         />
                       )}
                     </motion.div>
@@ -1470,13 +1601,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     <ImageWithFallback
                       src={project.details.afterImage}
                       alt="After"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   ) : (
                     <img
                       src={project.details.afterImage}
                       alt="After"
-                      className="w-full h-auto object-contain"
+                      className="w-full h-auto object-contain rounded-lg"
                     />
                   )}
                 </div>
@@ -1579,6 +1710,28 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 <span className="text-2xl">⭐</span>
                 <span>Platform adopted by hundreds of sellers across Peru with significantly improved satisfaction</span>
               </div>
+            </motion.div>
+
+            {/* View More Projects Button - Inside IMPACT section for Juntoz */}
+            <motion.div
+              className="flex justify-center mt-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <motion.button
+                onClick={onBack}
+                className="bg-black text-white hover:bg-black/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
+                style={{
+                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  fontWeight: 500,
+                  fontSize: '18px'
+                }}
+                whileHover={{ scale: 1.05 }}
+              >
+                VIEW MORE PROJECTS
+              </motion.button>
             </motion.div>
           </div>
         </section>

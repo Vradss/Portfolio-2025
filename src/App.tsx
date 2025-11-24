@@ -77,20 +77,27 @@ function AppContent() {
   }, [getCurrentColor])
 
   // useEffect para interpolar color de Skills (blanco) a Work (negro)
+  // REPLICANDO EXACTAMENTE LA LÓGICA DEL HERO
   useEffect(() => {
     const handleScrollWork = () => {
       const skillsSection = skillsRef.current
       if (!skillsSection) return
 
-      const skillsRect = skillsSection.getBoundingClientRect()
-      const skillsHeight = skillsRect.height
-      const skillsTop = skillsRect.top
+      // Obtener la altura real de Skills y su posición desde el top de la página
+      const skillsHeight = skillsSection.offsetHeight
+      const skillsTop = skillsSection.offsetTop
 
-      // Calcular el progreso del scroll a través de la sección Skills
-      // Empezar la transición cuando Skills está al 50% visible
-      const startTransition = window.innerHeight * 0.5
-      const scrollProgress = Math.max(0, startTransition - skillsTop) / (skillsHeight * 0.5)
-      const progress = Math.min(Math.max(scrollProgress, 0), 1)
+      // IGUAL QUE EL HERO: Calcular scroll raw (0 a 1 a través de Skills)
+      // scrollY - skillsTop = cuánto hemos scrolleado dentro de Skills
+      const scrollRaw = Math.min(Math.max((window.scrollY - skillsTop) / skillsHeight, 0), 1)
+
+      // Ajustar el progreso - empezar más temprano para que termine en negro ANTES de Work
+      // Mantener blanco hasta 30%, luego transicionar de 30% a 80%
+      let progress = 0
+      if (scrollRaw > 0.3) {
+        // De 0.3 a 0.8 → mapear a 0 a 1 para la interpolación
+        progress = Math.min((scrollRaw - 0.3) / 0.5, 1)
+      }
 
       // Interpolar de blanco (255,255,255) a negro (0,0,0)
       const fromRGB: [number, number, number] = [255, 255, 255] // Blanco
@@ -191,16 +198,16 @@ function AppContent() {
             <AboutTextSection />
             <AboutSection />
           </div>
-          <div ref={skillsRef}>
-            <SkillsSection />
-          </div>
           <div
-            id="work-section"
+            ref={skillsRef}
             style={{
               backgroundColor: workBgColor,
               transition: 'background-color 0.1s linear'
             }}
           >
+            <SkillsSection />
+          </div>
+          <div id="work-section">
             <WorkSection onViewProject={handleViewProject} />
           </div>
           <Footer />

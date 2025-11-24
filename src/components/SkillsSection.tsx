@@ -178,9 +178,9 @@ export function SkillsSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen pt-20 md:pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen pt-32 md:pt-48 lg:pt-56 pb-32 md:pb-40 lg:pb-48 px-4 sm:px-6 lg:px-8 overflow-hidden"
       style={{
-        backgroundColor: 'white'
+        backgroundColor: 'transparent'
       }}
     >
       <div className="max-w-7xl mx-auto">

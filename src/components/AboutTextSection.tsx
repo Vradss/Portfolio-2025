@@ -23,14 +23,14 @@ export function AboutTextSection() {
       className="relative overflow-hidden px-4 sm:px-6 lg:px-8 min-h-[80vh] md:min-h-[80vh] flex items-center justify-center pt-32 md:pt-40 pb-32 md:pb-80 z-10"
       style={{ backgroundColor: 'transparent' }}
     >
-      <div className="relative flex flex-col items-start justify-center gap-6 max-w-6xl w-full">
+      <div className="relative flex flex-col items-start justify-center gap-6 max-w-6xl w-full"> 
         {/* Texto completo con palabra rotando */}
         <motion.div
           className="text-black text-left leading-relaxed space-y-6"
           style={{
-            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
             fontWeight: 500,
-            fontSize: 'clamp(20px, 5vw, 40px) !important',
+            fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
             textTransform: 'uppercase'
           }}
@@ -66,9 +66,9 @@ export function AboutTextSection() {
         <motion.div
           className="text-black text-left leading-relaxed space-y-6"
           style={{
-            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
             fontWeight: 500,
-            fontSize: 'clamp(20px, 5vw, 40px) !important',
+            fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
             textTransform: 'uppercase'
           }}
@@ -85,9 +85,9 @@ export function AboutTextSection() {
         <motion.div
           className="text-black text-left leading-relaxed"
           style={{
-            fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+            fontFamily: 'Monument Grotesk Regular, Space Grotesk, sans-serif',
             fontWeight: 500,
-            fontSize: 'clamp(20px, 5vw, 40px) !important',
+            fontSize: 'clamp(24px, 8vw, 40px) !important',
             lineHeight: 1.6,
             textTransform: 'uppercase'
           }}
@@ -112,6 +112,6 @@ export function AboutTextSection() {
           }
         `}
       </style>
-    </section>
+    </section> 
   )
 }

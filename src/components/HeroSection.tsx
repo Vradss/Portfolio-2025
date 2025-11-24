@@ -13,13 +13,14 @@ import llamaImage from '@/assets/hero-images/llama.png'
 import rainbowImage from '@/assets/hero-images/rainbow.png'
 import tarotImage from '@/assets/hero-images/tarot-cards.png'
 import tamagotchiImage from '@/assets/hero-images/tamagotchi.png'
-import machuPicchuImage from '@/assets/hero-images/machu-picchu.png'
 import retroComputerImage from '@/assets/hero-images/retro-computer.png'
 import pointingHandImage from '@/assets/hero-images/pointing-hand.png'
 import pepeMemeFaceImage from '@/assets/hero-images/pepe-meme.png'
 import fluffyDogImage from '@/assets/hero-images/fluffy-dog.png'
 import dogWithToyImage from '@/assets/hero-images/dog-with-toy.png'
 import michaelScottImage from '@/assets/hero-images/michael-scott.png'
+import consolaDJImage from '@/assets/hero-images/consolaDJ.png'
+import potusImage from '@/assets/hero-images/potus.png'
 
 const hoverImages = [
   {
@@ -68,11 +69,6 @@ const hoverImages = [
     large: true
   },
   {
-    src: machuPicchuImage,
-    alt: "Machu Picchu ancient ruins",
-    extraLarge: true
-  },
-  {
     src: rainbowImage,
     alt: "Rainbow",
     large: true
@@ -95,6 +91,16 @@ const hoverImages = [
     src: michaelScottImage,
     alt: "Michael Scott from The Office smiling",
     large: true
+  },
+  {
+    src: consolaDJImage,
+    alt: "DJ console mixer",
+    extraLarge: true
+  },
+  {
+    src: potusImage,
+    alt: "Potus presidential seal",
+    extraLarge: true
   }
 ]
 
@@ -173,7 +179,7 @@ export function HeroSection() {
     setMousePosition({ x, y })
 
     const now = Date.now()
-    if (now - lastMouseMove.current > 50) { // 50ms para movimiento fluido
+    if (now - lastMouseMove.current > 80) { // 80ms para mayor separación entre imágenes
       lastMouseMove.current = now
       
       const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
@@ -337,7 +343,7 @@ export function HeroSection() {
             exit={{
               opacity: 0,
               scale: 0,
-              rotate: item.rotation + 180
+              rotate: item.rotation
             }}
             transition={{
               duration: 0.8,

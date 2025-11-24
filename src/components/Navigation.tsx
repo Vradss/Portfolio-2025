@@ -5,9 +5,10 @@ import { motion, AnimatePresence } from 'motion/react'
 
 interface NavigationProps {
   isDark?: boolean
+  onLogoClick?: () => void
 }
 
-export function Navigation({ isDark = false }: NavigationProps) {
+export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = [
@@ -34,6 +35,19 @@ export function Navigation({ isDark = false }: NavigationProps) {
     link.click()
     document.body.removeChild(link)
     closeMenu()
+  }
+
+  const handleLogoClick = () => {
+    if (onLogoClick) {
+      // If we're in a project detail page, use the onLogoClick callback
+      onLogoClick()
+    } else {
+      // Otherwise, scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
   }
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string, isDownload?: boolean) => {
@@ -71,9 +85,10 @@ export function Navigation({ isDark = false }: NavigationProps) {
       >
         <div className="flex justify-between items-center">
           {/* 1. Logo/Brand */}
-          <motion.div 
-            className={`${textColor} font-medium tracking-wide`}
-            style={{ 
+          <motion.button
+            onClick={handleLogoClick}
+            className={`${textColor} font-medium tracking-wide cursor-pointer`}
+            style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontSize: '16px'
             }}
@@ -81,7 +96,7 @@ export function Navigation({ isDark = false }: NavigationProps) {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
             VRADIS
-          </motion.div>
+          </motion.button>
 
           {/* 2. Desktop Navigation Links - Horizontal */}
           <div className="hidden md:flex items-center gap-8">

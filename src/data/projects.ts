@@ -25,19 +25,22 @@ import juntozBeforeCupones from '@/assets/projects/juntoz/juntoz-before-cupones.
 import juntozBeforeCatalogo from '@/assets/projects/juntoz/juntoz-before-catalogo.png'
 import juntozBeforeListadoPedidos from '@/assets/projects/juntoz/juntoz-before-listado-pedidos.png'
 import juntozAfter from '@/assets/projects/juntoz/juntoz-after.png'
+import juntozProductosLong from '@/assets/projects/juntoz/Productos_Long2.jpg'
+import juntozCalificaciones from '@/assets/projects/juntoz/Calificaciones.jpg'
+import juntozMarketingInfo from '@/assets/projects/juntoz/Marketing_Informacion de campaña 3.jpg'
 
 export interface Project {
   id: number
   title: string
   description: string
-  category: 'Web Design' | 'UX Design' | 'Product Management' | 'Development'
   image: string | any
   technologies?: string[]
-  year: string
+  industry: string
   country: string
   logo?: string | any
   details?: {
     problem: string
+    year?: string
     skills?: string[]
     approach?: string[]
     results: string[]
@@ -55,15 +58,15 @@ export const projects: Project[] = [
   {
     id: 1,
     title: "SHIFT",
-    description: "Brand positioning and website redesign for a creative co-working space blending art, tech, and community.",
-    category: "Web Development",
+    description: "Positioning strategy and website for innovation community connecting corporate leaders with entrepreneurial ecosystem.",
     image: shiftImage,
-    technologies: ["Webflow", "UI Design", "Web Development", "UX Research"],
-    year: "Innovation Hub",
+    technologies: ["Webflow", "Custom CSS/JS"],
+    industry: "Innovation Hub",
     country: "Peru",
     details: {
-      problem: "SHIFT needed a complete rebrand to differentiate itself in the saturated co-working market. The existing brand lacked personality and failed to communicate their unique value proposition of blending art, technology, and community in one space.",
-      skills: ["Web Design", "Content Strategy" , "Visual Identity Design"],
+      problem: "SHIFT was launching an innovation community with a unique but difficult positioning challenge: serve two distinct audiences simultaneously.\n\nCorporate leaders needed exposure to innovation and entrepreneurial thinking. Entrepreneurs needed ccess to corporate decision-makers and resources.\n\nChallenge: position SHIFT as the connective tissue between these worlds in a market where competitors served one OR the other—and build a website that spoke to both audiences without alienating either",
+      year: "2025",
+      skills: ["Position Strategy", "UX Research" , "UX/UI Design", "Web Development"],
       results: [
         "🚀 40% increase in membership inquiries within first month",
         "🔎 Brand recognition improved by 65% in target demographic",
@@ -78,13 +81,13 @@ export const projects: Project[] = [
     id: 2,
     title: "WORTHIT",
     description: "Venture capital platform for early-stage B2B SaaS startups, differentiating through strategic corporate connections.",
-    category: "Web Design",
     image: worthitImage,
     technologies: ["Webflow", "Custom CSS/JS"],
-    year: "Venture Capital",
+    industry: "Venture Capital",
     country: "Peru",
     details: {
       problem: "WorthIt, a newly launched venture capital fund, needed to differentiate in a crowded LatAm VC market.\n\nTheir unique value wasn't just capital—it was strategic connections to enterprise clients that accelerate product-market fit.\n\nProduct challenge: build a digital platform that communicated this differentiation to two user segments (founders seeking investment, investors seeking co-investment opportunities) while establishing credibility as a new fund.",
+      year: "2025",
       skills: ["Product Strategy", "UX Design", "Web Development"],
       results: [
         "🎯 Clear dual-path user experience serving both founders and investors",
@@ -101,13 +104,13 @@ export const projects: Project[] = [
     id: 3,
     title: "INVOINET",
     description: "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
-    category: ["Product Strategy", "UX Design", "Frontend Development"],
     image: invoiNetImage,
     technologies: ["React", "React Router", "Azure DevOps"],
-    year: "Fintech",
+    industry: "Fintech",
     country: "United States",
     details: {
-      problem: "Invoinet, a fintech serving 40+ enterprise clients, needed to reposition for regional expansion. Their website messaging was misaligned with their evolved product, causing wrong prospect expectations and low enterprise credibility.",
+      problem: "Invoinet, a fintech serving 40+ enterprise clients, needed to reposition for regional expansion. Their website messaging was misaligned with their evolved product, causing wrong prospect expectations and low enterprise credibility. ",
+      year: "2023",
       skills: ["Product Strategy", "UX Design", "Frontend Development"],
       approach: [
         "Led user research with enterprise clients to redefine positioning strategy",
@@ -128,13 +131,13 @@ export const projects: Project[] = [
     id: 4,
     title: "NGROWTH",
     description: "B2B sales strategies platform optimized for growth, featuring proven methods and playbooks used by unicorn startups, restructuring commercial processes for business expansion.",
-    category: "Web Design",
     image: nGrowthImage,
     technologies: ["WordPress", "Custom CSS/JS", "MailerLite"],
-    year: "Sales B2B Consulting",
+    industry: "Sales B2B Consulting",
     country: "Peru",
     details: {
       problem: "NGROWTH was launching as a new B2B sales consultancy targeting tech startup founders. They needed to establish market positioning and digital presence from scratch, differentiating themselves in a crowded space while building credibility with zero brand recognition.",
+      year: "2024",
       skills: ["Brand Positioning", "UX Design", "Web Development"],
       results: [
         "🚀 Established strong market positioning in competitive B2B consultancy space",
@@ -150,13 +153,13 @@ export const projects: Project[] = [
     id: 5,
     title: "JUNTOZ",
     description: "E-commerce marketplace redesign: rebuilt Seller Center from user research to production.",
-    category: "UX Design",
     image: juntozImage,
     technologies: ["Figma", "User Research", "Prototyping"],
-    year: "E-commerce",
+    industry: "E-commerce",
     country: "Peru",
     details: {
       problem: "Juntoz, a leading Peruvian e-commerce marketplace recently acquired by EFE Group, was losing sellers to competitors like Amazon Seller Central and Mercado Libre.\n\nThe Seller Center was built without user research, making it extremely difficult for sellers to create and manage their virtual stores. Sellers abandoned the platform and chose competitors with more intuitive seller experiences—directly impacting marketplace growth.\n\nProduct challenge: redesign the Seller Center to match or exceed competitor usability, enabling sellers to onboard and operate independently without friction.",
+      year: "2022",
       skills: ["Product Strategy", "UX Research", "Product Design"],
       results: [
         "✓ Redesigned Seller Center from ground up based on comprehensive user research",
@@ -169,7 +172,7 @@ export const projects: Project[] = [
       userResearchImage: juntozUserResearch,
       informationArchitectureImage: juntozInformationArchitecture,
       beforeImage: [juntozBeforeCatalogo, juntozBeforeListadoPedidos],
-      afterImage: [juntozBeforePedidos, juntozBeforeCupones, juntozAfter]
+      afterImage: [juntozProductosLong, juntozCalificaciones, juntozBeforePedidos, juntozBeforeCupones, juntozAfter, juntozMarketingInfo]
     }
   }
 ]

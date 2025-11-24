@@ -12,7 +12,7 @@ interface WorkSectionProps {
 
 export function WorkSection({ onViewProject }: WorkSectionProps) {
   return (
-    <section id="work" className="relative bg-transparent text-white overflow-hidden pt-20 md:pt-32 lg:pt-40">
+    <section id="work" className="relative bg-black text-white overflow-hidden pt-20 md:pt-32 lg:pt-40">
       {/* Projects Stack Container */}
       <div className="relative">
         {projects.map((project, index) => (
@@ -44,8 +44,8 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
   return (
     <div className="relative h-screen">
       <motion.div
-        className="sticky top-0 h-screen bg-black flex items-center"
-        style={{ 
+        className="sticky top-0 h-screen flex items-center"
+        style={{
           zIndex: totalProjects - index
         }}
         initial={{ y: 100, opacity: 0 }}
@@ -145,7 +145,7 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                     fontSize: '18px'
                   }}
                 >
-                  /{project.year}
+                  /{project.industry}
                 </span>
               </motion.div>
 
