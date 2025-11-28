@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 import profileImage from '@/assets/about-section/profile-photo.png'
-import workingImage from '@/assets/about-section/working-at-desk.png'
+import workingImage from '@/assets/about-section/working-at-desk.webp'
 import mountainImage from '@/assets/about-section/mountain-landscape.png'
 import innomakersImage from '@/assets/about-section/innomakers.jpg'
 import madrid42PresImage from '@/assets/about-section/42madrid_pres.jpg'
@@ -35,6 +35,7 @@ const parallaxLayers = [
     depth: 0.7,
     zIndex: 25,
     initialPosition: { x: '65%', y: '60%' },
+    initialPositionMobile: { x: '70%', y: '50%' }, // Posición ajustada para mobile
     size: 'w-68 lg:w-[380px]' // Agrandada
   },
   {
@@ -43,7 +44,7 @@ const parallaxLayers = [
     alt: 'Working on laptop in office',
     depth: 0.85,
     zIndex: 30,
-    initialPosition: { x: '28%', y: '70%' },
+    initialPosition: { x: '28%', y: '55%' },
     size: 'w-64 lg:w-[360px]'
   },
   {
@@ -106,22 +107,40 @@ export function AboutSection() {
             // Calcular blur y fade out basado en scrollY
             // Las imágenes deben desaparecer ANTES de que aparezca el título SKILLS
             // Sección es 180vh, las imágenes desaparecen al final con más espacio en mobile
-            const fadeStart = window.innerHeight * 1.2  // Empieza a 120% de scroll
-            const fadeEnd = window.innerHeight * 1.6    // Termina a 160% de scroll
-            const fadeProgress = Math.min(Math.max((scrollY - fadeStart) / (fadeEnd - fadeStart), 0), 1)
+            // Las imágenes más abajo (mayor y%) tardan más en desaparecer
+            const positionY = parseFloat(layer.initialPosition.y) / 100 // Convertir porcentaje a decimal (0-1)
+            
+            // Asegurar que las imágenes sean visibles al inicio (scrollY negativo o pequeño)
+            // Solo aplicar fade cuando scrollY sea positivo y suficiente
+            const fadeStart = window.innerHeight * (1.2 + positionY * 0.2)  // Ajustar según posición vertical
+            const fadeEnd = window.innerHeight * (1.6 + positionY * 0.2)    // Ajustar según posición vertical
+            
+            // Solo calcular fade si scrollY es positivo y mayor que fadeStart
+            let fadeProgress = 0
+            if (scrollY > fadeStart) {
+              fadeProgress = Math.min((scrollY - fadeStart) / (fadeEnd - fadeStart), 1)
+            }
 
             // Blur: 0px → 30px (blur intenso)
             const blurAmount = fadeProgress * 30
-            // Opacity: 1 → 0 (fade completo)
-            const imageOpacity = Math.max(1 - (fadeProgress * 1.3), 0) // Fade rápido, no negativo
+            // Opacity: 1 → 0 (fade completo) - las imágenes más abajo se mantienen visibles más tiempo
+            // Asegurar que la opacidad sea 1 cuando scrollY es negativo o pequeño
+            const imageOpacity = scrollY < fadeStart 
+              ? 1 
+              : Math.max(1 - (fadeProgress * (1.3 - positionY * 0.2)), 0) // Fade más lento para imágenes más abajo
+
+            // Usar posición mobile si está definida y estamos en mobile
+            const position = isMobile && (layer as any).initialPositionMobile 
+              ? (layer as any).initialPositionMobile 
+              : layer.initialPosition
 
             return (
               <div
                 key={layer.id}
                 className={`absolute pointer-events-none ${layer.size} h-auto`}
                 style={{
-                  left: layer.initialPosition.x,
-                  top: layer.initialPosition.y,
+                  left: position.x,
+                  top: position.y,
                   zIndex: layer.zIndex,
                   transform: `translate(-50%, calc(-50% + ${parallaxOffset}px))`,
                   transition: 'transform 0.05s linear, filter 0.3s ease-out, opacity 0.3s ease-out',

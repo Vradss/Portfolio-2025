@@ -153,22 +153,22 @@ export function SkillsSection() {
     {
       emoji: "🧠",
       title: "Product Thinking",
-      description: "Discovery, research, positioning, go-to-market strategy"
+      description: "Discovery, insight synthesis, problem framing, UX research, product strategy"
     },
     {
       emoji: "⚡",
       title: "Technical Execution",
-      description: "Prototyping (React, Python), AI integrations, hands-on validation"
+      description: "Prototyping (React, Next.js), AI integrations, hands-on validation"
     },
     {
       emoji: "🤖",
       title: "AI Product Development",
-      description: "LLM workflows (Claude, GPT), n8n, automation for product efficiency"
+      description: "LLM workflows , multi-agent automation (n8n, MCP), AI-driven feature prototyping"
     },
     {
       emoji: "📊",
       title: "Data-Driven Decisions",
-      description: "User research, A/B testing, product analytics"
+      description: "User research, product analytics, A/B tests, metrics interpretation for business impact"
     }
   ]
 
@@ -190,10 +190,9 @@ export function SkillsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true, margin: "-50px" }}
-          className="text-center mb-20"
+          className="text-center mb-16 md:mb-24 lg:mb-32"
         >
           <h2
-            className="mb-6"
             style={{
               fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
               fontWeight: 600,

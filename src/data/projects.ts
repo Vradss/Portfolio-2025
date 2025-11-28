@@ -105,7 +105,7 @@ export const projects: Project[] = [
     title: "INVOINET",
     description: "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
     image: invoiNetImage,
-    technologies: ["React", "React Router", "Azure DevOps"],
+    technologies: ["React", ".NET"],
     industry: "Fintech",
     country: "United States",
     details: {
