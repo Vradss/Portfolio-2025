@@ -29,8 +29,8 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
   const handleDownloadResume = () => {
     // Create a link element and trigger download
     const link = document.createElement('a')
-    link.href = '/resume.pdf' // You'll need to add your resume.pdf to the public folder
-    link.download = 'VRADIS_Resume.pdf'
+    link.href = '/Resume - PM - DIC2025.pdf'
+    link.download = 'Resume - PM - DIC2025.pdf' // Only filename, not path
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)

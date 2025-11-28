@@ -59,8 +59,8 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   const handleResumeClick = () => {
     // Download resume PDF
     const link = document.createElement('a')
-    link.href = '/resume.pdf'
-    link.download = 'VRADIS_Resume.pdf'
+    link.href = '/Resume - PM - DIC2025.pdf'
+    link.download = 'Resume - PM - DIC2025.pdf'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -71,7 +71,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   }
 
   const handleLetsTalkClick = () => {
-    window.location.href = 'mailto:hello@vradis.dev?subject=Let\'s work together!'
+    window.location.href = 'mailto:vradis.tech@gmail.com?subject=Let\'s work together!'
   }
 
   return (

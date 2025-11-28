@@ -64,7 +64,7 @@ onClick={() => trackSocialClick('github')}
 
 ### Trackear descarga de resume
 ```typescript
-import { trackResumeDownload } from '@/lib/analytics'
+import { trackResume - PM - DIC2025.pdfDownload } from '@/lib/analytics'
 
 // En el botón de descarga
 onClick={() => trackResumeDownload()}
@@ -185,8 +185,8 @@ import { trackResumeDownload } from '@/lib/analytics'
 const handleDownloadResume = () => {
   trackResumeDownload()
   const link = document.createElement('a')
-  link.href = '/resume.pdf'
-  link.download = 'VRADIS_Resume.pdf'
+  link.href = '/Resume - PM - DIC2025.pdf'
+  link.download = 'VRADIS_Resume - PM - DIC2025.pdf'
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)

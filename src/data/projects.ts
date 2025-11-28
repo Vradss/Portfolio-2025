@@ -57,51 +57,6 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 1,
-    title: "SHIFT",
-    description: "Positioning strategy and website for innovation community connecting corporate leaders with entrepreneurial ecosystem.",
-    image: shiftImage,
-    technologies: ["Webflow", "Custom CSS/JS"],
-    industry: "Innovation Hub",
-    country: "Peru",
-    details: {
-      problem: "SHIFT was launching an innovation community with a unique but difficult positioning challenge: serve two distinct audiences simultaneously.\n\nCorporate leaders needed exposure to innovation and entrepreneurial thinking. Entrepreneurs needed ccess to corporate decision-makers and resources.\n\nChallenge: position SHIFT as the connective tissue between these worlds in a market where competitors served one OR the other—and build a website that spoke to both audiences without alienating either",
-      year: "2025",
-      skills: ["Position Strategy", "UX Research" , "UX/UI Design", "Web Development"],
-      results: [
-        "🚀 40% increase in membership inquiries within first month",
-        "🔎 Brand recognition improved by 65% in target demographic",
-        "💡 Website conversion rate increased from 2.1% to 8.3%",
-        "👀 Featured in 5 major design publications",
-      ],
-      beforeImage: shiftBefore,
-      afterImage: shiftAfter
-    }
-  },
-  {
-    id: 2,
-    title: "WORTHIT",
-    description: "Venture capital platform for early-stage B2B SaaS startups, differentiating through strategic corporate connections.",
-    image: worthitImage,
-    technologies: ["Webflow", "Custom CSS/JS"],
-    industry: "Venture Capital",
-    country: "Peru",
-    details: {
-      problem: "WorthIt, a newly launched venture capital fund, needed to differentiate in a crowded LatAm VC market.\n\nTheir unique value wasn't just capital—it was strategic connections to enterprise clients that accelerate product-market fit.\n\nProduct challenge: build a digital platform that communicated this differentiation to two user segments (founders seeking investment, investors seeking co-investment opportunities) while establishing credibility as a new fund.",
-      year: "2025",
-      skills: ["Product Strategy", "UX Design", "Web Development"],
-      results: [
-        "🎯 Clear dual-path user experience serving both founders and investors",
-        "📊 Effective communication of complex investment thesis and criteria",
-        "🚀 Established credible digital presence for newly launched VC fund",
-        "💼 Streamlined conversion flows for each user segment"
-      ],
-      wireframeImage: worthitWireframe,
-      afterImage: worthitFinal,
-      competitiveAnalysisImage: worthitCompetitiveAnalysis
-    }
-  },
-  {
-    id: 3,
     title: "INVOINET",
     description: "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
     image: invoiNetImage,
@@ -128,29 +83,7 @@ export const projects: Project[] = [
     }
   },
   {
-    id: 4,
-    title: "NGROWTH",
-    description: "B2B sales strategies platform optimized for growth, featuring proven methods and playbooks used by unicorn startups, restructuring commercial processes for business expansion.",
-    image: nGrowthImage,
-    technologies: ["WordPress", "Custom CSS/JS", "MailerLite"],
-    industry: "Sales B2B Consulting",
-    country: "Peru",
-    details: {
-      problem: "NGROWTH was launching as a new B2B sales consultancy targeting tech startup founders. They needed to establish market positioning and digital presence from scratch, differentiating themselves in a crowded space while building credibility with zero brand recognition.",
-      year: "2024",
-      skills: ["Brand Positioning", "UX Design", "Web Development"],
-      results: [
-        "🚀 Established strong market positioning in competitive B2B consultancy space",
-        "💼 Built credible digital presence that attracted early-stage tech founders",
-        "📈 Created scalable website foundation for future growth",
-        "✨ Differentiated brand identity that resonated with target audience"
-      ],
-      wireframeImage: nGrowthWireframe,
-      afterImage: nGrowthFinal
-    }
-  },
-  {
-    id: 5,
+    id: 2,
     title: "JUNTOZ",
     description: "E-commerce marketplace redesign: rebuilt Seller Center from user research to production.",
     image: juntozImage,
@@ -174,5 +107,72 @@ export const projects: Project[] = [
       beforeImage: [juntozBeforeCatalogo, juntozBeforeListadoPedidos],
       afterImage: [juntozProductosLong, juntozCalificaciones, juntozBeforePedidos, juntozBeforeCupones, juntozAfter, juntozMarketingInfo]
     }
-  }
+  },
+  {
+    id: 3,
+    title: "SHIFT",
+    description: "Positioning strategy and website for innovation community connecting corporate leaders with entrepreneurial ecosystem.",
+    image: shiftImage,
+    technologies: ["Webflow", "Custom CSS/JS"],
+    industry: "Innovation Hub",
+    country: "Peru",
+    details: {
+      problem: "SHIFT was launching an innovation community with a unique but difficult positioning challenge: serve two distinct audiences simultaneously.\n\nCorporate leaders needed exposure to innovation and entrepreneurial thinking. Entrepreneurs needed ccess to corporate decision-makers and resources.\n\nChallenge: position SHIFT as the connective tissue between these worlds in a market where competitors served one OR the other—and build a website that spoke to both audiences without alienating either",
+      year: "2025",
+      skills: ["Position Strategy", "UX Research" , "UX/UI Design", "Web Development"],
+      results: [
+        "🚀 40% increase in membership inquiries within first month",
+        "🔎 Brand recognition improved by 65% in target demographic",
+        "💡 Website conversion rate increased from 2.1% to 8.3%",
+        "👀 Featured in 5 major design publications",
+      ],
+      beforeImage: shiftBefore,
+      afterImage: shiftAfter
+    }
+  },
+  {
+    id: 5,
+    title: "WORTHIT",
+    description: "Venture capital platform for early-stage B2B SaaS startups, differentiating through strategic corporate connections.",
+    image: worthitImage,
+    technologies: ["Webflow", "Custom CSS/JS"],
+    industry: "Venture Capital",
+    country: "Peru",
+    details: {
+      problem: "WorthIt, a newly launched venture capital fund, needed to differentiate in a crowded LatAm VC market.\n\nTheir unique value wasn't just capital—it was strategic connections to enterprise clients that accelerate product-market fit.\n\nProduct challenge: build a digital platform that communicated this differentiation to two user segments (founders seeking investment, investors seeking co-investment opportunities) while establishing credibility as a new fund.",
+      year: "2025",
+      skills: ["Product Strategy", "UX Design", "Web Development"],
+      results: [
+        "🎯 Clear dual-path user experience serving both founders and investors",
+        "📊 Effective communication of complex investment thesis and criteria",
+        "🚀 Established credible digital presence for newly launched VC fund",
+        "💼 Streamlined conversion flows for each user segment"
+      ],
+      wireframeImage: worthitWireframe,
+      afterImage: worthitFinal,
+      competitiveAnalysisImage: worthitCompetitiveAnalysis
+    }
+  },
+  {
+    id: 4,
+    title: "NGROWTH",
+    description: "B2B sales strategies platform optimized for growth, featuring proven methods and playbooks used by unicorn startups, restructuring commercial processes for business expansion.",
+    image: nGrowthImage,
+    technologies: ["WordPress", "Custom CSS/JS", "MailerLite"],
+    industry: "Sales B2B Consulting",
+    country: "Peru",
+    details: {
+      problem: "NGROWTH was launching as a new B2B sales consultancy targeting tech startup founders. They needed to establish market positioning and digital presence from scratch, differentiating themselves in a crowded space while building credibility with zero brand recognition.",
+      year: "2024",
+      skills: ["Brand Positioning", "UX Design", "Web Development"],
+      results: [
+        "🚀 Established strong market positioning in competitive B2B consultancy space",
+        "💼 Built credible digital presence that attracted early-stage tech founders",
+        "📈 Created scalable website foundation for future growth",
+        "✨ Differentiated brand identity that resonated with target audience"
+      ],
+      wireframeImage: nGrowthWireframe,
+      afterImage: nGrowthFinal
+    }
+  },
 ]

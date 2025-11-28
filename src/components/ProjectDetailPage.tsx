@@ -394,7 +394,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* PRODUCT RESEARCH & DISCOVERY Section - For WORTHIT */}
-      {project.id === 2 && project.details?.competitiveAnalysisImage && (
+      {project.id === 5 && project.details?.competitiveAnalysisImage && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
@@ -747,7 +747,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* USER RESEARCH & DISCOVERY Section - For JUNTOZ */}
-      {project.id === 5 && (project.details?.userResearchImage || project.details?.competitiveAnalysisImage) && (
+      {project.id === 2 && (project.details?.userResearchImage || project.details?.competitiveAnalysisImage) && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
@@ -934,7 +934,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* INFORMATION ARCHITECTURE Section - For JUNTOZ */}
-      {project.id === 5 && project.details?.informationArchitectureImage && (
+      {project.id === 2 && project.details?.informationArchitectureImage && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
@@ -1060,7 +1060,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* DESIGN & ITERATION Section - For JUNTOZ */}
-      {project.id === 5 && (
+      {project.id === 2 && (
         <section className="relative bg-black pt-[60px] pb-[40px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
@@ -1472,7 +1472,84 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               </motion.div>
             )}
 
-            {/* View More Projects Button - Inside THE TRANSFORMATION section */}
+            {/* View More Projects Button - Inside THE TRANSFORMATION section (hidden for INVOINET as it has IMPACT section) */}
+            {project.id !== 1 && (
+              <motion.div
+                className="flex justify-center mt-16"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <motion.button
+                  onClick={onBack}
+                  className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 500,
+                    fontSize: '18px'
+                  }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  VIEW MORE PROJECTS
+                </motion.button>
+              </motion.div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* IMPACT Section - For INVOINET */}
+      {project.id === 1 && project.details?.results && project.details.results.length > 0 && (
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
+          <div className="max-w-7xl mx-auto">
+            {/* Main Title */}
+            <motion.h2
+              className="text-black mb-16"
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 700,
+                fontSize: '48px',
+                lineHeight: 1.2
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              IMPACT
+            </motion.h2>
+
+            {/* Impact Items - Mapped from results */}
+            <motion.div
+              className="space-y-6 max-w-4xl"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              {project.details.results.map((result, index) => (
+                <motion.div
+                  key={index}
+                  className="text-black flex items-start gap-4"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '20px',
+                    lineHeight: 1.7
+                  }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 + (index * 0.1) }}
+                  viewport={{ once: true }}
+                >
+                  <span className="text-2xl">✓</span>
+                  <span>{result.replace(/^✓\s*/, '')}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* View More Projects Button - Inside IMPACT section for INVOINET */}
             <motion.div
               className="flex justify-center mt-16"
               initial={{ opacity: 0, y: 20 }}
@@ -1482,7 +1559,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
             >
               <motion.button
                 onClick={onBack}
-                className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
+                className="bg-black text-white hover:bg-black/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
                 style={{
                   fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
                   fontWeight: 500,
@@ -1498,7 +1575,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* JUNTOZ TRANSFORMATION - BEFORE & AFTER */}
-      {project.id === 5 && Array.isArray(project.details?.beforeImage) && project.details?.afterImage && (
+      {project.id === 2 && Array.isArray(project.details?.beforeImage) && project.details?.afterImage && (
         <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* BEFORE Section - 2 images in grid */}
@@ -1618,7 +1695,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* IMPACT Section - For JUNTOZ */}
-      {project.id === 5 && (
+      {project.id === 2 && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
