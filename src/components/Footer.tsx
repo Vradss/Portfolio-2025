@@ -67,7 +67,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   }
 
   const handleLinkedInClick = () => {
-    window.open('https://linkedin.com/in/vradis', '_blank')
+    window.open('https://www.linkedin.com/in/vradisflorez/', '_blank')
   }
 
   const handleLetsTalkClick = () => {

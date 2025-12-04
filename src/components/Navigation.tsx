@@ -216,7 +216,7 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
                 <motion.a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/in/vradisflorez/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white hover:text-gray-300 transition-colors cursor-pointer"
