@@ -1,17 +1,25 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { AnimatePresence, LayoutGroup } from 'motion/react'
-import { HeroSection } from './components/HeroSection'
-import { AboutTextSection } from './components/AboutTextSection'
-import { AboutSection } from './components/AboutSection'
-import { SkillsSection } from './components/SkillsSection'
-import { WorkSection } from './components/WorkSection'
-import { Footer } from './components/Footer'
-import { ProjectDetailPage } from './components/ProjectDetailPage'
+import { useState, useEffect, useRef, useCallback, useMemo, lazy, Suspense } from 'react'
+import { LayoutGroup } from 'motion/react'
 import { HeroStateProvider, useHeroState } from './contexts/HeroStateContext'
 import { useLenis, getLenis } from './hooks/useLenis'
+import { useThrottle } from './hooks/useThrottle'
 import { projects } from './data/projects'
+
+// Code splitting: cargar componentes pesados de forma lazy
+const HeroSection = lazy(() => import('./components/HeroSection').then(m => ({ default: m.HeroSection })))
+const AboutTextSection = lazy(() => import('./components/AboutTextSection').then(m => ({ default: m.AboutTextSection })))
+const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({ default: m.AboutSection })))
+const SkillsSection = lazy(() => import('./components/SkillsSection').then(m => ({ default: m.SkillsSection })))
+const WorkSection = lazy(() => import('./components/WorkSection').then(m => ({ default: m.WorkSection })))
+const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })))
+const ProjectDetailPage = lazy(() => import('./components/ProjectDetailPage').then(m => ({ default: m.ProjectDetailPage })))
+
+// Skeleton para loading states
+const SectionSkeleton = () => (
+  <div className="w-full h-screen bg-gray-50 animate-pulse" />
+)
 
 // Función para interpolar linealmente entre dos colores RGB
 function lerpColor(fromRGB: [number, number, number], toRGB: [number, number, number], t: number): string {
@@ -31,94 +39,91 @@ function AppContent() {
   const heroRef = useRef<HTMLDivElement>(null)
   const skillsRef = useRef<HTMLDivElement>(null)
 
-  // useEffect para escuchar el scroll y cambiar el color de fondo
-  useEffect(() => {
-    // Función para convertir hex a RGB
-    const hexToRgb = (hex: string): [number, number, number] => {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
-      return result
-        ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
-        : [255, 255, 255]
-    }
-
-    const handleScroll = () => {
-      // Obtener la altura real del Hero
-      const heroHeight = heroRef.current?.offsetHeight || window.innerHeight
-
-      // Calcular scroll raw (0 a 1 a través del Hero)
-      const scrollRaw = Math.min(window.scrollY / heroHeight, 1)
-
-      // Ajustar el progreso: mantener color original hasta 50%, luego transicionar rápidamente
-      // Esto hace que el color predominante sea blanco cuando la segunda sección aparece
-      let progress = 0
-      if (scrollRaw > 0.5) {
-        // De 0.5 a 1.0 → mapear a 0 a 1 para la interpolación
-        progress = (scrollRaw - 0.5) / 0.5
-      }
-
-      // Colores: desde el color actual del hero hasta blanco
-      const currentHeroColor = getCurrentColor()
-      const fromRGB = hexToRgb(currentHeroColor)
-      const toRGB: [number, number, number] = [255, 255, 255] // Blanco
-
-      // Interpolar el color
-      const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
-
-      // Aplicar el color de fondo
-      setBgColor(interpolatedColor)
-    }
-
-    // Ejecutar al montar y en cada scroll
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [getCurrentColor])
-
-  // useEffect para interpolar color de Skills (blanco) a Work (negro)
-  // REPLICANDO EXACTAMENTE LA LÓGICA DEL HERO
-  useEffect(() => {
-    const handleScrollWork = () => {
-      const skillsSection = skillsRef.current
-      if (!skillsSection) return
-
-      // Obtener la altura real de Skills y su posición desde el top de la página
-      const skillsHeight = skillsSection.offsetHeight
-      const skillsTop = skillsSection.offsetTop
-
-      // IGUAL QUE EL HERO: Calcular scroll raw (0 a 1 a través de Skills)
-      // scrollY - skillsTop = cuánto hemos scrolleado dentro de Skills
-      const scrollRaw = Math.min(Math.max((window.scrollY - skillsTop) / skillsHeight, 0), 1)
-
-      // Ajustar el progreso - empezar más temprano para que termine en negro ANTES de Work
-      // Mantener blanco hasta 30%, luego transicionar de 30% a 80%
-      let progress = 0
-      if (scrollRaw > 0.3) {
-        // De 0.3 a 0.8 → mapear a 0 a 1 para la interpolación
-        progress = Math.min((scrollRaw - 0.3) / 0.5, 1)
-      }
-
-      // Interpolar de blanco (255,255,255) a negro (0,0,0)
-      const fromRGB: [number, number, number] = [255, 255, 255] // Blanco
-      const toRGB: [number, number, number] = [0, 0, 0] // Negro
-
-      const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
-      setWorkBgColor(interpolatedColor)
-    }
-
-    handleScrollWork()
-    window.addEventListener('scroll', handleScrollWork, { passive: true })
-
-    return () => window.removeEventListener('scroll', handleScrollWork)
+  // Memoizar función de conversión hex a RGB
+  const hexToRgb = useCallback((hex: string): [number, number, number] => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+    return result
+      ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)]
+      : [255, 255, 255]
   }, [])
 
-  // Handler to view project details
-  const handleViewProject = (projectId: number) => {
-    setSelectedProjectId(projectId)
-  }
+  // Handler de scroll optimizado con throttle
+  const handleScroll = useCallback(() => {
+    // Obtener la altura real del Hero
+    const heroHeight = heroRef.current?.offsetHeight || window.innerHeight
 
-  // Handler to go back to main portfolio
-  const handleBackToPortfolio = () => {
+    // Calcular scroll raw (0 a 1 a través del Hero)
+    const scrollRaw = Math.min(window.scrollY / heroHeight, 1)
+
+    // Ajustar el progreso: mantener color original hasta 50%, luego transicionar rápidamente
+    let progress = 0
+    if (scrollRaw > 0.5) {
+      progress = (scrollRaw - 0.5) / 0.5
+    }
+
+    // Colores: desde el color actual del hero hasta blanco
+    const currentHeroColor = getCurrentColor()
+    const fromRGB = hexToRgb(currentHeroColor)
+    const toRGB: [number, number, number] = [255, 255, 255]
+
+    // Interpolar el color
+    const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
+
+    // Aplicar el color de fondo
+    setBgColor(interpolatedColor)
+  }, [getCurrentColor, hexToRgb])
+
+  // Throttle del scroll handler (16ms = ~60fps)
+  const throttledHandleScroll = useThrottle(handleScroll, 16)
+
+  // useEffect para escuchar el scroll y cambiar el color de fondo
+  useEffect(() => {
+    // Ejecutar al montar
+    handleScroll()
+    window.addEventListener('scroll', throttledHandleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', throttledHandleScroll)
+  }, [throttledHandleScroll, handleScroll])
+
+  // Handler de scroll para Skills → Work optimizado
+  const handleScrollWork = useCallback(() => {
+    const skillsSection = skillsRef.current
+    if (!skillsSection) return
+
+    const skillsHeight = skillsSection.offsetHeight
+    const skillsTop = skillsSection.offsetTop
+
+    const scrollRaw = Math.min(Math.max((window.scrollY - skillsTop) / skillsHeight, 0), 1)
+
+    let progress = 0
+    if (scrollRaw > 0.3) {
+      progress = Math.min((scrollRaw - 0.3) / 0.5, 1)
+    }
+
+    const fromRGB: [number, number, number] = [255, 255, 255]
+    const toRGB: [number, number, number] = [0, 0, 0]
+
+    const interpolatedColor = lerpColor(fromRGB, toRGB, progress)
+    setWorkBgColor(interpolatedColor)
+  }, [])
+
+  // Throttle del scroll handler para Skills
+  const throttledHandleScrollWork = useThrottle(handleScrollWork, 16)
+
+  // useEffect para interpolar color de Skills (blanco) a Work (negro)
+  useEffect(() => {
+    handleScrollWork()
+    window.addEventListener('scroll', throttledHandleScrollWork, { passive: true })
+
+    return () => window.removeEventListener('scroll', throttledHandleScrollWork)
+  }, [throttledHandleScrollWork, handleScrollWork])
+
+  // Memoizar handlers para evitar re-renders
+  const handleViewProject = useCallback((projectId: number) => {
+    setSelectedProjectId(projectId)
+  }, [])
+
+  const handleBackToPortfolio = useCallback(() => {
     setSelectedProjectId(null)
     // Scroll to work section when going back
     setTimeout(() => {
@@ -127,7 +132,7 @@ function AppContent() {
         workSection.scrollIntoView({ behavior: 'smooth' })
       }
     }, 100)
-  }
+  }, [])
 
   // Scroll to top when project is selected
   useEffect(() => {
@@ -161,55 +166,78 @@ function AppContent() {
     }
   }, [selectedProjectId])
 
+  // Memoizar proyecto seleccionado
+  const selectedProject = useMemo(() => {
+    return selectedProjectId !== null 
+      ? projects.find(p => p.id === selectedProjectId) 
+      : null
+  }, [selectedProjectId])
+
+  // Memoizar estilos para evitar recreación
+  const containerStyle = useMemo(() => ({
+    backgroundColor: bgColor,
+    transition: 'background-color 0.05s linear'
+  }), [bgColor])
+
+  const skillsStyle = useMemo(() => ({
+    backgroundColor: workBgColor,
+    transition: 'background-color 0.1s linear'
+  }), [workBgColor])
+
   // If a project is selected, show the project detail page
-  if (selectedProjectId !== null) {
-    const selectedProject = projects.find(p => p.id === selectedProjectId)
-    if (selectedProject) {
-      return (
-        <LayoutGroup>
-          <div className="antialiased">
+  if (selectedProject) {
+    return (
+      <LayoutGroup>
+        <div className="antialiased">
+          <Suspense fallback={<SectionSkeleton />}>
             <ProjectDetailPage
               project={selectedProject}
               onBack={handleBackToPortfolio}
             />
-          </div>
-        </LayoutGroup>
-      )
-    }
+          </Suspense>
+        </div>
+      </LayoutGroup>
+    )
   }
 
   return (
     <LayoutGroup>
-      {/* Contenedor principal con el color de fondo interpolado - transición smooth entre colores */}
+      {/* Contenedor principal con el color de fondo interpolado */}
       <div
         className="antialiased"
-        style={{
-          backgroundColor: bgColor,
-          transition: 'background-color 0.05s linear' // Transición muy rápida para que el scroll se sienta smooth
-        }}
+        style={containerStyle}
       >
         <div className="relative">
           {/* Hero con ref para obtener su altura */}
           <div ref={heroRef}>
-            <HeroSection />
+            <Suspense fallback={<SectionSkeleton />}>
+              <HeroSection />
+            </Suspense>
           </div>
           <div id="about-section">
-            <AboutTextSection />
-            <AboutSection />
+            <Suspense fallback={<SectionSkeleton />}>
+              <AboutTextSection />
+            </Suspense>
+            <Suspense fallback={<SectionSkeleton />}>
+              <AboutSection />
+            </Suspense>
           </div>
           <div
             ref={skillsRef}
-            style={{
-              backgroundColor: workBgColor,
-              transition: 'background-color 0.1s linear'
-            }}
+            style={skillsStyle}
           >
-            <SkillsSection />
+            <Suspense fallback={<SectionSkeleton />}>
+              <SkillsSection />
+            </Suspense>
           </div>
           <div id="work-section">
-            <WorkSection onViewProject={handleViewProject} />
+            <Suspense fallback={<SectionSkeleton />}>
+              <WorkSection onViewProject={handleViewProject} />
+            </Suspense>
           </div>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </div>
       </div>
     </LayoutGroup>

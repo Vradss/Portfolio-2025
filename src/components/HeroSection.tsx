@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
+import { OptimizedImage } from './OptimizedImage'
 import { MadridTime } from './MadridTime'
 import { MadeInPeru } from './MadeInPeru'
 import { Navigation } from './Navigation'
 import { useHeroState } from '../contexts/HeroStateContext'
+import { useThrottle } from '../hooks/useThrottle'
 import prideFlag from '@/assets/hero-images/pride-flag.png'
 import avocadoImage from '@/assets/hero-images/avocado.png'
 import llamaImage from '@/assets/hero-images/llama.png'
@@ -189,8 +191,8 @@ export function HeroSection() {
     return () => clearInterval(interval)
   }, [textAnimationComplete])
 
-  // Generate a single image on mouse move - posición del mouse (only on desktop)
-  const handleMouseMove = (e: React.MouseEvent) => {
+  // Handler optimizado con throttle para mouse move
+  const handleMouseMoveInternal = useCallback((e: React.MouseEvent) => {
     if (!textAnimationComplete || window.innerWidth < 768) return
 
     const rect = e.currentTarget.getBoundingClientRect()
@@ -199,7 +201,7 @@ export function HeroSection() {
     setMousePosition({ x, y })
 
     const now = Date.now()
-    if (now - lastMouseMove.current > 80) { // 80ms para mayor separación entre imágenes
+    if (now - lastMouseMove.current > 80) {
       lastMouseMove.current = now
 
       const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
@@ -222,21 +224,24 @@ export function HeroSection() {
         setFloatingImages(prev => prev.filter(img => img.id !== newImage.id))
       }, 1000)
     }
-  }
+  }, [textAnimationComplete])
 
-  const handleMouseLeave = () => {
+  // Throttle del mouse move (16ms = ~60fps)
+  const handleMouseMove = useThrottle(handleMouseMoveInternal, 16)
+
+  const handleMouseLeave = useCallback(() => {
     setFloatingImages([])
-  }
+  }, [])
 
   // Watch for clickState changes to update transition key
   useEffect(() => {
     setTransitionKey(prev => prev + 1) // Force new keys for all letters when state changes
   }, [clickState])
 
-  const handleClick = () => {
-    setClickState((prev) => (prev + 1) % 3) // Cycle through 3 states
-    setTransitionKey(prev => prev + 1) // Force new keys for all letters
-  }
+  const handleClick = useCallback(() => {
+    setClickState((prev) => (prev + 1) % 3)
+    setTransitionKey(prev => prev + 1)
+  }, [setClickState])
 
   const { firstLine, secondLine } = getCurrentText()
 
@@ -370,31 +375,26 @@ export function HeroSection() {
               ease: "easeOut"
             }}
           >
-            {typeof item.image.src === 'string' ? (
-              <ImageWithFallback
-                src={item.image.src}
-                alt={item.image.alt}
-                className={
-                  item.image.extraLarge 
-                    ? "w-60 h-60 md:w-96 md:h-96 object-contain" // 50% más grande que large (240px → 384px)
-                    : item.image.large 
-                      ? "w-40 h-40 md:w-60 md:h-60 object-contain" 
-                      : "w-32 h-32 md:w-48 md:h-48 object-contain"
-                }
-              />
-            ) : (
-              <img
-                src={item.image.src}
-                alt={item.image.alt}
-                className={
-                  item.image.extraLarge 
-                    ? "w-60 h-60 md:w-96 md:h-96 object-contain" // 50% más grande que large (240px → 384px)
-                    : item.image.large 
-                      ? "w-40 h-40 md:w-60 md:h-60 object-contain" 
-                      : "w-32 h-32 md:w-48 md:h-48 object-contain"
-                }
-              />
-            )}
+            {(() => {
+              // Convertir imagen importada a string si es necesario
+              const imageSrc = typeof item.image.src === 'string' 
+                ? item.image.src 
+                : (item.image.src?.default || item.image.src || '')
+              
+              return (
+                <ImageWithFallback
+                  src={imageSrc}
+                  alt={item.image.alt}
+                  className={
+                    item.image.extraLarge 
+                      ? "w-60 h-60 md:w-96 md:h-96 object-contain"
+                      : item.image.large 
+                        ? "w-40 h-40 md:w-60 md:h-60 object-contain" 
+                        : "w-32 h-32 md:w-48 md:h-48 object-contain"
+                  }
+                />
+              )
+            })()}
           </motion.div>
         ))}
       </AnimatePresence>

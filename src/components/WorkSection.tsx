@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { memo, useCallback, useMemo } from 'react'
 import { motion } from 'motion/react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { Button } from './ui/button'
@@ -38,8 +38,28 @@ interface ProjectItemProps {
   onViewProject?: (projectId: number) => void
 }
 
-function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: ProjectItemProps) {
+const ProjectItem = memo(function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: ProjectItemProps) {
   const [isHovered, setIsHovered] = React.useState(false)
+
+  const handleViewProject = useCallback(() => {
+    onViewProject?.(project.id)
+  }, [onViewProject, project.id])
+
+  const handleMouseEnter = useCallback(() => {
+    setIsHovered(true)
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false)
+  }, [])
+
+  // Memoizar estilos comunes
+  const titleStyle = useMemo(() => ({
+    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+    fontWeight: 500,
+    fontSize: 'clamp(32px, 6vw, 64px)',
+    lineHeight: 1.1
+  }), [])
 
   return (
     <div className="relative h-screen">
@@ -111,6 +131,8 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                       src={project.image}
                       alt={project.title}
                       className="w-full h-auto object-contain rounded-lg"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
                 </div>
@@ -152,12 +174,7 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
               {/* Title */}
               <motion.h2
                 className="text-white"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 500,
-                  fontSize: 'clamp(32px, 6vw, 64px)',
-                  lineHeight: 1.1
-                }}
+                style={titleStyle}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -190,9 +207,9 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
                   viewport={{ once: true }}
                 >
                   <Button
-                    onClick={() => onViewProject(project.id)}
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
+                    onClick={handleViewProject}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                     className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-8 py-3 rounded-full transform relative"
                     style={{
                       fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
@@ -223,4 +240,11 @@ function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: 
       </motion.div>
     </div>
   )
-}
+}, (prevProps, nextProps) => {
+  // Comparación personalizada para evitar re-renders innecesarios
+  return (
+    prevProps.project.id === nextProps.project.id &&
+    prevProps.index === nextProps.index &&
+    prevProps.isFirst === nextProps.isFirst
+  )
+})

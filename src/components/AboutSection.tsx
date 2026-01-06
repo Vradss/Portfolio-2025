@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import profileImage from '@/assets/about-section/profile-photo.png'
 import workingImage from '@/assets/about-section/working-at-desk.webp'
 import mountainImage from '@/assets/about-section/mountain-landscape.png'
@@ -8,7 +8,6 @@ import innomakersImage from '@/assets/about-section/innomakers.jpg'
 import madrid42PresImage from '@/assets/about-section/42madrid_pres.jpg'
 
 // Configuración de las capas parallax - 5 fotos contenidas en su sección
-// Las capas más lejanas son más pequeñas para crear sensación de profundidad 3D
 const parallaxLayers = [
   {
     id: 'madrid42pres',
@@ -35,8 +34,8 @@ const parallaxLayers = [
     depth: 0.7,
     zIndex: 25,
     initialPosition: { x: '65%', y: '60%' },
-    initialPositionMobile: { x: '70%', y: '50%' }, // Posición ajustada para mobile
-    size: 'w-68 lg:w-[380px]' // Agrandada
+    initialPositionMobile: { x: '70%', y: '50%' },
+    size: 'w-68 lg:w-[380px]'
   },
   {
     id: 'working',
@@ -51,7 +50,7 @@ const parallaxLayers = [
     id: 'profile',
     image: profileImage,
     alt: 'Digital Product Manager working on laptop with code',
-    depth: 1.0, // Capa más cercana - se mueve mucho más
+    depth: 1.0,
     zIndex: 40,
     initialPosition: { x: '15%', y: '28%' },
     size: 'w-72 lg:w-[400px]'
@@ -79,39 +78,33 @@ export function AboutSection() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Hook para trackear el scroll y calcular el offset de parallax con requestAnimationFrame
+  // Handler optimizado de scroll con useCallback
+  const updateScroll = useCallback(() => {
+    if (!containerRef.current) return
+
+    const rect = containerRef.current.getBoundingClientRect()
+    const sectionTop = rect.top
+
+    if (sectionTop < windowHeightRef.current && sectionTop + rect.height > 0) {
+      setScrollY(-sectionTop)
+    }
+  }, [])
+
+  // Hook para trackear el scroll con requestAnimationFrame
   useEffect(() => {
     let ticking = false
-
-    const updateScroll = () => {
-      if (!containerRef.current) {
-        ticking = false
-        return
-      }
-
-      // Obtener la posición de la sección relativa al viewport
-      const rect = containerRef.current.getBoundingClientRect()
-      const sectionTop = rect.top
-
-      // Calcular scroll solo cuando la sección está visible
-      if (sectionTop < windowHeightRef.current && sectionTop + rect.height > 0) {
-        // Scroll relativo a la sección (negativo cuando scrolleamos hacia abajo)
-        setScrollY(-sectionTop)
-      }
-
-      ticking = false
-    }
 
     const handleScroll = () => {
       if (!ticking) {
         rafId.current = requestAnimationFrame(() => {
           updateScroll()
+          ticking = false
         })
         ticking = true
       }
     }
 
-    updateScroll() // Ejecutar al montar
+    updateScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     
     return () => {
@@ -120,7 +113,7 @@ export function AboutSection() {
         cancelAnimationFrame(rafId.current)
       }
     }
-  }, [])
+  }, [updateScroll])
 
   return (
     <>
@@ -188,7 +181,7 @@ export function AboutSection() {
                   opacity: imageOpacity,
                   transition: 'opacity 0.3s ease-out, filter 0.3s ease-out'
                 }}
-              >
+                >
                 <img
                   src={layer.image}
                   alt={layer.alt}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo, useCallback } from 'react'
 import { motion } from 'motion/react'
 import { ArrowLeft } from 'lucide-react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
@@ -8,11 +8,15 @@ import { Navigation } from './Navigation'
 import { Footer } from './Footer'
 import { type Project } from '../data/projects'
 import { getLenis } from '../hooks/useLenis'
-import positioningFramework from '@/assets/projects/ngrowth/ngrowth-positioning-framework.png'
-import wireframeImage from '@/assets/other-assets/wireframe-generic.png'
-import competitiveResearchNgrowth from '@/assets/projects/ngrowth/ngrowth-competitive-research.png'
-import positioningNgrowth from '@/assets/projects/ngrowth/ngrowth-positioning.png'
-import competitiveAnalysisShift from '@/assets/projects/shift/competitive_analysis.png'
+
+// Imports dinámicos para reducir bundle inicial
+const imageImports = {
+  positioningFramework: () => import('@/assets/projects/ngrowth/ngrowth-positioning-framework.png'),
+  wireframeImage: () => import('@/assets/other-assets/wireframe-generic.png'),
+  competitiveResearchNgrowth: () => import('@/assets/projects/ngrowth/ngrowth-competitive-research.png'),
+  positioningNgrowth: () => import('@/assets/projects/ngrowth/ngrowth-positioning.png'),
+  competitiveAnalysisShift: () => import('@/assets/projects/shift/competitive_analysis.png'),
+}
 
 interface ProjectDetailPageProps {
   project: Project
@@ -22,7 +26,55 @@ interface ProjectDetailPageProps {
 export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
   const [viewMode, setViewMode] = useState<'side-by-side' | 'before' | 'after'>('side-by-side')
   
-  // Scroll to top when component mounts (force immediate)
+  // Memoizar callback para evitar re-renders
+  const handleBack = useCallback(() => {
+    onBack()
+  }, [onBack])
+
+  const handleViewModeChange = useCallback((mode: 'side-by-side' | 'before' | 'after') => {
+    setViewMode(mode)
+  }, [])
+
+  // Memoizar URLs de imágenes dinámicas
+  const [dynamicImages, setDynamicImages] = useState<Record<string, string>>({})
+  
+  useEffect(() => {
+    // Cargar imágenes solo cuando se necesiten
+    const loadImages = async () => {
+      const loaded: Record<string, string> = {}
+      
+      if (project.id === 4) {
+        const [framework, research, positioning] = await Promise.all([
+          imageImports.positioningFramework(),
+          imageImports.competitiveResearchNgrowth(),
+          imageImports.positioningNgrowth(),
+        ])
+        loaded.positioningFramework = framework.default
+        loaded.competitiveResearchNgrowth = research.default
+        loaded.positioningNgrowth = positioning.default
+      }
+      
+      if (project.id === 3) {
+        const [framework, wireframe] = await Promise.all([
+          imageImports.positioningFramework(),
+          imageImports.wireframeImage(),
+        ])
+        loaded.positioningFramework = framework.default
+        loaded.wireframeImage = wireframe.default
+      }
+      
+      if (project.id === 1) {
+        const shift = await imageImports.competitiveAnalysisShift()
+        loaded.competitiveAnalysisShift = shift.default
+      }
+      
+      setDynamicImages(loaded)
+    }
+    
+    loadImages()
+  }, [project.id])
+  
+  // Scroll to top when component mounts (force immediate) - optimizado
   useEffect(() => {
     const lenis = getLenis()
 
@@ -52,22 +104,33 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
     })
   }, [project.id])
 
+  // Memoizar estilos comunes para evitar recreación
+  const commonStyles = useMemo(() => ({
+    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+  }), [])
+
+  // Configuración de animaciones optimizada
+  const motionConfig = useMemo(() => ({
+    viewport: { once: true, margin: '0px 0px -100px 0px' },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+  }), [])
+
   return (
     <div className="bg-white">
       {/* Navigation */}
-      <Navigation isDark={true} onLogoClick={onBack} />
+      <Navigation isDark={true} onLogoClick={handleBack} />
 
       {/* Hero Section - New Layout */}
       <section className="relative bg-[#1a1a1a] text-white pt-32 pb-24 px-4 sm:px-6 lg:px-8">
         {/* View More Projects Button */}
         <div className="max-w-7xl mx-auto mb-12">
           <motion.button
-            onClick={onBack}
+            onClick={handleBack}
             className="inline-flex items-center gap-2 px-6 py-3 border border-white/30 rounded hover:bg-white/10 transition-all duration-300"
             whileHover={{ x: -5 }}
             transition={{ duration: 0.2 }}
             style={{
-              fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+              ...commonStyles,
               fontWeight: 400,
               fontSize: '14px',
               letterSpacing: '1px'
@@ -123,15 +186,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               <a
                 href={
                   project.id === 1
-                    ? 'https://shift.pe'
-                    : project.id === 2
-                    ? 'https://worthit.vc'
-                    : project.id === 3
                     ? 'https://invoinet.com'
+                    : project.id === 2
+                    ? 'https://juntoz.com'
+                    : project.id === 3
+                    ? 'https://shift.pe'
                     : project.id === 4
                     ? 'https://ngrowth.io'
                     : project.id === 5
-                    ? 'https://juntoz.com'
+                    ? 'https://worthit.vc'
                     : '#'
                 }
                 target="_blank"
@@ -181,6 +244,8 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   src={project.image}
                   alt={project.title}
                   className="w-full h-full object-contain rounded-lg"
+                  loading="eager"
+                  decoding="async"
                 />
               )}
             </div>
@@ -198,8 +263,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                viewport={{ once: true }}
+                {...motionConfig}
               >
                 <h2
                   className="text-black mb-8"
@@ -379,14 +443,18 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 className="w-full rounded-lg overflow-hidden"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <img
-                  src={competitiveAnalysisShift}
-                  alt="SHIFT Competitive Analysis"
-                  className="w-full h-auto object-contain rounded-lg"
-                />
+                {dynamicImages.competitiveAnalysisShift ? (
+                  <ImageWithFallback
+                    src={dynamicImages.competitiveAnalysisShift}
+                    alt="SHIFT Competitive Analysis"
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
+                )}
               </motion.div>
             </motion.div>
           </div>
@@ -561,11 +629,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* Framework Image - Now with contain */}
               <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
-                <img
-                  src={positioningFramework}
-                  alt="Competitive Differentiation Framework"
-                  className="w-full h-auto object-contain rounded-lg"
-                />
+                {dynamicImages.positioningFramework ? (
+                  <ImageWithFallback
+                    src={dynamicImages.positioningFramework}
+                    alt="Competitive Differentiation Framework"
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
+                )}
               </div>
             </motion.div>
 
@@ -605,11 +677,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* Wireframe Image */}
               <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
-                <img
-                  src={wireframeImage}
-                  alt="Information Architecture Wireframe"
-                  className="w-full h-auto object-contain rounded-lg"
-                />
+                {dynamicImages.wireframeImage ? (
+                  <ImageWithFallback
+                    src={dynamicImages.wireframeImage}
+                    alt="Information Architecture Wireframe"
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
+                )}
               </div>
             </motion.div>
           </div>
@@ -691,11 +767,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* Competitive Research Image */}
               <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
-                <img
-                  src={competitiveResearchNgrowth}
-                  alt="Competitive Research nGrowth"
-                  className="w-full h-auto object-contain rounded-lg"
-                />
+                {dynamicImages.competitiveResearchNgrowth ? (
+                  <ImageWithFallback
+                    src={dynamicImages.competitiveResearchNgrowth}
+                    alt="Competitive Research nGrowth"
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
+                )}
               </div>
             </motion.div>
 
@@ -735,11 +815,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* Positioning Framework Image */}
               <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
-                <img
-                  src={positioningNgrowth}
-                  alt="Product Positioning Framework nGrowth"
-                  className="w-full h-auto object-contain rounded-lg"
-                />
+                {dynamicImages.positioningNgrowth ? (
+                  <ImageWithFallback
+                    src={dynamicImages.positioningNgrowth}
+                    alt="Product Positioning Framework nGrowth"
+                    className="w-full h-auto object-contain rounded-lg"
+                  />
+                ) : (
+                  <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
+                )}
               </div>
             </motion.div>
           </div>
@@ -1204,7 +1288,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               viewport={{ once: true }}
             >
               <motion.button
-                onClick={onBack}
+                onClick={handleBack}
                 className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
                 style={{
                   fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
@@ -1297,14 +1381,14 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
             >
               {/* Side by Side - Hidden on mobile */}
               <button
-                onClick={() => setViewMode('side-by-side')}
+                onClick={() => handleViewModeChange('side-by-side')}
                 className={`hidden md:inline-block px-6 py-3 rounded-full transition-all duration-300 ${
                   viewMode === 'side-by-side' 
                     ? 'bg-white text-black' 
                     : 'bg-transparent text-white border border-white/30 hover:border-white/60'
                 }`}
                 style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  ...commonStyles,
                   fontWeight: 500,
                   fontSize: '12px'
                 }}
@@ -1314,14 +1398,14 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* Before */}
               <button
-                onClick={() => setViewMode('before')}
+                onClick={() => handleViewModeChange('before')}
                 className={`px-6 py-3 rounded-full transition-all duration-300 ${
                   viewMode === 'before' 
                     ? 'bg-white text-black' 
                     : 'bg-transparent text-white border border-white/30 hover:border-white/60'
                 }`}
                 style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  ...commonStyles,
                   fontWeight: 500,
                   fontSize: '12px'
                 }}
@@ -1331,14 +1415,14 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
               {/* After */}
               <button
-                onClick={() => setViewMode('after')}
+                onClick={() => handleViewModeChange('after')}
                 className={`px-6 py-3 rounded-full transition-all duration-300 ${
                   viewMode === 'after' 
                     ? 'bg-white text-black' 
                     : 'bg-transparent text-white border border-white/30 hover:border-white/60'
                 }`}
                 style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  ...commonStyles,
                   fontWeight: 500,
                   fontSize: '12px'
                 }}
@@ -1482,7 +1566,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 viewport={{ once: true }}
               >
                 <motion.button
-                  onClick={onBack}
+                  onClick={handleBack}
                   className="bg-white text-black hover:bg-white/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
                   style={{
                     fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
@@ -1558,7 +1642,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               viewport={{ once: true }}
             >
               <motion.button
-                onClick={onBack}
+                onClick={handleBack}
                 className="bg-black text-white hover:bg-black/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
                 style={{
                   fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
@@ -1798,7 +1882,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               viewport={{ once: true }}
             >
               <motion.button
-                onClick={onBack}
+                onClick={handleBack}
                 className="bg-black text-white hover:bg-black/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
                 style={{
                   fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
