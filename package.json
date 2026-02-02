@@ -66,6 +66,7 @@
             "dev": "vite",
             "build": "vite build",
             "optimize-images": "node scripts/convert-to-webp.mjs",
+            "build:with-optimization": "npm run optimize-images && vite build",
             "prebuild": "npm run optimize-images"
       },
       "type": "module"

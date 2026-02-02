@@ -42,7 +42,7 @@ export function MadridTime() {
           letterSpacing: '0.1em'
         }}
       >
-        <div>MADRID</div>
+        <div>BASED IN MADRID</div>
         <div>{time}</div>
       </div>
     </motion.div>

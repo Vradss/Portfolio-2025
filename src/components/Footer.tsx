@@ -55,7 +55,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   }
 
   const handleContactClick = () => {
-    window.location.href = 'mailto:hello@vradis.dev?subject=Let\'s work together!'
+    window.location.href = 'mailto:vradis@nucleostudio.co?subject=Let\'s work together!'
   }
 
   const handleResumeClick = () => {

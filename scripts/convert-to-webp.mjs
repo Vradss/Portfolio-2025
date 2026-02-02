@@ -21,6 +21,7 @@ const PNG_EXTENSIONS = ['.png', '.PNG'];
 let stats = {
   total: 0,
   converted: 0,
+  skipped: 0, // WebP ya existentes
   errors: 0,
   savedBytes: 0,
 };
@@ -38,9 +39,23 @@ async function convertToWebP(filePath) {
     const outputPath = filePath.replace(/\.png$/i, '.webp');
     const originalSize = (await stat(filePath)).size;
 
-    // Convertir con sharp
+    // Verificar si el WebP ya existe
+    try {
+      const webpStat = await stat(outputPath);
+      const pngStat = await stat(filePath);
+      
+      // Si el WebP existe y es más reciente que el PNG, saltar conversión
+      if (webpStat.mtime >= pngStat.mtime) {
+        stats.skipped++; // Contar como "ya existe"
+        return; // Saltar, ya existe y está actualizado
+      }
+    } catch {
+      // Si no existe el WebP, continuar con la conversión
+    }
+
+    // Convertir con sharp (reducir effort de 6 a 4 para velocidad)
     await sharp(filePath)
-      .webp({ quality: WEBP_QUALITY, effort: 6 })
+      .webp({ quality: WEBP_QUALITY, effort: 4 })
       .toFile(outputPath);
 
     const newSize = (await stat(outputPath)).size;
@@ -106,6 +121,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`Total de imágenes procesadas: ${stats.total}`);
   console.log(`✓ Convertidas exitosamente: ${stats.converted}`);
+  console.log(`⏭️  Omitidas (WebP ya existe): ${stats.skipped}`);
   console.log(`✗ Errores: ${stats.errors}`);
   console.log(`💾 Espacio ahorrado: ${formatBytes(stats.savedBytes)}`);
   console.log(`⏱️  Tiempo: ${duration}s`);

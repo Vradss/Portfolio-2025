@@ -7,28 +7,33 @@ export default defineConfig({
   plugins: [
     react(),
     ViteImageOptimizer({
-      // Configuración de optimización con breakpoints responsive
+      // Configuración de optimización optimizada para velocidad
       png: {
-        quality: 80, // Calidad ajustable
+        quality: 80,
+        effort: 4, // Reducir effort para velocidad (0-6, donde 4 es balance)
       },
       jpeg: {
         quality: 85,
+        mozjpeg: true, // Más rápido que libjpeg
       },
       jpg: {
         quality: 85,
+        mozjpeg: true,
       },
       webp: {
-        quality: 85, // WebP con buena calidad
+        quality: 85,
+        effort: 4, // Reducir effort de 6 a 4 (más rápido, calidad similar)
         lossless: false,
       },
       avif: {
-        quality: 80, // AVIF para navegadores modernos
+        quality: 80,
+        effort: 4, // Reducir effort para velocidad
       },
       // Opciones generales
       test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
       includePublic: true,
-      logStats: true,
-      ansiColors: true,
+      logStats: false, // Desactivar logs para velocidad
+      ansiColors: false,
       svg: {
         multipass: true,
         plugins: [
