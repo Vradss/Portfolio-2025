@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useHeroState } from '../contexts/HeroStateContext'
 
 interface FooterProps {
@@ -10,6 +11,7 @@ interface FooterProps {
 }
 
 export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
+  const { t } = useTranslation()
   const { getCurrentColor, clickState } = useHeroState()
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -113,7 +115,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
               filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.1))"
             }}
           >
-            LET'S TALK
+            {t('footer.letsTalk')}
           </motion.h1>
         </motion.div>
       </div>
@@ -143,7 +145,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
               color: '#212121'
             }}
           >
-            © 2025 ALL RIGHTS RESERVED
+            {t('footer.allRightsReserved')}
           </p>
         </motion.div>
 
@@ -167,7 +169,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            WORK
+            {t('footer.work')}
           </motion.button>
 
           <motion.button
@@ -182,7 +184,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            ABOUT
+            {t('footer.about')}
           </motion.button>
 
           <motion.button
@@ -197,7 +199,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            CONTACT
+            {t('footer.contact')}
           </motion.button>
 
           <motion.button
@@ -212,7 +214,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            RESUME
+            {t('footer.resume')}
           </motion.button>
 
           <motion.button
@@ -227,7 +229,7 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            LINKEDIN
+            {t('footer.linkedin')}
           </motion.button>
         </motion.div>
       </motion.div>

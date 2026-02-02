@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "work": "PROYECTOS",
+    "about": "SOBRE MÍ",
+    "contact": "CONTACTO",
+    "resume": "CV",
+    "menu": "MENÚ",
+    "close": "CERRAR"
+  },
+  "hero": {
+    "states": {
+      "0": {
+        "firstLine": "BORN",
+        "secondLine": "VRADIS"
+      },
+      "1": {
+        "firstLine": "BORN",
+        "secondLine": "CURIOUS"
+      },
+      "2": {
+        "firstLine": "BORN TO",
+        "secondLine": "INNOVATE"
+      }
+    }
+  },
+  "about": {
+    "greeting": "Hola, soy Vradis",
+    "paragraph1": "Technical Product Manager que avanza del descubrimiento al despliegue más rápido que la mayoría de equipos avanza de reuniones a especificaciones.",
+    "paragraph2": "No solo defino qué construir — lo investigo, lo diseño, lo programo y lo lanzo. Desde entrevistas con usuarios hasta MVPs en vivo, ejecuto de extremo a extremo porque no dependo de colas de desarrollo.",
+    "paragraph3": "He construido plataformas de e-commerce, flujos de trabajo automatizados y productos B2B SaaS en fintech, edtech y marketplaces. Actualmente explorando agentes de IA y automatización para eliminar cuellos de botella."
+  },
+  "work": {
+    "featuredProjects": "PROYECTOS DESTACADOS",
+    "viewProject": "Ver Proyecto"
+  },
+  "skills": {
+    "title": "HABILIDADES",
+    "items": {
+      "productThinking": {
+        "icon": "HeadCircuit",
+        "title": "Construcción de Producto 0 a 1",
+        "description": "Tomo problemas ambiguos y los convierto en productos lanzados. Desde el descubrimiento hasta el despliegue, me hago cargo del ciclo completo."
+      },
+      "technicalExecution": {
+        "icon": "BoundingBox",
+        "title": "Diseño con Profundidad Técnica",
+        "description": "Diseño soluciones que son tanto amigables para el usuario como técnicamente viables — porque entiendo tanto código como UX."
+      },
+      "aiProductDevelopment": {
+        "icon": "BracketsCurly",
+        "title": "Prototipado Rápido y Validación",
+        "description": "Construyo MVPs funcionales en semanas para probar con usuarios reales, no meses de documentos de especificación y coordinación."
+      },
+      "dataDrivenDecisions": {
+        "icon": "Database",
+        "title": "Enfoque en Impacto de Negocio",
+        "description": "Mido el éxito en adopción, ingresos y eficiencia — no en características lanzadas. Los datos informan cada decisión."
+      }
+    }
+  },
+  "footer": {
+    "letsTalk": "HABLEMOS",
+    "allRightsReserved": "© 2025 TODOS LOS DERECHOS RESERVADOS",
+    "work": "TRABAJO",
+    "about": "SOBRE MÍ",
+    "contact": "CONTACTO",
+    "resume": "CV",
+    "linkedin": "LINKEDIN"
+  },
+  "projectDetail": {
+    "liveLink": "ENLACE EN VIVO",
+    "viewMoreProjects": "VER MÁS PROYECTOS",
+    "theChallenge": "EL DESAFÍO",
+    "myRole": "MI ROL",
+    "theProcess": "EL PROCESO",
+    "impact": "IMPACTO",
+    "whatILearned": "LO QUE APRENDÍ",
+    "theTransformation": "LA TRANSFORMACIÓN",
+    "before": "ANTES",
+    "after": "DESPUÉS",
+    "productResearch": "INVESTIGACIÓN Y DESCUBRIMIENTO",
+    "informationArchitecture": "ARQUITECTURA DE INFORMACIÓN",
+    "designIteration": "DISEÑO E ITERACIÓN",
+    "tech": "TECNOLOGÍA",
+    "disciplines": "DISCIPLINAS"
+  }
+}

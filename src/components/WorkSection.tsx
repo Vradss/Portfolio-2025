@@ -1,16 +1,32 @@
 'use client'
 
-import React, { memo, useCallback, useMemo } from 'react'
+import React, { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
+import i18n from 'i18next'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { Button } from './ui/button'
-import { projects, type Project } from '../data/projects'
+import { getProjectsFromTranslations, type Project } from '../data/projects'
 
 interface WorkSectionProps {
   onViewProject?: (projectId: number) => void
 }
 
 export function WorkSection({ onViewProject }: WorkSectionProps) {
+  const { i18n: i18nInstance } = useTranslation()
+  const [projects, setProjects] = useState<Project[]>(getProjectsFromTranslations())
+
+  useEffect(() => {
+    const updateProjects = () => {
+      setProjects(getProjectsFromTranslations())
+    }
+    
+    i18nInstance.on('languageChanged', updateProjects)
+    return () => {
+      i18nInstance.off('languageChanged', updateProjects)
+    }
+  }, [i18nInstance])
+
   return (
     <section id="work" className="relative bg-black text-white overflow-hidden pt-20 md:pt-32 lg:pt-40">
       {/* Projects Stack Container */}
@@ -39,6 +55,7 @@ interface ProjectItemProps {
 }
 
 const ProjectItem = memo(function ProjectItem({ project, index, totalProjects, isFirst, onViewProject }: ProjectItemProps) {
+  const { t } = useTranslation()
   const [isHovered, setIsHovered] = React.useState(false)
 
   const handleViewProject = useCallback(() => {
@@ -96,7 +113,7 @@ const ProjectItem = memo(function ProjectItem({ project, index, totalProjects, i
                   textAlign: 'left'
                 }}
               >
-                FEATURED PROJECTS
+                {t('work.featuredProjects')}
               </h1>
             </motion.div>
           )}
@@ -218,7 +235,7 @@ const ProjectItem = memo(function ProjectItem({ project, index, totalProjects, i
                     }}
                   >
                     <span className="inline-flex items-center gap-2">
-                      View Project
+                      {t('work.viewProject')}
                       <motion.span
                         initial={{ x: -10, opacity: 0 }}
                         animate={{

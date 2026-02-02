@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { motion } from 'motion/react'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft } from 'lucide-react'
 import { ImageWithFallback } from './figma/ImageWithFallback'
 import { Navigation } from './Navigation'
@@ -24,6 +25,7 @@ interface ProjectDetailPageProps {
 }
 
 export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
+  const { t } = useTranslation()
   const [viewMode, setViewMode] = useState<'side-by-side' | 'before' | 'after'>('side-by-side')
   
   // Memoizar callback para evitar re-renders
@@ -54,7 +56,8 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
         loaded.positioningNgrowth = positioning.default
       }
       
-      if (project.id === 3) {
+      if (project.id === 1) {
+        // INVOINET - carga framework y wireframe
         const [framework, wireframe] = await Promise.all([
           imageImports.positioningFramework(),
           imageImports.wireframeImage(),
@@ -63,7 +66,8 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
         loaded.wireframeImage = wireframe.default
       }
       
-      if (project.id === 1) {
+      if (project.id === 3) {
+        // SHIFT - carga competitive analysis
         const shift = await imageImports.competitiveAnalysisShift()
         loaded.competitiveAnalysisShift = shift.default
       }
@@ -274,11 +278,50 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     lineHeight: 1.2
                   }}
                 >
-                  THE CHALLENGE
+                  {t('projectDetail.theChallenge')}
                 </h2>
 
                 <div className="space-y-6">
-                  {project.details.problem.split('\n').map((paragraph, index) => (
+                  {project.id === 2 && project.details?.theChallenge ? (
+                    // Custom content for JUNTOZ with bold support
+                    <>
+                      <p
+                        className="text-black"
+                        style={{
+                          fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                          fontWeight: 400,
+                          fontSize: '20px',
+                          lineHeight: 1.7
+                        }}
+                      >
+                        {project.details.theChallenge.paragraph1}
+                      </p>
+                      <p
+                        className="text-black"
+                        style={{
+                          fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                          fontWeight: 400,
+                          fontSize: '20px',
+                          lineHeight: 1.7
+                        }}
+                      >
+                        <strong>Core Problem:</strong> {project.details.theChallenge.coreProblem}
+                      </p>
+                      <p
+                        className="text-black"
+                        style={{
+                          fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                          fontWeight: 400,
+                          fontSize: '20px',
+                          lineHeight: 1.7
+                        }}
+                      >
+                        <strong>Product Goal:</strong> {project.details.theChallenge.productGoal}
+                      </p>
+                    </>
+                  ) : (
+                    // Generic content for other projects
+                    project.details?.problem ? project.details.problem.split('\n').map((paragraph, index) => (
                     paragraph.trim() && (
                       <p
                         key={index}
@@ -293,11 +336,12 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                         {paragraph}
                       </p>
                     )
-                  ))}
+                    )) : null
+                  )}
                 </div>
               </motion.div>
 
-              {/* Right Column - Tech Stack & Disciplines - Aligned with bullets */}
+              {/* Right Column - MY ROLE, Tech Stack & Disciplines - Aligned with bullets */}
               <motion.div
                 className="flex flex-col lg:pt-[calc(48px+2rem)]"
                 initial={{ opacity: 0, x: 50 }}
@@ -306,6 +350,34 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 viewport={{ once: true }}
               >
                 <div className="space-y-8">
+                  {/* MY ROLE */}
+                  {project.details?.role && (
+                    <div>
+                      <h3
+                        className="text-black/60 mb-3"
+                        style={{
+                          fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                          fontWeight: 500,
+                          fontSize: '12px',
+                          letterSpacing: '1px'
+                        }}
+                      >
+                        {t('projectDetail.myRole', 'MY ROLE')}
+                      </h3>
+                      <p
+                        className="text-black"
+                        style={{
+                          fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                          fontWeight: 400,
+                          fontSize: '20px',
+                          lineHeight: 1.7
+                        }}
+                      >
+                        {project.details.role}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Tech Stack */}
                   {project.technologies && project.technologies.length > 0 && (
                     <div>
@@ -318,7 +390,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                           letterSpacing: '1px'
                         }}
                       >
-                        TECH
+                        {t('projectDetail.tech', 'TECH')}
                       </h3>
                       <p
                         className="text-black"
@@ -346,7 +418,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                           letterSpacing: '1px'
                         }}
                       >
-                        DISCIPLINES
+                        {t('projectDetail.disciplines', 'DISCIPLINES')}
                       </h3>
                       <p
                         className="text-black"
@@ -368,8 +440,256 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
         </section>
       )}
 
+      {/* THE PROCESS Section - For JUNTOZ */}
+      {project.id === 2 && (
+        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
+          <div className="max-w-7xl mx-auto">
+            <motion.h2
+              className="text-black mb-16"
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 700,
+                fontSize: '48px',
+                lineHeight: 1.2
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              {t('projectDetail.theProcess')}
+            </motion.h2>
+
+            {/* 1. Product Research & Discovery */}
+            {project.details?.theProcess?.productResearch && (
+              <motion.div
+                className="mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                <h3
+                  className="text-black mb-6"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '32px',
+                    lineHeight: 1.3
+                  }}
+                >
+                  1. {t('projectDetail.productResearch')}
+                </h3>
+                <ul className="space-y-4 mb-10 max-w-4xl">
+                  <li
+                    className="text-black flex items-start gap-3"
+                    style={{
+                      fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                      fontWeight: 400,
+                      fontSize: '20px',
+                      lineHeight: 1.7
+                    }}
+                  >
+                    <span className="text-black mt-1">•</span>
+                    <span><strong>User Research:</strong> {project.details.theProcess.productResearch.userResearch}</span>
+                  </li>
+                  <li
+                    className="text-black flex items-start gap-3"
+                    style={{
+                      fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                      fontWeight: 400,
+                      fontSize: '20px',
+                      lineHeight: 1.7
+                    }}
+                  >
+                    <span className="text-black mt-1">•</span>
+                    <span><strong>Competitive Benchmarking:</strong> {project.details.theProcess.productResearch.competitiveBenchmarking}</span>
+                  </li>
+                  <li
+                    className="text-black flex items-start gap-3"
+                    style={{
+                      fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                      fontWeight: 400,
+                      fontSize: '20px',
+                      lineHeight: 1.7
+                    }}
+                  >
+                    <span className="text-black mt-1">•</span>
+                    <span><strong>Key Insight:</strong> {project.details.theProcess.productResearch.keyInsight}</span>
+                  </li>
+                </ul>
+
+              {/* User Research Image */}
+              {project.details.userResearchImage && (
+                <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50 mb-10">
+                  {typeof project.details.userResearchImage === 'string' ? (
+                    <ImageWithFallback
+                      src={project.details.userResearchImage}
+                      alt="User Research"
+                      className="w-full h-auto object-contain rounded-lg"
+                    />
+                  ) : (
+                    <img
+                      src={project.details.userResearchImage}
+                      alt="User Research"
+                      className="w-full h-auto object-contain rounded-lg"
+                    />
+                  )}
+                </div>
+              )}
+
+              {/* Competitive Benchmarking Images */}
+              {project.details.competitiveAnalysisImage && project.details.competitiveBenchmarkingImages && project.details.competitiveBenchmarkingImages.length > 0 && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <motion.div
+                    className="relative rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200"
+                    initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0 }}
+              viewport={{ once: true }}
+            >
+                    {typeof project.details.competitiveAnalysisImage === 'string' ? (
+                      <ImageWithFallback
+                        src={project.details.competitiveAnalysisImage}
+                        alt="Competitive Benchmarking Overview"
+                        className="w-full h-auto object-contain rounded-lg"
+                      />
+                    ) : (
+                      <img
+                        src={project.details.competitiveAnalysisImage}
+                        alt="Competitive Benchmarking Overview"
+                        className="w-full h-auto object-contain rounded-lg"
+                      />
+                    )}
+                  </motion.div>
+
+                  {project.details.competitiveBenchmarkingImages.map((image, index) => (
+            <motion.div
+                      key={index}
+                      className="relative rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
+                      viewport={{ once: true }}
+                    >
+                      {typeof image === 'string' ? (
+                        <ImageWithFallback
+                          src={image}
+                          alt={`Competitive Benchmarking ${index + 1}`}
+                          className="w-full h-auto object-contain rounded-lg"
+                        />
+                      ) : (
+                        <img
+                          src={image}
+                          alt={`Competitive Benchmarking ${index + 1}`}
+                          className="w-full h-auto object-contain rounded-lg"
+                        />
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+              </motion.div>
+            )}
+
+            {/* 2. Information Architecture Redesign */}
+            {project.details?.informationArchitectureImage && project.details?.theProcess?.informationArchitecture && (
+              <motion.div
+                className="mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <h3
+                  className="text-black mb-6"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '32px',
+                    lineHeight: 1.3
+                  }}
+                >
+                  2. {t('projectDetail.informationArchitecture')}
+                </h3>
+                <p
+                  className="text-black mb-10 max-w-4xl"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '20px',
+                    lineHeight: 1.7
+                  }}
+                >
+                  {project.details.theProcess.informationArchitecture.description} {project.details.theProcess.informationArchitecture.modules}
+                </p>
+
+                {/* IA Diagram Image */}
+                <div className="relative w-full rounded-lg overflow-hidden shadow-xl bg-gray-50 flex items-center justify-center mb-10">
+                  {typeof project.details.informationArchitectureImage === 'string' ? (
+                  <ImageWithFallback
+                      src={project.details.informationArchitectureImage}
+                      alt="Information Architecture - 12 Core Modules"
+                      className="w-full h-auto object-contain p-8"
+                  />
+                ) : (
+                  <img
+                      src={project.details.informationArchitectureImage}
+                      alt="Information Architecture - 12 Core Modules"
+                      className="w-full h-auto object-contain p-8"
+                  />
+                )}
+              </div>
+
+              </motion.div>
+            )}
+
+            {/* 3. Design & Prototyping */}
+            {project.details?.theProcess?.designPrototyping && (
+              <motion.div
+                className="mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                viewport={{ once: true }}
+              >
+                <h3
+                  className="text-black mb-6"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '32px',
+                    lineHeight: 1.3
+                  }}
+                >
+                  3. {t('projectDetail.designIteration')}
+                </h3>
+                <ul className="space-y-4 mb-10 max-w-4xl">
+                  {project.details.theProcess.designPrototyping.items.map((item, index) => (
+                    <li
+                      key={index}
+                      className="text-black flex items-start gap-3"
+                      style={{
+                        fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                        fontWeight: 400,
+                        fontSize: '20px',
+                        lineHeight: 1.7
+                      }}
+                    >
+                      <span className="text-black mt-1">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
+
+          </div>
+        </section>
+      )}
+
       {/* PRODUCT RESEARCH & DISCOVERY Section - For SHIFT */}
-      {project.id === 1 && (
+      {project.id === 3 && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title */}
@@ -450,12 +770,12 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   <ImageWithFallback
                     src={dynamicImages.competitiveAnalysisShift}
                     alt="SHIFT Competitive Analysis"
-                    className="w-full h-auto object-contain rounded-lg"
-                  />
+                  className="w-full h-auto object-contain rounded-lg"
+                />
                 ) : (
                   <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
                 )}
-              </motion.div>
+            </motion.div>
             </motion.div>
           </div>
         </section>
@@ -545,8 +865,8 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   <img
                     src={project.details.competitiveAnalysisImage}
                     alt="Competitive Analysis"
-                    className="w-full h-auto object-contain rounded-lg"
-                  />
+                  className="w-full h-auto object-contain rounded-lg"
+                />
                 )}
               </div>
             </motion.div>
@@ -555,7 +875,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       )}
 
       {/* PRODUCT RESEARCH & DISCOVERY Section - For INVOINET */}
-      {project.id === 3 && (
+      {project.id === 1 && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
             {/* Main Title - Left Aligned - Black like THE CHALLENGE */}
@@ -593,101 +913,101 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
             </motion.p>
 
             {/* A) COMPETITIVE DIFFERENTIATION */}
-            <motion.div
-              className="mb-20"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              {/* Subheading with A) */}
-              <h3
-                className="text-black mb-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '20px',
-                  lineHeight: 1.4,
-                  letterSpacing: '1px'
-                }}
+              <motion.div
+                className="mb-20"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                viewport={{ once: true }}
               >
+                {/* Subheading with A) */}
+                <h3
+                  className="text-black mb-4"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '20px',
+                    lineHeight: 1.4,
+                    letterSpacing: '1px'
+                  }}
+                >
                 A) COMPETITIVE DIFFERENTIATION
-              </h3>
+                </h3>
 
-              {/* Description */}
-              <p
-                className="text-black mb-10 max-w-4xl"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
+                {/* Description */}
+                <p
+                  className="text-black mb-10 max-w-4xl"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '20px',
+                    lineHeight: 1.7
+                  }}
+                >
                 Analyzed competitors across product and go-to-market dimensions. This revealed Invoinet's unique opportunity: combining automation platform with personalized support for enterprise accounts.
-              </p>
+                </p>
 
               {/* Framework Image - Now with contain */}
-              <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
+                <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
                 {dynamicImages.positioningFramework ? (
-                  <ImageWithFallback
+                    <ImageWithFallback
                     src={dynamicImages.positioningFramework}
                     alt="Competitive Differentiation Framework"
-                    className="w-full h-auto object-contain rounded-lg"
-                  />
-                ) : (
+                      className="w-full h-auto object-contain rounded-lg"
+                    />
+                  ) : (
                   <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
-                )}
-              </div>
-            </motion.div>
+                  )}
+                </div>
+              </motion.div>
 
             {/* B) INFORMATION ARCHITECTURE */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              {/* Subheading with B) */}
-              <h3
-                className="text-black mb-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '20px',
-                  lineHeight: 1.4,
-                  letterSpacing: '1px'
-                }}
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                viewport={{ once: true }}
               >
+                {/* Subheading with B) */}
+                <h3
+                  className="text-black mb-4"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '20px',
+                    lineHeight: 1.4,
+                    letterSpacing: '1px'
+                  }}
+                >
                 B) INFORMATION ARCHITECTURE
-              </h3>
+                </h3>
 
-              {/* Description */}
-              <p
-                className="text-black mb-10 max-w-4xl"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
+                {/* Description */}
+                <p
+                  className="text-black mb-10 max-w-4xl"
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '20px',
+                    lineHeight: 1.7
+                  }}
+                >
                 Designed website structure with 8 strategic sections to communicate positioning. Each section used specific persuasion techniques informed by competitive research.
               </p>
 
               {/* Wireframe Image */}
               <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
                 {dynamicImages.wireframeImage ? (
-                  <ImageWithFallback
+                        <ImageWithFallback
                     src={dynamicImages.wireframeImage}
                     alt="Information Architecture Wireframe"
-                    className="w-full h-auto object-contain rounded-lg"
-                  />
-                ) : (
+                          className="w-full h-auto object-contain rounded-lg"
+                        />
+                      ) : (
                   <div className="w-full h-64 bg-gray-100 animate-pulse rounded-lg" />
                 )}
-              </div>
-            </motion.div>
+                  </div>
+              </motion.div>
           </div>
         </section>
       )}
@@ -755,13 +1075,13 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               {/* Description */}
               <p
                 className="text-black mb-10 max-w-4xl"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                    fontWeight: 400,
+                    fontSize: '20px',
+                    lineHeight: 1.7
+                  }}
+                >
                 Analyzed 4 competitors to identify market gaps. Finding: competitors offered generic methodologies or platforms alone. nGrowth's opportunity was combining proven frameworks with personalized support for tech founders.
               </p>
 
@@ -789,10 +1109,10 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               {/* Subheading with B) */}
               <h3
                 className="text-black mb-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                  style={{
+                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
                   fontWeight: 600,
-                  fontSize: '20px',
+                    fontSize: '20px',
                   lineHeight: 1.4,
                   letterSpacing: '1px'
                 }}
@@ -800,15 +1120,15 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 B) PRODUCT POSITIONING
               </h3>
 
-              {/* Description */}
+            {/* Description */}
               <p
                 className="text-black mb-10 max-w-4xl"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 400,
+                fontSize: '20px',
+                lineHeight: 1.7
+              }}
               >
                 Developed positioning framework mapping pain points to nGrowth's capabilities and benefits. This informed all website messaging.
               </p>
@@ -826,360 +1146,6 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 )}
               </div>
             </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* USER RESEARCH & DISCOVERY Section - For JUNTOZ */}
-      {project.id === 2 && (project.details?.userResearchImage || project.details?.competitiveAnalysisImage) && (
-        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
-          <div className="max-w-7xl mx-auto">
-            {/* Main Title */}
-            <motion.h2
-              className="text-black mb-4"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: '48px',
-                lineHeight: 1.2
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              USER RESEARCH & DISCOVERY
-            </motion.h2>
-
-            {/* Subtitle */}
-            <motion.p
-              className="text-black mb-20 max-w-4xl"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 400,
-                fontSize: '20px',
-                lineHeight: 1.7
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              Led comprehensive discovery process combining user research and competitive analysis to define product requirements.
-            </motion.p>
-
-            {/* A) USER RESEARCH */}
-            {project.details.userResearchImage && (
-              <motion.div
-                className="mb-20"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                {/* Subheading with A) */}
-                <h3
-                  className="text-black mb-4"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 600,
-                    fontSize: '20px',
-                    lineHeight: 1.4,
-                    letterSpacing: '1px'
-                  }}
-                >
-                  A) USER RESEARCH
-                </h3>
-
-                {/* Description */}
-                <p
-                  className="text-black mb-10 max-w-4xl"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '20px',
-                    lineHeight: 1.7
-                  }}
-                >
-                  Conducted in-depth interviews and surveys across seller segments and internal stakeholders to understand needs and pain points.
-                </p>
-
-                {/* User Research Image */}
-                <div className="relative rounded-lg overflow-hidden shadow-xl bg-gray-50">
-                  {typeof project.details.userResearchImage === 'string' ? (
-                    <ImageWithFallback
-                      src={project.details.userResearchImage}
-                      alt="User Research"
-                      className="w-full h-auto object-contain rounded-lg"
-                    />
-                  ) : (
-                    <img
-                      src={project.details.userResearchImage}
-                      alt="User Research"
-                      className="w-full h-auto object-contain rounded-lg"
-                    />
-                  )}
-                </div>
-              </motion.div>
-            )}
-
-            {/* B) COMPETITIVE BENCHMARKING */}
-            {project.details.competitiveAnalysisImage && (
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                viewport={{ once: true }}
-              >
-                {/* Subheading with B) */}
-                <h3
-                  className="text-black mb-4"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 600,
-                    fontSize: '20px',
-                    lineHeight: 1.4,
-                    letterSpacing: '1px'
-                  }}
-                >
-                  B) COMPETITIVE BENCHMARKING
-                </h3>
-
-                {/* Description */}
-                <p
-                  className="text-black mb-10 max-w-4xl"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '20px',
-                    lineHeight: 1.7
-                  }}
-                >
-                  Evaluated national and international marketplace seller platforms to identify usability best practices and feature gaps.
-                </p>
-
-                {/* All Benchmarking Images in 2x3 grid */}
-                {project.details.competitiveBenchmarkingImages && project.details.competitiveBenchmarkingImages.length > 0 && (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* First image - Main competitive benchmarking */}
-                    <motion.div
-                      className="relative rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0 }}
-                      viewport={{ once: true }}
-                    >
-                      {typeof project.details.competitiveAnalysisImage === 'string' ? (
-                        <ImageWithFallback
-                          src={project.details.competitiveAnalysisImage}
-                          alt="Competitive Benchmarking Overview"
-                          className="w-full h-auto object-contain rounded-lg"
-                        />
-                      ) : (
-                        <img
-                          src={project.details.competitiveAnalysisImage}
-                          alt="Competitive Benchmarking Overview"
-                          className="w-full h-auto object-contain rounded-lg"
-                        />
-                      )}
-                    </motion.div>
-
-                    {/* Additional 5 images */}
-                    {project.details.competitiveBenchmarkingImages.map((image, index) => (
-                      <motion.div
-                        key={index}
-                        className="relative rounded-lg overflow-hidden shadow-xl bg-white border border-gray-200"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 * (index + 1) }}
-                        viewport={{ once: true }}
-                      >
-                        {typeof image === 'string' ? (
-                          <ImageWithFallback
-                            src={image}
-                            alt={`Competitive Benchmarking ${index + 1}`}
-                            className="w-full h-auto object-contain rounded-lg"
-                          />
-                        ) : (
-                          <img
-                            src={image}
-                            alt={`Competitive Benchmarking ${index + 1}`}
-                            className="w-full h-auto object-contain rounded-lg"
-                          />
-                        )}
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
-              </motion.div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* INFORMATION ARCHITECTURE Section - For JUNTOZ */}
-      {project.id === 2 && project.details?.informationArchitectureImage && (
-        <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
-          <div className="max-w-7xl mx-auto">
-            {/* Main Title */}
-            <motion.h2
-              className="text-black mb-4"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: '48px',
-                lineHeight: 1.2
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              INFORMATION ARCHITECTURE
-            </motion.h2>
-
-            {/* Intro Text */}
-            <motion.p
-              className="text-black mb-12 max-w-4xl"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 400,
-                fontSize: '20px',
-                lineHeight: 1.7
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              Restructured platform with 12 core modules designed for seller self-service and operational clarity.
-            </motion.p>
-
-            {/* IA Diagram Image - Auto height container */}
-            <motion.div
-              className="my-16"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative w-full rounded-lg overflow-hidden shadow-xl bg-gray-50 flex items-center justify-center">
-                {typeof project.details.informationArchitectureImage === 'string' ? (
-                  <ImageWithFallback
-                    src={project.details.informationArchitectureImage}
-                    alt="Information Architecture - 12 Core Modules"
-                    className="w-full h-auto object-contain p-8"
-                  />
-                ) : (
-                  <img
-                    src={project.details.informationArchitectureImage}
-                    alt="Information Architecture - 12 Core Modules"
-                    className="w-full h-auto object-contain p-8"
-                  />
-                )}
-              </div>
-            </motion.div>
-
-            {/* Key Product Decisions */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h3
-                className="text-black mb-6"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 600,
-                  fontSize: '20px',
-                  lineHeight: 1.4,
-                  letterSpacing: '1px'
-                }}
-              >
-                Key product decisions:
-              </h3>
-
-              <ul className="space-y-4 max-w-4xl">
-                <li
-                  className="text-black flex items-start gap-3"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '20px',
-                    lineHeight: 1.7
-                  }}
-                >
-                  <span className="text-black mt-1">•</span>
-                  <span>Desktop-first for complex operations (catalog upload, store design)</span>
-                </li>
-                <li
-                  className="text-black flex items-start gap-3"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '20px',
-                    lineHeight: 1.7
-                  }}
-                >
-                  <span className="text-black mt-1">•</span>
-                  <span>Mobile as read-only dashboard for on-the-go monitoring</span>
-                </li>
-                <li
-                  className="text-black flex items-start gap-3"
-                  style={{
-                    fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 400,
-                    fontSize: '20px',
-                    lineHeight: 1.7
-                  }}
-                >
-                  <span className="text-black mt-1">•</span>
-                  <span>Progressive disclosure based on seller maturity</span>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* DESIGN & ITERATION Section - For JUNTOZ */}
-      {project.id === 2 && (
-        <section className="relative bg-black pt-[60px] pb-[40px] px-4 sm:px-6 lg:px-[240px]">
-          <div className="max-w-7xl mx-auto">
-            {/* Main Title */}
-            <motion.h2
-              className="text-white mb-4"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 700,
-                fontSize: '48px',
-                lineHeight: 1.2
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              DESIGN & ITERATION
-            </motion.h2>
-
-            {/* Description */}
-            <motion.p
-              className="text-white mb-8 max-w-4xl"
-              style={{
-                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                fontWeight: 400,
-                fontSize: '20px',
-                lineHeight: 1.7
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              Created and tested prototypes at multiple fidelity levels with internal teams and sellers before development.
-            </motion.p>
           </div>
         </section>
       )}
@@ -1297,7 +1263,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 }}
                 whileHover={{ scale: 1.05 }}
               >
-                VIEW MORE PROJECTS
+                {t('projectDetail.viewMoreProjects')}
               </motion.button>
             </motion.div>
           </div>
@@ -1410,7 +1376,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   fontSize: '12px'
                 }}
               >
-                BEFORE
+                {t('projectDetail.before')}
               </button>
 
               {/* After */}
@@ -1427,7 +1393,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   fontSize: '12px'
                 }}
               >
-                AFTER
+                {t('projectDetail.after')}
               </button>
             </motion.div>
 
@@ -1449,7 +1415,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                         fontSize: '20px'
                       }}
                     >
-                      BEFORE
+                      {t('projectDetail.before')}
                     </h3>
                   </div>
                   <div className="relative w-full rounded-lg overflow-hidden shadow-xl">
@@ -1484,7 +1450,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                         fontSize: '20px'
                       }}
                     >
-                      AFTER
+                      {t('projectDetail.after')}
                     </h3>
                   </div>
                   <div className="relative w-full rounded-lg overflow-hidden shadow-xl">
@@ -1575,7 +1541,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  VIEW MORE PROJECTS
+                  {t('projectDetail.viewMoreProjects')}
                 </motion.button>
               </motion.div>
             )}
@@ -1651,7 +1617,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                 }}
                 whileHover={{ scale: 1.05 }}
               >
-                VIEW MORE PROJECTS
+                {t('projectDetail.viewMoreProjects')}
               </motion.button>
             </motion.div>
           </div>
@@ -1662,12 +1628,29 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
       {project.id === 2 && Array.isArray(project.details?.beforeImage) && project.details?.afterImage && (
         <section className="relative bg-black pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
+            {/* Main Title */}
+            <motion.h2
+              className="text-white mb-16"
+              style={{
+                fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                fontWeight: 700,
+                fontSize: '48px',
+                lineHeight: 1.2
+              }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              {t('projectDetail.theTransformation')}
+            </motion.h2>
+
             {/* BEFORE Section - 2 images in grid */}
             <motion.div
               className="mb-16"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
               <h3
@@ -1679,7 +1662,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   lineHeight: 1.2
                 }}
               >
-                BEFORE
+                {t('projectDetail.before')}
               </h3>
 
               <div className="flex flex-col gap-8 max-w-5xl mx-auto">
@@ -1726,7 +1709,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                   lineHeight: 1.2
                 }}
               >
-                AFTER
+                {t('projectDetail.after')}
               </h3>
 
               {Array.isArray(project.details.afterImage) ? (
@@ -1796,104 +1779,37 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              IMPACT
+              {t('projectDetail.impact')}
             </motion.h2>
 
             {/* Impact Items */}
-            <motion.div
-              className="space-y-6 max-w-4xl"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <div
-                className="text-black flex items-start gap-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
+            {project.details?.impact && (
+              <motion.div
+                className="space-y-6 max-w-4xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
               >
-                <span className="text-2xl">📈</span>
-                <span>20% increase in digital sales</span>
-              </div>
+                {project.details.impact.items.map((item, index) => (
+                  <div
+                    key={index}
+                    className="text-black flex items-start gap-4"
+                    style={{
+                      fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
+                      fontWeight: 400,
+                      fontSize: '20px',
+                      lineHeight: 1.7
+                    }}
+                  >
+                    <span className="text-black mt-1">
+                      {index === 0 ? <strong>{item}</strong> : <>✅ <strong>{item}</strong></>}
+                    </span>
+                  </div>
+                ))}
+              </motion.div>
+            )}
 
-              <div
-                className="text-black flex items-start gap-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
-                <span className="text-2xl">⚡</span>
-                <span>Improved seller and operations team efficiency</span>
-              </div>
-
-              <div
-                className="text-black flex items-start gap-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
-                <span className="text-2xl">🚀</span>
-                <span>Reduced onboarding friction and support tickets</span>
-              </div>
-
-              <div
-                className="text-black flex items-start gap-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
-                <span className="text-2xl">🏢</span>
-                <span>Enabled self-service management at scale for EFE Group expansion</span>
-              </div>
-
-              <div
-                className="text-black flex items-start gap-4"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 400,
-                  fontSize: '20px',
-                  lineHeight: 1.7
-                }}
-              >
-                <span className="text-2xl">⭐</span>
-                <span>Platform adopted by hundreds of sellers across Peru with significantly improved satisfaction</span>
-              </div>
-            </motion.div>
-
-            {/* View More Projects Button - Inside IMPACT section for Juntoz */}
-            <motion.div
-              className="flex justify-center mt-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <motion.button
-                onClick={handleBack}
-                className="bg-black text-white hover:bg-black/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-12 py-4 rounded-full transform relative"
-                style={{
-                  fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                  fontWeight: 500,
-                  fontSize: '18px'
-                }}
-                whileHover={{ scale: 1.05 }}
-              >
-                VIEW MORE PROJECTS
-              </motion.button>
-            </motion.div>
           </div>
         </section>
       )}

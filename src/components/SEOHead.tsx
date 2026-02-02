@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 /**
  * SEO Head Component - Schema.org Structured Data
- * Add this component in your App.tsx or main layout
+ * Optimized for Technical Product Manager positioning
  */
 
 interface SEOHeadProps {
@@ -13,10 +13,10 @@ interface SEOHeadProps {
 }
 
 export function SEOHead({
-  title = "Vradis Florez - Product Manager & Developer",
-  description = "Product Manager transitioning to full-stack development. Experienced in product strategy, UX design, and building digital products from concept to launch.",
-  image = "https://vradis.com/og-image.jpg",
-  url = "https://vradis.com"
+  title = "Vradis Florez - Technical Product Manager",
+  description = "Technical Product Manager who doesn't wait for dev cycles. I research, design, and code — moving from insight to deployed MVP in weeks. Building products across e-commerce, fintech, and B2B SaaS.",
+  image = "https://vradis.es/og-image.jpg",
+  url = "https://vradis.es"
 }: SEOHeadProps) {
 
   useEffect(() => {
@@ -60,38 +60,58 @@ export function SEOHead({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Person",
-            "name": "Vradis Florez",
-            "url": "https://vradis.com",
-            "image": "https://vradis.com/profile-photo.jpg",
+            "name": "Vradis Florez Luque",
+            "url": "https://vradis.es",
+            "image": "https://vradis.es/profile-photo.jpg",
             "sameAs": [
               "https://www.linkedin.com/in/vradisflorez/",
               "https://github.com/vradss"
             ],
-            "jobTitle": "Product Manager & Developer",
+            "jobTitle": "Technical Product Manager",
             "worksFor": {
               "@type": "Organization",
-              "name": "Freelance"
+              "name": "Núcleo Studio",
+              "url": "https://nucleostudio.co"
             },
-            "alumniOf": {
-              "@type": "Organization",
-              "name": "42 Madrid"
-            },
+            "alumniOf": [
+              {
+                "@type": "EducationalOrganization",
+                "name": "42 Madrid"
+              },
+              {
+                "@type": "EducationalOrganization",
+                "name": "Peruvian University of Applied Sciences"
+              }
+            ],
             "address": {
               "@type": "PostalAddress",
               "addressLocality": "Madrid",
+              "addressRegion": "Madrid",
               "addressCountry": "ES"
             },
             "knowsAbout": [
-              "Product Management",
-              "UX Design",
-              "Frontend Development",
-              "React",
-              "TypeScript",
+              "Technical Product Management",
               "Product Strategy",
+              "End-to-End Product Development",
+              "UX/UI Design",
+              "Full-Stack Development",
+              "React",
+              "Next.js",
+              "Python",
+              "Django",
+              "Rapid Prototyping",
+              "MVP Development",
+              "B2B SaaS",
+              "E-commerce",
+              "Fintech",
+              "AI Product Development",
+              "Workflow Automation",
               "User Research",
-              "Web Development"
+              "Data-Driven Decision Making"
             ],
-            "description": description
+            "description": description,
+            "email": "vradis.tech@gmail.com",
+            "telephone": "+34613510777"
           })
         }}
       />
@@ -103,41 +123,47 @@ export function SEOHead({
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebSite",
-            "name": "Vradis Florez Portfolio",
-            "url": "https://vradis.com",
+            "name": "Vradis Florez - Technical Product Manager Portfolio",
+            "url": "https://vradis.es",
             "description": description,
             "author": {
               "@type": "Person",
-              "name": "Vradis Florez"
+              "name": "Vradis Florez Luque"
             },
-            "inLanguage": "en-US"
+            "inLanguage": ["en-US", "es-ES"],
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://vradis.es/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+
+      {/* Professional Profile Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "dateCreated": "2024-06-01T00:00:00+00:00",
+            "dateModified": new Date().toISOString(),
+            "mainEntity": {
+              "@type": "Person",
+              "name": "Vradis Florez Luque",
+              "alternateName": "Vradis Florez",
+              "description": "Technical Product Manager specializing in end-to-end product development, from research and strategy to design and code execution.",
+              "image": "https://vradis.es/profile-photo.jpg",
+              "sameAs": [
+                "https://www.linkedin.com/in/vradisflorez/",
+                "https://github.com/vradss",
+                "https://nucleostudio.co"
+              ]
+            }
           })
         }}
       />
     </>
   )
 }
-
-/**
- * Usage in App.tsx or layout:
- *
- * import { SEOHead } from '@/components/SEOHead'
- *
- * function App() {
- *   return (
- *     <>
- *       <SEOHead />
- *       <YourContent />
- *     </>
- *   )
- * }
- *
- * Or for dynamic pages:
- *
- * <SEOHead
- *   title="Project Name - Vradis Florez"
- *   description="Project description..."
- *   image="https://vradis.com/project-image.jpg"
- *   url="https://vradis.com/projects/project-name"
- * />
- */

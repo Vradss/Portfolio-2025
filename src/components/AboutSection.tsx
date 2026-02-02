@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import profileImage from '@/assets/about-section/profile-photo.png'
 import workingImage from '@/assets/about-section/working-at-desk.webp'
-import mountainImage from '@/assets/about-section/mountain-landscape.png'
 import innomakersImage from '@/assets/about-section/innomakers.jpg'
 import madrid42PresImage from '@/assets/about-section/42madrid_pres.jpg'
 
@@ -16,26 +15,16 @@ const parallaxLayers = [
     depth: 0.4,
     zIndex: 15,
     initialPosition: { x: '50%', y: '15%' },
-    size: 'w-48 lg:w-[260px]'
-  },
-  {
-    id: 'mountain',
-    image: mountainImage,
-    alt: 'Woman with sunglasses by the lake and mountains',
-    depth: 0.55,
-    zIndex: 20,
-    initialPosition: { x: '82%', y: '35%' },
-    size: 'w-52 lg:w-[280px]'
+    size: 'w-48 lg:w-[300px]'
   },
   {
     id: 'innomakers',
     image: innomakersImage,
-    alt: 'Innomakers project',
-    depth: 0.7,
-    zIndex: 25,
-    initialPosition: { x: '65%', y: '60%' },
-    initialPositionMobile: { x: '70%', y: '50%' },
-    size: 'w-68 lg:w-[380px]'
+    alt: 'Innomakers Hackathon 2023',
+    depth: 0.55,
+    zIndex: 20,
+    initialPosition: { x: '82%', y: '35%' },
+    size: 'w-60 lg:w-[400px]'
   },
   {
     id: 'working',
@@ -43,8 +32,8 @@ const parallaxLayers = [
     alt: 'Working on laptop in office',
     depth: 0.85,
     zIndex: 30,
-    initialPosition: { x: '28%', y: '55%' },
-    size: 'w-64 lg:w-[360px]'
+    initialPosition: { x: '50%', y: '50%' },
+    size: 'w-64 lg:w-[400px]'
   },
   {
     id: 'profile',

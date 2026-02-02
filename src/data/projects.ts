@@ -1,3 +1,4 @@
+import i18n from 'i18next'
 import shiftImage from '@/assets/projects/shift/shift-main.png'
 import shiftBefore from '@/assets/projects/shift/shift-before.png'
 import shiftAfter from '@/assets/projects/shift/shift-after.png'
@@ -39,6 +40,7 @@ export interface Project {
   country: string
   logo?: string | any
   details?: {
+    role?: string
     problem: string
     year?: string
     skills?: string[]
@@ -51,128 +53,127 @@ export interface Project {
     competitiveBenchmarkingImages?: (string | any)[]
     userResearchImage?: string | any
     informationArchitectureImage?: string | any
+    whatILearned?: string[]
+    myRole?: {
+      title: string
+      items: string[]
+    }
+    theChallenge?: {
+      paragraph1: string
+      coreProblem: string
+      productGoal: string
+    }
+    theProcess?: {
+      productResearch?: {
+        userResearch: string
+        competitiveBenchmarking: string
+        keyInsight: string
+      }
+      informationArchitecture?: {
+        description: string
+        modules: string
+        keyProductDecisions: {
+          desktopFirst: string
+          mobileReadOnly: string
+          progressiveDisclosure: string
+        }
+      }
+      designPrototyping?: {
+        items: string[]
+      }
+      developmentQA?: {
+        items: string[]
+      }
+    }
+    impact?: {
+      items: string[]
+    }
   }
 }
 
-export const projects: Project[] = [
-  {
-    id: 1,
-    title: "INVOINET",
-    description: "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
-    image: invoiNetImage,
-    technologies: ["React", ".NET"],
-    industry: "Fintech",
-    country: "United States",
-    details: {
-      problem: "Invoinet, a fintech serving 40+ enterprise clients, needed to reposition for regional expansion. Their website messaging was misaligned with their evolved product, causing wrong prospect expectations and low enterprise credibility. ",
-      year: "2023",
-      skills: ["Product Strategy", "UX Design", "Frontend Development"],
-      approach: [
-        "Led user research with enterprise clients to redefine positioning strategy",
-        "Designed UX/UI and information architecture for enterprise audience",
-        "Built entire frontend from scratch in React (first solo production app)",
-        "Deployed to Azure and managed release"
-      ],
-      results: [
-        "✓ Clarified value proposition enabling sales team to qualify leads better",
-        "✓ Positioned as enterprise-grade solution for regional expansion",
-        "✓ Page load optimized and improved conversion rate"
-      ],
-      beforeImage: invoiNetBefore,
-      afterImage: invoiNetAfter
+// Helper function to get projects from translations
+export function getProjectsFromTranslations(): Project[] {
+  const lng = i18n.language || 'en'
+  const projectsData = i18n.getResourceBundle(lng, 'projects')
+  
+  if (!projectsData || !projectsData.projects) {
+    // Fallback to English if translation not found
+    const enProjects = i18n.getResourceBundle('en', 'projects')
+    return enProjects?.projects || []
+  }
+
+  return projectsData.projects.map((project: any) => {
+    // Map project data and add image references based on ID
+    const baseProject: Partial<Project> = {
+      id: project.id,
+      title: project.title,
+      description: project.description,
+      technologies: project.technologies,
+      industry: project.industry,
+      country: project.country,
+      details: project.details ? {
+        role: project.details.role,
+        problem: project.details.problem,
+        year: project.details.year,
+        skills: project.details.skills,
+        approach: project.details.approach,
+        results: project.details.results,
+        whatILearned: project.details.whatILearned,
+        myRole: project.details.myRole,
+        theChallenge: project.details.theChallenge,
+        theProcess: project.details.theProcess,
+        impact: project.details.impact
+      } : undefined
     }
-  },
-  {
-    id: 2,
-    title: "JUNTOZ",
-    description: "E-commerce marketplace redesign: rebuilt Seller Center from user research to production.",
-    image: juntozImage,
-    technologies: ["Figma", "User Research", "Prototyping"],
-    industry: "E-commerce",
-    country: "Peru",
-    details: {
-      problem: "Juntoz, a leading Peruvian e-commerce marketplace recently acquired by EFE Group, was losing sellers to competitors like Amazon Seller Central and Mercado Libre.\n\nThe Seller Center was built without user research, making it extremely difficult for sellers to create and manage their virtual stores. Sellers abandoned the platform and chose competitors with more intuitive seller experiences—directly impacting marketplace growth.\n\nProduct challenge: redesign the Seller Center to match or exceed competitor usability, enabling sellers to onboard and operate independently without friction.",
-      year: "2022",
-      skills: ["Product Strategy", "UX Research", "Product Design"],
-      results: [
-        "✓ Redesigned Seller Center from ground up based on comprehensive user research",
-        "✓ Matched competitor usability standards enabling independent seller operations",
-        "✓ Improved seller onboarding and retention rates",
-        "✓ Reduced seller support tickets through intuitive interface design"
-      ],
-      competitiveAnalysisImage: juntozCompetitiveBenchmarking,
-      competitiveBenchmarkingImages: [juntozAnalytics, juntozProductos, juntozMarketing, juntozLogistica, juntozCapacitaciones],
-      userResearchImage: juntozUserResearch,
-      informationArchitectureImage: juntozInformationArchitecture,
-      beforeImage: [juntozBeforeCatalogo, juntozBeforeListadoPedidos],
-      afterImage: [juntozProductosLong, juntozCalificaciones, juntozBeforePedidos, juntozBeforeCupones, juntozAfter, juntozMarketingInfo]
+
+    // Add images based on project ID
+    switch (project.id) {
+      case 1: // INVOINET
+        baseProject.image = invoiNetImage
+        if (baseProject.details) {
+          baseProject.details.beforeImage = invoiNetBefore
+          baseProject.details.afterImage = invoiNetAfter
+        }
+        break
+      case 2: // JUNTOZ
+        baseProject.image = juntozImage
+        if (baseProject.details) {
+          baseProject.details.competitiveAnalysisImage = juntozCompetitiveBenchmarking
+          baseProject.details.competitiveBenchmarkingImages = [juntozAnalytics, juntozProductos, juntozMarketing, juntozLogistica, juntozCapacitaciones]
+          baseProject.details.userResearchImage = juntozUserResearch
+          baseProject.details.informationArchitectureImage = juntozInformationArchitecture
+          baseProject.details.beforeImage = [juntozBeforeCatalogo, juntozBeforeListadoPedidos]
+          baseProject.details.afterImage = [juntozProductosLong, juntozCalificaciones, juntozBeforePedidos, juntozBeforeCupones, juntozAfter, juntozMarketingInfo]
+        }
+        break
+      case 3: // SHIFT
+        baseProject.image = shiftImage
+        if (baseProject.details) {
+          baseProject.details.beforeImage = shiftBefore
+          baseProject.details.afterImage = shiftAfter
+        }
+        break
+      case 4: // NGROWTH
+        baseProject.image = nGrowthImage
+        if (baseProject.details) {
+          baseProject.details.wireframeImage = nGrowthWireframe
+          baseProject.details.afterImage = nGrowthFinal
+        }
+        break
+      case 5: // WORTHIT
+        baseProject.image = worthitImage
+        if (baseProject.details) {
+          baseProject.details.wireframeImage = worthitWireframe
+          baseProject.details.afterImage = worthitFinal
+          baseProject.details.competitiveAnalysisImage = worthitCompetitiveAnalysis
+        }
+        break
     }
-  },
-  {
-    id: 3,
-    title: "SHIFT",
-    description: "Positioning strategy and website for innovation community connecting corporate leaders with entrepreneurial ecosystem.",
-    image: shiftImage,
-    technologies: ["Webflow", "Custom CSS/JS"],
-    industry: "Innovation Hub",
-    country: "Peru",
-    details: {
-      problem: "SHIFT was launching an innovation community with a unique but difficult positioning challenge: serve two distinct audiences simultaneously.\n\nCorporate leaders needed exposure to innovation and entrepreneurial thinking. Entrepreneurs needed ccess to corporate decision-makers and resources.\n\nChallenge: position SHIFT as the connective tissue between these worlds in a market where competitors served one OR the other—and build a website that spoke to both audiences without alienating either",
-      year: "2025",
-      skills: ["Position Strategy", "UX Research" , "UX/UI Design", "Web Development"],
-      results: [
-        "🚀 40% increase in membership inquiries within first month",
-        "🔎 Brand recognition improved by 65% in target demographic",
-        "💡 Website conversion rate increased from 2.1% to 8.3%",
-        "👀 Featured in 5 major design publications",
-      ],
-      beforeImage: shiftBefore,
-      afterImage: shiftAfter
-    }
-  },
-  {
-    id: 5,
-    title: "WORTHIT",
-    description: "Venture capital platform for early-stage B2B SaaS startups, differentiating through strategic corporate connections.",
-    image: worthitImage,
-    technologies: ["Webflow", "Custom CSS/JS"],
-    industry: "Venture Capital",
-    country: "Peru",
-    details: {
-      problem: "WorthIt, a newly launched venture capital fund, needed to differentiate in a crowded LatAm VC market.\n\nTheir unique value wasn't just capital—it was strategic connections to enterprise clients that accelerate product-market fit.\n\nProduct challenge: build a digital platform that communicated this differentiation to two user segments (founders seeking investment, investors seeking co-investment opportunities) while establishing credibility as a new fund.",
-      year: "2025",
-      skills: ["Product Strategy", "UX Design", "Web Development"],
-      results: [
-        "🎯 Clear dual-path user experience serving both founders and investors",
-        "📊 Effective communication of complex investment thesis and criteria",
-        "🚀 Established credible digital presence for newly launched VC fund",
-        "💼 Streamlined conversion flows for each user segment"
-      ],
-      wireframeImage: worthitWireframe,
-      afterImage: worthitFinal,
-      competitiveAnalysisImage: worthitCompetitiveAnalysis
-    }
-  },
-  {
-    id: 4,
-    title: "NGROWTH",
-    description: "B2B sales strategies platform optimized for growth, featuring proven methods and playbooks used by unicorn startups, restructuring commercial processes for business expansion.",
-    image: nGrowthImage,
-    technologies: ["WordPress", "Custom CSS/JS", "MailerLite"],
-    industry: "Sales B2B Consulting",
-    country: "Peru",
-    details: {
-      problem: "NGROWTH was launching as a new B2B sales consultancy targeting tech startup founders. They needed to establish market positioning and digital presence from scratch, differentiating themselves in a crowded space while building credibility with zero brand recognition.",
-      year: "2024",
-      skills: ["Brand Positioning", "UX Design", "Web Development"],
-      results: [
-        "🚀 Established strong market positioning in competitive B2B consultancy space",
-        "💼 Built credible digital presence that attracted early-stage tech founders",
-        "📈 Created scalable website foundation for future growth",
-        "✨ Differentiated brand identity that resonated with target audience"
-      ],
-      wireframeImage: nGrowthWireframe,
-      afterImage: nGrowthFinal
-    }
-  },
-]
+
+    return baseProject as Project
+  })
+}
+
+// Note: Projects are now loaded dynamically from translations
+// Use getProjectsFromTranslations() in components with useTranslation hook
+// to get reactive updates when language changes

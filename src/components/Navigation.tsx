@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import { useTranslation } from 'react-i18next'
+import i18n from 'i18next'
 
 interface NavigationProps {
   isDark?: boolean
@@ -9,13 +11,14 @@ interface NavigationProps {
 }
 
 export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
+  const { t } = useTranslation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navItems = [
-    { name: 'work', href: '#work-section' },
-    { name: 'about', href: '#about-section' },
-    { name: 'contact', href: '#footer' },
-    { name: 'resume', href: '#', isDownload: true }
+    { name: 'work', href: '#work-section', translationKey: 'nav.work' },
+    { name: 'about', href: '#about-section', translationKey: 'nav.about' },
+    { name: 'contact', href: '#footer', translationKey: 'nav.contact' },
+    { name: 'resume', href: '#', isDownload: true, translationKey: 'nav.resume' }
   ]
 
   const toggleMenu = () => {
@@ -29,8 +32,8 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
   const handleDownloadResume = () => {
     // Create a link element and trigger download
     const link = document.createElement('a')
-    link.href = '/Resume - PM - DIC2025.pdf'
-    link.download = 'Resume - PM - DIC2025.pdf' // Only filename, not path
+    link.href = '/TECHNICAL PRODUCT MANAGER EN- 2026.pdf'
+    link.download = 'TECHNICAL PRODUCT MANAGER EN- 2026.pdf' // Only filename, not path
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -98,8 +101,8 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
             VRADIS
           </motion.button>
 
-          {/* 2. Desktop Navigation Links - Horizontal */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* 2. Desktop Navigation Links - Horizontal - Centered */}
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
             {navItems.map((item, index) => (
               <motion.a
                 key={item.name}
@@ -120,13 +123,16 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
                 }}
                 whileHover={{ y: -2 }}
               >
-                {item.name.toUpperCase()}
+                {t(item.translationKey)}
               </motion.a>
             ))}
           </div>
 
-          {/* 3. Social Icons - Desktop */}
+          {/* 3. Right Side: Language Selector + Social Icons - Desktop */}
           <div className="hidden md:flex items-center gap-4">
+            {/* Language Selector */}
+            <LanguageSelector textColor={textColor} />
+            {/* LinkedIn Icon */}
             <motion.a
               href="https://www.linkedin.com/in/vradisflorez/"
               target="_blank"
@@ -141,6 +147,7 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
             </motion.a>
+            {/* GitHub Icon */}
             <motion.a
               href="https://github.com/vradss"
               target="_blank"
@@ -168,7 +175,7 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           >
-            {isMenuOpen ? 'CLOSE' : 'MENU'}
+            {isMenuOpen ? t('nav.close') : t('nav.menu')}
           </motion.button>
         </div>
       </motion.nav>
@@ -204,7 +211,7 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
                   }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  {item.name.toUpperCase()}
+                  {t(item.translationKey)}
                 </motion.a>
               ))}
 
@@ -240,6 +247,9 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
               </motion.div>
             </div>
 
+            {/* Language Selector in Mobile Menu */}
+            <LanguageSelectorMobile isMenuOpen={isMenuOpen} />
+
             {/* Close button inside menu */}
             <motion.button
               className="absolute top-4 right-4 md:top-6 md:right-6 text-white z-60"
@@ -253,11 +263,91 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
               transition={{ delay: 0.3 }}
               whileHover={{ scale: 1.05 }}
             >
-              CLOSE
+              {t('nav.close')}
             </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  )
+}
+
+// Language Selector Component
+function LanguageSelector({ textColor }: { textColor: string }) {
+  const currentLanguage = i18n.language || 'en'
+  
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
+  }
+
+  return (
+    <div className="flex items-center gap-2" style={{ fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif' }}>
+      <button
+        onClick={() => changeLanguage('en')}
+        className={`transition-colors ${currentLanguage === 'en' ? textColor : textColor + '/60'} hover:${textColor}`}
+        style={{
+          fontSize: '14px',
+          fontWeight: currentLanguage === 'en' ? 600 : 400,
+          cursor: 'pointer'
+        }}
+      >
+        EN
+      </button>
+      <span className={textColor + '/40'}>|</span>
+      <button
+        onClick={() => changeLanguage('es')}
+        className={`transition-colors ${currentLanguage === 'es' ? textColor : textColor + '/60'} hover:${textColor}`}
+        style={{
+          fontSize: '14px',
+          fontWeight: currentLanguage === 'es' ? 600 : 400,
+          cursor: 'pointer'
+        }}
+      >
+        ES
+      </button>
+    </div>
+  )
+}
+
+// Language Selector for Mobile Menu
+function LanguageSelectorMobile({ isMenuOpen }: { isMenuOpen: boolean }) {
+  const currentLanguage = i18n.language || 'en'
+  
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng)
+  }
+
+  if (!isMenuOpen) return null
+
+  return (
+    <motion.div
+      className="absolute top-4 right-16 md:top-6 md:right-20 z-60 flex items-center gap-2"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2 }}
+      style={{ fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif' }}
+    >
+      <button
+        onClick={() => changeLanguage('en')}
+        className={`transition-colors text-white ${currentLanguage === 'en' ? 'font-bold' : 'font-normal opacity-60'} hover:opacity-100`}
+        style={{
+          fontSize: '16px',
+          cursor: 'pointer'
+        }}
+      >
+        EN
+      </button>
+      <span className="text-white/40">|</span>
+      <button
+        onClick={() => changeLanguage('es')}
+        className={`transition-colors text-white ${currentLanguage === 'es' ? 'font-bold' : 'font-normal opacity-60'} hover:opacity-100`}
+        style={{
+          fontSize: '16px',
+          cursor: 'pointer'
+        }}
+      >
+        ES
+      </button>
+    </motion.div>
   )
 }

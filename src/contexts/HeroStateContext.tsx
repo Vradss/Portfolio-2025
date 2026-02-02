@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface HeroStateContextType {
   clickState: number // 0: BORN VRADIS, 1: BORN CURIOUS, 2: BORN TO INNOVATE
@@ -13,6 +14,7 @@ const HeroStateContext = createContext<HeroStateContextType | undefined>(undefin
 
 export function HeroStateProvider({ children }: { children: ReactNode }) {
   const [clickState, setClickState] = useState(0)
+  const { t } = useTranslation()
 
   // Auto-change state every 8 seconds - centralized logic
   useEffect(() => {
@@ -37,15 +39,10 @@ export function HeroStateProvider({ children }: { children: ReactNode }) {
   }
 
   const getCurrentText = () => {
-    switch (clickState) {
-      case 0:
-        return { firstLine: "BORN", secondLine: "VRADIS" }
-      case 1:
-        return { firstLine: "BORN", secondLine: "CURIOUS" }
-      case 2:
-        return { firstLine: "BORN TO", secondLine: "INNOVATE" }
-      default:
-        return { firstLine: "BORN", secondLine: "VRADIS" }
+    const stateKey = clickState.toString()
+    return {
+      firstLine: t(`hero.states.${stateKey}.firstLine`),
+      secondLine: t(`hero.states.${stateKey}.secondLine`)
     }
   }
 

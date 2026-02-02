@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "work": "WORK",
+    "about": "ABOUT",
+    "contact": "CONTACT",
+    "resume": "RESUME",
+    "menu": "MENU",
+    "close": "CLOSE"
+  },
+  "hero": {
+    "states": {
+      "0": {
+        "firstLine": "BORN",
+        "secondLine": "VRADIS"
+      },
+      "1": {
+        "firstLine": "BORN",
+        "secondLine": "CURIOUS"
+      },
+      "2": {
+        "firstLine": "BORN TO",
+        "secondLine": "INNOVATE"
+      }
+    }
+  },
+  "about": {
+    "greeting": "Hey, I'm Vradis",
+    "paragraph1": "Technical Product Manager who moves from discovery to deployment faster than most teams move from meetings to specs.",
+    "paragraph2": "I don't just define what to build — I research it, design it, code it, and ship it. From user interviews to live MVPs, I execute end-to-end because I don't depend on dev queues.",
+    "paragraph3": "I've built e-commerce platforms, automated workflows, and B2B SaaS products across fintech, edtech, and marketplaces. Currently exploring AI agents and automation to eliminate bottlenecks."
+  },
+  "work": {
+    "featuredProjects": "FEATURED PROJECTS",
+    "viewProject": "View Project"
+  },
+  "skills": {
+    "title": "SKILLS",
+    "items": {
+      "productThinking": {
+        "icon": "HeadCircuit",
+        "title": "0 to 1 Product Building",
+        "description": "I take ambiguous problems and turn them into launched products. From discovery to deployment, I own the full cycle."
+      },
+      "technicalExecution": {
+        "icon": "BoundingBox",
+        "title": "Design with Technical Depth",
+        "description": "I design solutions that are both user-friendly and technically feasible — because I understand both code and UX."
+      },
+      "aiProductDevelopment": {
+        "icon": "BracketsCurly",
+        "title": "Rapid Prototyping & Validation",
+        "description": "I build functional MVPs in weeks to test with real users, not months of spec documents and coordination."
+      },
+      "dataDrivenDecisions": {
+        "icon": "Database",
+        "title": "Business Impact Focus",
+        "description": "I measure success in adoption, revenue, and efficiency — not features shipped. Data informs every decision."
+      }
+    }
+  },
+  "footer": {
+    "letsTalk": "LET'S TALK",
+    "allRightsReserved": "© 2025 ALL RIGHTS RESERVED",
+    "work": "WORK",
+    "about": "ABOUT",
+    "contact": "CONTACT",
+    "resume": "RESUME",
+    "linkedin": "LINKEDIN"
+  },
+  "projectDetail": {
+    "liveLink": "LIVE LINK",
+    "viewMoreProjects": "VIEW MORE PROJECTS",
+    "theChallenge": "THE CHALLENGE",
+    "myRole": "MY ROLE",
+    "theProcess": "THE PROCESS",
+    "impact": "IMPACT",
+    "whatILearned": "WHAT I LEARNED",
+    "theTransformation": "THE TRANSFORMATION",
+    "before": "BEFORE",
+    "after": "AFTER",
+    "productResearch": "PRODUCT RESEARCH & DISCOVERY",
+    "informationArchitecture": "INFORMATION ARCHITECTURE",
+    "designIteration": "DESIGN & ITERATION",
+    "tech": "TECH",
+    "disciplines": "DISCIPLINES"
+  }
+}

@@ -5,7 +5,8 @@ import { LayoutGroup } from 'motion/react'
 import { HeroStateProvider, useHeroState } from './contexts/HeroStateContext'
 import { useLenis, getLenis } from './hooks/useLenis'
 import { useThrottle } from './hooks/useThrottle'
-import { projects } from './data/projects'
+import { getProjectsFromTranslations } from './data/projects'
+import { useTranslation } from 'react-i18next'
 
 // Code splitting: cargar componentes pesados de forma lazy
 const HeroSection = lazy(() => import('./components/HeroSection').then(m => ({ default: m.HeroSection })))
@@ -32,7 +33,9 @@ function lerpColor(fromRGB: [number, number, number], toRGB: [number, number, nu
 // Componente interno que tiene acceso al contexto del Hero
 function AppContent() {
   const { getCurrentColor } = useHeroState()
+  const { i18n: i18nInstance } = useTranslation()
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null)
+  const [projects, setProjects] = useState(getProjectsFromTranslations())
   // Color inicial debe ser el color actual del hero
   const [bgColor, setBgColor] = useState<string>(getCurrentColor())
   const [workBgColor, setWorkBgColor] = useState<string>('white')
@@ -166,12 +169,24 @@ function AppContent() {
     }
   }, [selectedProjectId])
 
+  // Update projects when language changes
+  useEffect(() => {
+    const updateProjects = () => {
+      setProjects(getProjectsFromTranslations())
+    }
+    
+    i18nInstance.on('languageChanged', updateProjects)
+    return () => {
+      i18nInstance.off('languageChanged', updateProjects)
+    }
+  }, [i18nInstance])
+
   // Memoizar proyecto seleccionado
   const selectedProject = useMemo(() => {
     return selectedProjectId !== null 
       ? projects.find(p => p.id === selectedProjectId) 
       : null
-  }, [selectedProjectId])
+  }, [selectedProjectId, projects])
 
   // Memoizar estilos para evitar recreación
   const containerStyle = useMemo(() => ({

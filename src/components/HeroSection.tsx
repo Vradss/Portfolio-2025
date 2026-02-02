@@ -9,18 +9,18 @@ import { MadeInPeru } from './MadeInPeru'
 import { Navigation } from './Navigation'
 import { useHeroState } from '../contexts/HeroStateContext'
 import { useThrottle } from '../hooks/useThrottle'
-import prideFlag from '@/assets/hero-images/pride-flag.png'
-import avocadoImage from '@/assets/hero-images/avocado.png'
-import llamaImage from '@/assets/hero-images/llama.png'
-import rainbowImage from '@/assets/hero-images/rainbow.png'
-import tarotImage from '@/assets/hero-images/tarot-cards.png'
-import tamagotchiImage from '@/assets/hero-images/tamagotchi.png'
-import retroComputerImage from '@/assets/hero-images/retro-computer.png'
-import pointingHandImage from '@/assets/hero-images/pointing-hand.png'
-import pepeMemeFaceImage from '@/assets/hero-images/pepe-meme.png'
-import fluffyDogImage from '@/assets/hero-images/fluffy-dog.png'
-import dogWithToyImage from '@/assets/hero-images/dog-with-toy.png'
-import michaelScottImage from '@/assets/hero-images/michael-scott.png'
+import prideFlag from '@/assets/hero-images/pride-flag.webp'
+import avocadoImage from '@/assets/hero-images/avocado.webp'
+import llamaImage from '@/assets/hero-images/llama.webp'
+import rainbowImage from '@/assets/hero-images/rainbow.webp'
+import tarotImage from '@/assets/hero-images/tarot-cards.webp'
+import tamagotchiImage from '@/assets/hero-images/tamagotchi.webp'
+import retroComputerImage from '@/assets/hero-images/retro-computer.webp'
+import pointingHandImage from '@/assets/hero-images/pointing-hand.webp'
+import pepeMemeFaceImage from '@/assets/hero-images/pepe-meme.webp'
+import fluffyDogImage from '@/assets/hero-images/fluffy-dog.webp'
+import dogWithToyImage from '@/assets/hero-images/dog-with-toy.webp'
+import michaelScottImage from '@/assets/hero-images/michael-scott.webp'
 import consolaDJImage from '@/assets/hero-images/consolaDJ.png'
 import potusImage from '@/assets/hero-images/potus.png'
 
@@ -201,33 +201,44 @@ export function HeroSection() {
     setMousePosition({ x, y })
 
     const now = Date.now()
-    if (now - lastMouseMove.current > 80) {
+    // Reducir throttle a 20ms para imágenes más cercanas
+    if (now - lastMouseMove.current > 20) {
       lastMouseMove.current = now
 
       const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)]
+      
+      // Calcular posición base del cursor
+      const baseX = (e.clientX - rect.left) / rect.width * 100
+      const baseY = (e.clientY - rect.top) / rect.height * 100
+      
+      // Agregar offset aleatorio pequeño (±3%) para que no todas estén en el mismo punto
+      const offsetX = (Math.random() - 0.5) * 6 // -3% a +3%
+      const offsetY = (Math.random() - 0.5) * 6 // -3% a +3%
+      
       const newImage: FloatingImage = {
         id: imageCounter.current++,
         image: randomImage,
-        x: (e.clientX - rect.left) / rect.width * 100,
-        y: (e.clientY - rect.top) / rect.height * 100,
+        x: baseX + offsetX,
+        y: baseY + offsetY,
         scale: Math.random() * 0.6 + 0.4,
         rotation: Math.random() * 40 - 20,
         timestamp: now
       }
 
       setFloatingImages(prev => {
-        const filtered = prev.filter(img => now - img.timestamp < 1000)
+        // Aumentar tiempo de vida a 1500ms para más imágenes visibles
+        const filtered = prev.filter(img => now - img.timestamp < 1500)
         return [...filtered, newImage]
       })
 
       setTimeout(() => {
         setFloatingImages(prev => prev.filter(img => img.id !== newImage.id))
-      }, 1000)
+      }, 1500)
     }
   }, [textAnimationComplete])
 
-  // Throttle del mouse move (16ms = ~60fps)
-  const handleMouseMove = useThrottle(handleMouseMoveInternal, 16)
+  // Throttle del mouse move (30ms para mejor respuesta y más imágenes)
+  const handleMouseMove = useThrottle(handleMouseMoveInternal, 30)
 
   const handleMouseLeave = useCallback(() => {
     setFloatingImages([])
@@ -376,15 +387,17 @@ export function HeroSection() {
             }}
           >
             {(() => {
-              // Convertir imagen importada a string si es necesario
+              // En Vite, las imágenes importadas devuelven directamente la URL como string
+              // item.image.src ya es la URL importada
               const imageSrc = typeof item.image.src === 'string' 
                 ? item.image.src 
-                : (item.image.src?.default || item.image.src || '')
+                : (item.image.src as any)?.default || String(item.image.src || '')
               
               return (
                 <ImageWithFallback
                   src={imageSrc}
                   alt={item.image.alt}
+                  priority={false}
                   className={
                     item.image.extraLarge 
                       ? "w-60 h-60 md:w-96 md:h-96 object-contain"

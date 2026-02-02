@@ -6,7 +6,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://vradis.com/</loc>
+    <loc>https://vradis.es/</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
 
   <!-- Work Section -->
   <url>
-    <loc>https://vradis.com/#work-section</loc>
+    <loc>https://vradis.es/#work-section</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -22,7 +22,7 @@
 
   <!-- About Section -->
   <url>
-    <loc>https://vradis.com/#about-section</loc>
+    <loc>https://vradis.es/#about-section</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -30,35 +30,35 @@
 
   <!-- Individual Projects (add as they are created) -->
   <url>
-    <loc>https://vradis.com/projects/shift</loc>
+    <loc>https://vradis.es/projects/shift</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://vradis.com/projects/worthit</loc>
+    <loc>https://vradis.es/projects/worthit</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://vradis.com/projects/invoinet</loc>
+    <loc>https://vradis.es/projects/invoinet</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://vradis.com/projects/ngrowth</loc>
+    <loc>https://vradis.es/projects/ngrowth</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://vradis.com/projects/juntoz</loc>
+    <loc>https://vradis.es/projects/juntoz</loc>
     <lastmod>2024-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

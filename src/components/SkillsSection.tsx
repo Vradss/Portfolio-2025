@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import HTML5Logo from '../imports/TechStackLogos'
 import FigmaLogo from '../imports/TechStackLogos-192-216'
 import JavaScriptLogo from '../imports/TechStackLogos-192-260'
@@ -13,14 +14,13 @@ import NodeLogo from '../imports/Icons8Nodejs1'
 import NotionLogo from '../imports/Notion1-207-37'
 import MakeLogo from '../imports/MakeLogo1-272-22'
 import N8NLogo from '../imports/N8NColor1-272-37'
-import CLogo from '../imports/C1-276-22'
 import LinuxLogo from '../imports/Linux1'
 import NextJsLogo from '../imports/NextJs1'
 import ReactImage from '@/assets/skills/react-logo.png'
-import BrainLight from '../imports/BrainLight'
-import CodeLight from '../imports/CodeLight'
-import CircuitryLight from '../imports/CircuitryLight'
-import PuzzlePieceLight from '../imports/PuzzlePieceLight'
+import HeadCircuit from '../imports/HeadCircuit'
+import BoundingBox from '../imports/BoundingBox'
+import BracketsCurly from '../imports/BracketsCurly'
+import Database from '../imports/Database'
 
 // Imported Tech Logo Components with rounded rectangle container for marquee (sin sombras)
 const TechLogos = {
@@ -88,11 +88,6 @@ const TechLogos = {
       <N8NLogo />
     </div>
   ),
-  C: () => (
-    <div className="w-20 h-20 p-3 bg-white rounded-2xl transition-all duration-300 hover:scale-105">
-      <CLogo />
-    </div>
-  ),
   Linux: () => (
     <div className="w-20 h-20 p-3 bg-white rounded-2xl transition-all duration-300 hover:scale-105">
       <LinuxLogo />
@@ -149,31 +144,41 @@ export function SkillsSection() {
     offset: ["start end", "end start"]
   })
 
+  const { t } = useTranslation()
+  
+  // Mapeo de nombres de iconos a componentes
+  const iconMap: Record<string, any> = {
+    HeadCircuit,
+    BoundingBox,
+    BracketsCurly,
+    Database
+  }
+
   const skills = [
     {
-      emoji: "🧠",
-      title: "Product Thinking",
-      description: "Discovery, insight synthesis, problem framing, UX research, product strategy"
+      icon: t('skills.items.productThinking.icon'),
+      title: t('skills.items.productThinking.title'),
+      description: t('skills.items.productThinking.description')
     },
     {
-      emoji: "⚡",
-      title: "Technical Execution",
-      description: "Prototyping (React, Next.js), AI integrations, hands-on validation"
+      icon: t('skills.items.technicalExecution.icon'),
+      title: t('skills.items.technicalExecution.title'),
+      description: t('skills.items.technicalExecution.description')
     },
     {
-      emoji: "🤖",
-      title: "AI Product Development",
-      description: "LLM workflows , multi-agent automation (n8n, MCP), AI-driven feature prototyping"
+      icon: t('skills.items.aiProductDevelopment.icon'),
+      title: t('skills.items.aiProductDevelopment.title'),
+      description: t('skills.items.aiProductDevelopment.description')
     },
     {
-      emoji: "📊",
-      title: "Data-Driven Decisions",
-      description: "User research, product analytics, A/B tests, metrics interpretation for business impact"
+      icon: t('skills.items.dataDrivenDecisions.icon'),
+      title: t('skills.items.dataDrivenDecisions.title'),
+      description: t('skills.items.dataDrivenDecisions.description')
     }
   ]
 
   // Tech logos organized in 1 row for marquee
-  const allLogos = ['JavaScript', 'HTML5', 'React', 'Notion', 'Figma', 'GitHub', 'Claude', 'Git', 'Jira', 'Make', 'N8N', 'C', 'Linux', 'NextJS', 'NodeJS']
+  const allLogos = ['JavaScript', 'HTML5', 'React', 'Notion', 'Figma', 'GitHub', 'Claude', 'Git', 'Jira', 'Make', 'N8N', 'Linux', 'NextJS', 'NodeJS']
 
   return (
     <section
@@ -201,24 +206,15 @@ export function SkillsSection() {
               color: '#212121'
             }}
           >
-            SKILLS
+            {t('skills.title')}
           </h2>
         </motion.div>
 
         {/* Skills Grid - Horizontal */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
           {skills.map((skill, index) => {
-            // Seleccionar el icono apropiado según el título
-            let IconComponent = null
-            if (skill.title === "Product Thinking") {
-              IconComponent = BrainLight
-            } else if (skill.title === "Technical Execution") {
-              IconComponent = CodeLight
-            } else if (skill.title === "AI Product Development") {
-              IconComponent = CircuitryLight
-            } else if (skill.title === "Data-Driven Decisions") {
-              IconComponent = PuzzlePieceLight
-            }
+            // Obtener el componente de icono desde el mapeo usando el nombre del JSON
+            const IconComponent = skill.icon ? iconMap[skill.icon] : null
 
             return (
               <motion.div
@@ -252,7 +248,7 @@ export function SkillsSection() {
                     </motion.div>
                   ) : (
                     <div style={{ fontSize: '48px' }}>
-                      {skill.emoji}
+                      {skill.icon || '💡'}
                     </div>
                   )}
                 </div>
@@ -260,7 +256,7 @@ export function SkillsSection() {
                   className="text-black mb-3"
                   style={{ 
                     fontFamily: 'Monument Grotesk, Space Grotesk, sans-serif',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     fontSize: 'clamp(16px, 2vw, 20px)',
                     lineHeight: 1.2
                   }}

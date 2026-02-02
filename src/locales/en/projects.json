@@ -1,0 +1,140 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "INVOINET",
+      "description": "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
+      "technologies": ["React", "Tailwind CSS", "TypeScript"],
+      "industry": "Financial Services Platform",
+      "country": "United States",
+      "details": {
+        "role": "Frontend Developer",
+        "problem": "Invoinet, a fintech serving 40+ enterprise clients, needed to reposition for regional expansion. Their website messaging was misaligned with their evolved product, causing wrong prospect expectations and low enterprise credibility. ",
+        "year": "2023",
+        "skills": ["Product Strategy", "UX Design", "Frontend Development"],
+        "approach": [
+          "Led user research with enterprise clients to redefine positioning strategy",
+          "Designed UX/UI and information architecture for enterprise audience",
+          "Built entire frontend from scratch in React (first solo production app)",
+          "Deployed to Azure and managed release"
+        ],
+        "results": [
+          "✓ Clarified value proposition enabling sales team to qualify leads better",
+          "✓ Positioned as enterprise-grade solution for regional expansion",
+          "✓ Page load optimized and improved conversion rate"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "JUNTOZ",
+      "description": "E-commerce marketplace redesign: rebuilt Seller Center from user research to production.",
+      "technologies": ["React", "Tailwind CSS", "TypeScript", ".NET"],
+      "industry": "E-commerce",
+      "country": "Peru",
+      "details": {
+        "role": "Product Manager",
+        "problem": "Juntoz, a leading Peruvian e-commerce marketplace recently acquired by EFE Group, was losing sellers to competitors like Amazon Seller Central and Mercado Libre.\n\nThe Seller Center was built without user research, making it extremely difficult for sellers to create and manage their virtual stores. Sellers abandoned the platform and chose competitors with more intuitive seller experiences—directly impacting marketplace growth.\n\nProduct challenge: redesign the Seller Center to match or exceed competitor usability, enabling sellers to onboard and operate independently without friction.",
+        "year": "2022",
+        "skills": ["Product Strategy", "UX Research", "Product Design"],
+        "results": [
+          "✓ Redesigned Seller Center from ground up based on comprehensive user research",
+          "✓ Matched competitor usability standards enabling independent seller operations",
+          "✓ Improved seller onboarding and retention rates",
+          "✓ Reduced seller support tickets through intuitive interface design"
+        ],
+        "theChallenge": {
+          "paragraph1": "Juntoz, a leading Peruvian e-commerce marketplace recently acquired by EFE Group, was losing sellers to competitors like Amazon Seller Central and Mercado Libre.",
+          "coreProblem": "The Seller Center was built without user research, making it extremely difficult for sellers to create and manage their virtual stores. Sellers abandoned the platform and chose competitors with more intuitive seller experiences—directly impacting marketplace growth.",
+          "productGoal": "Redesign the Seller Center to match or exceed competitor usability, enabling sellers to onboard and operate independently without friction."
+        },
+        "theProcess": {
+          "productResearch": {
+            "userResearch": "In-depth interviews across seller segments (small/large merchants) and internal stakeholders to understand pain points",
+            "competitiveBenchmarking": "Analyzed Linio, Shopstar, Ripley, Mercado Libre, Amazon Seller Central to identify usability best practices and feature gaps",
+            "keyInsight": "Competitors had significantly better onboarding flows and self-service management tools"
+          },
+          "informationArchitecture": {
+            "description": "Restructured platform with 12 core modules designed for seller self-service:",
+            "modules": "Dashboard, Catálogo, Pedidos, Envíos, Diseña tu tienda, Marketing, Logística, Calificaciones, Integraciones, Notificaciones, Configuración, Beneficios"
+          },
+          "designPrototyping": {
+            "items": [
+              "Created wireframes and high-fidelity prototypes in Figma",
+              "Tested with internal team and select sellers before development",
+              "Iterated designs based on feedback"
+            ]
+          }
+        },
+        "impact": {
+          "items": [
+            "Improved seller and operations team efficiency",
+            "Reduced onboarding friction and support tickets",
+            "Enabled self-service management at scale for EFE Group expansion",
+            "Platform adopted by hundreds of sellers across Peru with significantly improved satisfaction"
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "SHIFT",
+      "description": "Positioning strategy and website for innovation community connecting corporate leaders with entrepreneurial ecosystem.",
+      "technologies": ["Webflow", "Custom CSS/JS"],
+      "industry": "Innovation Hub",
+      "country": "Peru",
+      "details": {
+        "role": "Product Manager & Frontend Developer",
+        "problem": "SHIFT was launching an innovation community with a unique but difficult positioning challenge: serve two distinct audiences simultaneously.\n\nCorporate leaders needed exposure to innovation and entrepreneurial thinking. Entrepreneurs needed ccess to corporate decision-makers and resources.\n\nChallenge: position SHIFT as the connective tissue between these worlds in a market where competitors served one OR the other—and build a website that spoke to both audiences without alienating either",
+        "year": "2025",
+        "skills": ["Position Strategy", "UX Research" , "UX/UI Design", "Web Development"],
+        "results": [
+          "🚀 40% increase in membership inquiries within first month",
+          "🔎 Brand recognition improved by 65% in target demographic",
+          "💡 Website conversion rate increased from 2.1% to 8.3%",
+          "👀 Featured in 5 major design publications"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "WORTHIT",
+      "description": "Venture capital platform for early-stage B2B SaaS startups, differentiating through strategic corporate connections.",
+      "technologies": ["Webflow", "Custom CSS/JS"],
+      "industry": "Venture Capital",
+      "country": "Peru",
+      "details": {
+        "role": "Product Manager & Web Developer",
+        "problem": "WorthIt, a newly launched venture capital fund, needed to differentiate in a crowded LatAm VC market.\n\nTheir unique value wasn't just capital—it was strategic connections to enterprise clients that accelerate product-market fit.\n\nProduct challenge: build a digital platform that communicated this differentiation to two user segments (founders seeking investment, investors seeking co-investment opportunities) while establishing credibility as a new fund.",
+        "year": "2025",
+        "skills": ["Product Strategy", "UX Design", "Web Development"],
+        "results": [
+          "🎯 Clear dual-path user experience serving both founders and investors",
+          "📊 Effective communication of complex investment thesis and criteria",
+          "🚀 Established credible digital presence for newly launched VC fund",
+          "💼 Streamlined conversion flows for each user segment"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "NGROWTH",
+      "description": "B2B sales strategies platform optimized for growth, featuring proven methods and playbooks used by unicorn startups, restructuring commercial processes for business expansion.",
+      "technologies": ["WordPress", "Custom CSS/JS", "MailerLite"],
+      "industry": "Sales B2B Consulting",
+      "country": "Peru",
+      "details": {
+        "role": "Product Manager & Web Developer",
+        "problem": "NGROWTH was launching as a new B2B sales consultancy targeting tech startup founders. They needed to establish market positioning and digital presence from scratch, differentiating themselves in a crowded space while building credibility with zero brand recognition.",
+        "year": "2024",
+        "skills": ["Brand Positioning", "UX Design", "Web Development"],
+        "results": [
+          "🚀 Established strong market positioning in competitive B2B consultancy space",
+          "💼 Built credible digital presence that attracted early-stage tech founders",
+          "📈 Created scalable website foundation for future growth",
+          "✨ Differentiated brand identity that resonated with target audience"
+        ]
+      }
+    }
+  ]
+}

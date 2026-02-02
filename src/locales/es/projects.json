@@ -1,0 +1,151 @@
+{
+  "projects": [
+    {
+      "id": 1,
+      "title": "INVOINET",
+      "description": "Reposicionamiento de fintech empresarial para expansión regional y reconstrucción de plataforma en React",
+      "technologies": ["React", "Tailwind CSS", "TypeScript"],
+      "industry": "Plataforma de Servicios Financieros",
+      "country": "Estados Unidos",
+      "details": {
+        "role": "Frontend Developer",
+        "problem": "Invoinet, una fintech que atiende a más de 40 clientes empresariales, necesitaba reposicionarse para la expansión regional. El mensaje de su sitio web no estaba alineado con su producto evolucionado, causando expectativas incorrectas en los prospectos y baja credibilidad empresarial.",
+        "year": "2023",
+        "skills": ["Estrategia de Producto", "Diseño UX", "Desarrollo Frontend"],
+        "approach": [
+          "Lideré investigación de usuarios con clientes empresariales para redefinir la estrategia de posicionamiento",
+          "Diseñé UX/UI y arquitectura de información para audiencia empresarial",
+          "Construí todo el frontend desde cero en React (primera app de producción en solitario)",
+          "Desplegué en Azure y gestioné el lanzamiento"
+        ],
+        "results": [
+          "✓ Clarificó la propuesta de valor permitiendo al equipo de ventas calificar mejor los leads",
+          "✓ Posicionado como solución de nivel empresarial para expansión regional",
+          "✓ Optimización de carga de página y mejora de tasa de conversión"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "JUNTOZ",
+      "description": "Rediseño de marketplace de e-commerce: reconstrucción del Seller Center desde investigación de usuarios hasta producción.",
+      "technologies": ["React", "Tailwind CSS", "TypeScript", ".NET"],
+      "industry": "E-commerce",
+      "country": "Perú",
+      "details": {
+        "role": "Product Manager",
+        "problem": "Juntoz, un marketplace de e-commerce peruano líder recientemente adquirido por EFE Group, estaba perdiendo vendedores frente a competidores como Amazon Seller Central y Mercado Libre.\n\nEl Seller Center fue construido sin investigación de usuarios, haciendo extremadamente difícil para los vendedores crear y gestionar sus tiendas virtuales. Los vendedores abandonaron la plataforma y eligieron competidores con experiencias de vendedor más intuitivas—impactando directamente el crecimiento del marketplace.\n\nDesafío del producto: rediseñar el Seller Center para igualar o superar la usabilidad de los competidores, permitiendo a los vendedores incorporarse y operar independientemente sin fricción.",
+        "year": "2022",
+        "skills": ["Estrategia de Producto", "Investigación UX", "Diseño de Producto"],
+        "results": [
+          "✓ Rediseñó el Seller Center desde cero basado en investigación exhaustiva de usuarios",
+          "✓ Igualó los estándares de usabilidad de los competidores permitiendo operaciones independientes de vendedores",
+          "✓ Mejoró las tasas de incorporación y retención de vendedores",
+          "✓ Redujo tickets de soporte de vendedores a través de diseño de interfaz intuitivo"
+        ],
+        "myRole": {
+          "title": "Product Manager",
+          "items": [
+            "Lideré descubrimiento y rediseño de producto (iniciativa de 10 meses)",
+            "Gestioné equipo multifuncional: 2 diseñadores UX, 1 diseñador UI, 2 desarrolladores",
+            "Realicé investigación de usuarios y análisis competitivo",
+            "Definí arquitectura de información y requisitos de producto",
+            "Coordiné implementación de desarrollo y pruebas QA",
+            "Gestión de stakeholders con liderazgo de Juntoz y EFE Group"
+          ]
+        },
+        "theChallenge": {
+          "paragraph1": "Juntoz, un marketplace de e-commerce peruano líder recientemente adquirido por EFE Group, estaba perdiendo vendedores frente a competidores como Amazon Seller Central y Mercado Libre.",
+          "coreProblem": "El Seller Center fue construido sin investigación de usuarios, haciendo extremadamente difícil para los vendedores crear y gestionar sus tiendas virtuales. Los vendedores abandonaron la plataforma y eligieron competidores con experiencias de vendedor más intuitivas—impactando directamente el crecimiento del marketplace.",
+          "productGoal": "Rediseñar el Seller Center para igualar o superar la usabilidad de los competidores, permitiendo a los vendedores incorporarse y operar independientemente sin fricción."
+        },
+        "theProcess": {
+          "productResearch": {
+            "userResearch": "Entrevistas exhaustivas en segmentos de vendedores (comerciantes pequeños/grandes) y stakeholders internos para entender puntos de dolor",
+            "competitiveBenchmarking": "Analizamos Linio, Shopstar, Ripley, Mercado Libre, Amazon Seller Central para identificar mejores prácticas de usabilidad y brechas de características",
+            "keyInsight": "Los competidores tenían flujos de incorporación y herramientas de autoservicio significativamente mejores"
+          },
+          "informationArchitecture": {
+            "description": "Reestructuramos la plataforma con 12 módulos principales diseñados para autoservicio de vendedores:",
+            "modules": "Dashboard, Catálogo, Pedidos, Envíos, Diseña tu tienda, Marketing, Logística, Calificaciones, Integraciones, Notificaciones, Configuración, Beneficios"
+          },
+          "designPrototyping": {
+            "items": [
+              "Creé wireframes y prototipos de alta fidelidad en Figma",
+              "Probé con equipo interno y vendedores selectos antes del desarrollo",
+              "Iteré diseños basado en feedback"
+            ]
+          }
+        },
+        "impact": {
+          "items": [
+            "Mejoró la eficiencia del equipo de vendedores y operaciones",
+            "Redujo la fricción de incorporación y tickets de soporte",
+            "Habilitó gestión de autoservicio a escala para expansión de EFE Group",
+            "Plataforma adoptada por cientos de vendedores en Perú con satisfacción significativamente mejorada"
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "SHIFT",
+      "description": "Estrategia de posicionamiento y sitio web para comunidad de innovación conectando líderes corporativos con ecosistema emprendedor.",
+      "technologies": ["Webflow", "Custom CSS/JS"],
+      "industry": "Hub de Innovación",
+      "country": "Perú",
+      "details": {
+        "role": "Product Manager & Frontend Developer",
+        "problem": "SHIFT estaba lanzando una comunidad de innovación con un desafío de posicionamiento único pero difícil: servir a dos audiencias distintas simultáneamente.\n\nLos líderes corporativos necesitaban exposición a la innovación y el pensamiento emprendedor. Los emprendedores necesitaban acceso a tomadores de decisiones corporativos y recursos.\n\nDesafío: posicionar SHIFT como el tejido conectivo entre estos mundos en un mercado donde los competidores servían a uno O al otro—y construir un sitio web que hablara a ambas audiencias sin alienar a ninguna",
+        "year": "2025",
+        "skills": ["Estrategia de Posicionamiento", "Investigación UX", "Diseño UX/UI", "Desarrollo Web"],
+        "results": [
+          "🚀 40% de aumento en consultas de membresía en el primer mes",
+          "🔎 Reconocimiento de marca mejorado en 65% en demografía objetivo",
+          "💡 Tasa de conversión del sitio web aumentó de 2.1% a 8.3%",
+          "👀 Destacado en 5 publicaciones de diseño principales"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "WORTHIT",
+      "description": "Plataforma de capital de riesgo para startups B2B SaaS en etapa temprana, diferenciándose a través de conexiones corporativas estratégicas.",
+      "technologies": ["Webflow", "Custom CSS/JS"],
+      "industry": "Venture Capital",
+      "country": "Perú",
+      "details": {
+        "role": "Product Manager & Web Developer",
+        "problem": "WorthIt, un fondo de capital de riesgo recién lanzado, necesitaba diferenciarse en un mercado de VC de LatAm saturado.\n\nSu valor único no era solo capital—eran conexiones estratégicas con clientes empresariales que aceleran el ajuste producto-mercado.\n\nDesafío del producto: construir una plataforma digital que comunicara esta diferenciación a dos segmentos de usuarios (fundadores buscando inversión, inversionistas buscando oportunidades de coinversión) mientras establecía credibilidad como un nuevo fondo.",
+        "year": "2025",
+        "skills": ["Estrategia de Producto", "Diseño UX", "Desarrollo Web"],
+        "results": [
+          "🎯 Experiencia de usuario de doble vía clara sirviendo tanto a fundadores como inversionistas",
+          "📊 Comunicación efectiva de tesis de inversión compleja y criterios",
+          "🚀 Estableció presencia digital creíble para fondo de VC recién lanzado",
+          "💼 Flujos de conversión optimizados para cada segmento de usuario"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "NGROWTH",
+      "description": "Plataforma de estrategias de ventas B2B optimizada para crecimiento, con métodos probados y playbooks usados por startups unicornio, reestructurando procesos comerciales para expansión empresarial.",
+      "technologies": ["WordPress", "Custom CSS/JS", "MailerLite"],
+      "industry": "Consultoría de Ventas B2B",
+      "country": "Perú",
+      "details": {
+        "role": "Product Manager & Web Developer",
+        "problem": "NGROWTH se estaba lanzando como una nueva consultoría de ventas B2B dirigida a fundadores de startups tecnológicas. Necesitaban establecer posicionamiento de mercado y presencia digital desde cero, diferenciándose en un espacio saturado mientras construían credibilidad con reconocimiento de marca cero.",
+        "year": "2024",
+        "skills": ["Posicionamiento de Marca", "Diseño UX", "Desarrollo Web"],
+        "results": [
+          "🚀 Estableció fuerte posicionamiento de mercado en espacio competitivo de consultoría B2B",
+          "💼 Construyó presencia digital creíble que atrajo fundadores de startups en etapa temprana",
+          "📈 Creó base de sitio web escalable para crecimiento futuro",
+          "✨ Identidad de marca diferenciada que resonó con la audiencia objetivo"
+        ]
+      }
+    }
+  ]
+}
