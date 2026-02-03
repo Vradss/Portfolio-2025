@@ -171,15 +171,20 @@ function AppContent() {
 
   // Update projects when language changes
   useEffect(() => {
+    const currentLanguage = i18nInstance.language || 'en'
+    
     const updateProjects = () => {
       setProjects(getProjectsFromTranslations())
     }
+    
+    // Update immediately when language changes
+    updateProjects()
     
     i18nInstance.on('languageChanged', updateProjects)
     return () => {
       i18nInstance.off('languageChanged', updateProjects)
     }
-  }, [i18nInstance])
+  }, [i18nInstance, i18nInstance.language])
 
   // Memoizar proyecto seleccionado
   const selectedProject = useMemo(() => {

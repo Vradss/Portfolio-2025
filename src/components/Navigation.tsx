@@ -30,13 +30,8 @@ export function Navigation({ isDark = false, onLogoClick }: NavigationProps) {
   }
 
   const handleDownloadResume = () => {
-    // Create a link element and trigger download
-    const link = document.createElement('a')
-    link.href = '/TECHNICAL PRODUCT MANAGER EN- 2026.pdf'
-    link.download = 'TECHNICAL PRODUCT MANAGER EN- 2026.pdf' // Only filename, not path
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    // Open resume PDF in new tab
+    window.open('/TECHNICAL PRODUCT MANAGER EN- 2026.pdf', '_blank')
     closeMenu()
   }
 

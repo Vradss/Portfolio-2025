@@ -892,7 +892,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              PRODUCT RESEARCH & DISCOVERY
+              {t('projectDetail.productResearch')}
             </motion.h2>
 
             {/* Subtitle - Left Aligned */}
@@ -909,7 +909,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              Conducted competitive analysis and user research to understand market landscape and define product positioning.
+              {t('projectDetail.productResearchDescription')}
             </motion.p>
 
             {/* A) COMPETITIVE DIFFERENTIATION */}
@@ -931,7 +931,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     letterSpacing: '1px'
                   }}
                 >
-                A) COMPETITIVE DIFFERENTIATION
+                {t('projectDetail.competitiveDifferentiation')}
                 </h3>
 
                 {/* Description */}
@@ -944,7 +944,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     lineHeight: 1.7
                   }}
                 >
-                Analyzed competitors across product and go-to-market dimensions. This revealed Invoinet's unique opportunity: combining automation platform with personalized support for enterprise accounts.
+                {t('projectDetail.competitiveDifferentiationDescription')}
                 </p>
 
               {/* Framework Image - Now with contain */}
@@ -979,7 +979,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     letterSpacing: '1px'
                   }}
                 >
-                B) INFORMATION ARCHITECTURE
+                B) {t('projectDetail.informationArchitecture')}
                 </h3>
 
                 {/* Description */}
@@ -992,7 +992,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
                     lineHeight: 1.7
                   }}
                 >
-                Designed website structure with 8 strategic sections to communicate positioning. Each section used specific persuasion techniques informed by competitive research.
+                {t('projectDetail.informationArchitectureDescription')}
               </p>
 
               {/* Wireframe Image */}
@@ -1287,7 +1287,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              THE TRANSFORMATION
+              {t('projectDetail.theTransformation')}
             </motion.h2>
 
             {/* Single Image - Centered with max width */}
@@ -1334,7 +1334,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              THE TRANSFORMATION
+              {t('projectDetail.theTransformation')}
             </motion.h2>
 
             {/* Toggle Buttons */}
@@ -1761,11 +1761,10 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
         </section>
       )}
 
-      {/* IMPACT Section - For JUNTOZ */}
-      {project.id === 2 && (
+      {/* IMPACT Section - For JUNTOZ - COMMENTED OUT */}
+      {/* {project.id === 2 && (
         <section className="relative bg-white pt-[60px] pb-[120px] px-4 sm:px-6 lg:px-[240px]">
           <div className="max-w-7xl mx-auto">
-            {/* Main Title */}
             <motion.h2
               className="text-black mb-16"
               style={{
@@ -1782,7 +1781,6 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
               {t('projectDetail.impact')}
             </motion.h2>
 
-            {/* Impact Items */}
             {project.details?.impact && (
               <motion.div
                 className="space-y-6 max-w-4xl"
@@ -1812,7 +1810,7 @@ export function ProjectDetailPage({ project, onBack }: ProjectDetailPageProps) {
 
           </div>
         </section>
-      )}
+      )} */}
 
       {/* Footer */}
       <Footer fixedColor="#b9b2fd" onNavigateHome={onBack} />

@@ -55,17 +55,12 @@ export function Footer({ fixedColor, onNavigateHome }: FooterProps = {}) {
   }
 
   const handleContactClick = () => {
-    window.location.href = 'mailto:vradis@nucleostudio.co?subject=Let\'s work together!'
+    window.location.href = 'mailto:vradis.tech@gmail.com?subject=Let\'s work together!'
   }
 
   const handleResumeClick = () => {
-    // Download resume PDF
-    const link = document.createElement('a')
-    link.href = '/Resume - PM - DIC2025.pdf'
-    link.download = 'Resume - PM - DIC2025.pdf'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    // Open resume PDF in new tab
+    window.open('/TECHNICAL PRODUCT MANAGER EN- 2026.pdf', '_blank')
   }
 
   const handleLinkedInClick = () => {

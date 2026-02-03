@@ -59,7 +59,7 @@
     }
   },
   "footer": {
-    "letsTalk": "HABLEMOS",
+    "letsTalk": "LET'S TALK",
     "allRightsReserved": "© 2025 TODOS LOS DERECHOS RESERVADOS",
     "work": "TRABAJO",
     "about": "SOBRE MÍ",
@@ -82,6 +82,10 @@
     "informationArchitecture": "ARQUITECTURA DE INFORMACIÓN",
     "designIteration": "DISEÑO E ITERACIÓN",
     "tech": "TECNOLOGÍA",
-    "disciplines": "DISCIPLINAS"
+    "disciplines": "DISCIPLINAS",
+    "productResearchDescription": "Realicé análisis competitivo e investigación de usuarios para entender el panorama del mercado y definir el posicionamiento del producto.",
+    "competitiveDifferentiation": "A) DIFERENCIACIÓN COMPETITIVA",
+    "competitiveDifferentiationDescription": "Analicé competidores en dimensiones de producto y go-to-market. Esto reveló la oportunidad única de Invoinet: combinar plataforma de automatización con soporte personalizado para cuentas empresariales.",
+    "informationArchitectureDescription": "Diseñé la estructura del sitio web con 8 secciones estratégicas para comunicar el posicionamiento. Cada sección usó técnicas específicas de persuasión informadas por la investigación competitiva."
   }
 }

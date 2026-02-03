@@ -14,18 +14,40 @@ interface WorkSectionProps {
 
 export function WorkSection({ onViewProject }: WorkSectionProps) {
   const { i18n: i18nInstance } = useTranslation()
-  const [projects, setProjects] = useState<Project[]>(getProjectsFromTranslations())
+  const currentLanguage = i18nInstance.language || 'en'
+  
+  // Load projects directly using the hook's language to ensure correct language
+  const loadProjects = useCallback(() => {
+    const lang = i18nInstance.language || 'en'
+    
+    // Force i18n.language to match the hook's language before calling getProjectsFromTranslations
+    // This ensures the function uses the correct language
+    const originalLanguage = i18n.language
+    i18n.language = lang
+    const projects = getProjectsFromTranslations()
+    // Restore original language (though it should be the same)
+    if (originalLanguage !== lang) {
+      i18n.language = originalLanguage
+    }
+    return projects
+  }, [i18nInstance])
+  
+  const [projects, setProjects] = useState<Project[]>(() => loadProjects())
 
   useEffect(() => {
     const updateProjects = () => {
-      setProjects(getProjectsFromTranslations())
+      setProjects(loadProjects())
     }
     
+    // Update immediately when language changes
+    updateProjects()
+    
+    // Listen for language changes
     i18nInstance.on('languageChanged', updateProjects)
     return () => {
       i18nInstance.off('languageChanged', updateProjects)
     }
-  }, [i18nInstance])
+  }, [i18nInstance, currentLanguage, loadProjects])
 
   return (
     <section id="work" className="relative bg-black text-white overflow-hidden pt-20 md:pt-32 lg:pt-40">

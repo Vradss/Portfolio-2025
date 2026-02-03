@@ -82,6 +82,10 @@
     "informationArchitecture": "INFORMATION ARCHITECTURE",
     "designIteration": "DESIGN & ITERATION",
     "tech": "TECH",
-    "disciplines": "DISCIPLINES"
+    "disciplines": "DISCIPLINES",
+    "productResearchDescription": "Conducted competitive analysis and user research to understand market landscape and define product positioning.",
+    "competitiveDifferentiation": "A) COMPETITIVE DIFFERENTIATION",
+    "competitiveDifferentiationDescription": "Analyzed competitors across product and go-to-market dimensions. This revealed Invoinet's unique opportunity: combining automation platform with personalized support for enterprise accounts.",
+    "informationArchitectureDescription": "Designed website structure with 8 strategic sections to communicate positioning. Each section used specific persuasion techniques informed by competitive research."
   }
 }

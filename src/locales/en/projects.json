@@ -4,14 +4,14 @@
       "id": 1,
       "title": "INVOINET",
       "description": "Repositioned enterprise fintech for regional expansion and rebuilt platform in React",
-      "technologies": ["React", "Tailwind CSS", "TypeScript"],
+      "technologies": ["React", "Tailwind CSS", "TypeScript", "Azure"],
       "industry": "Financial Services Platform",
       "country": "United States",
       "details": {
-        "role": "Frontend Developer",
+        "role": "Product Manager & Frontend Developer",
         "problem": "Invoinet, a fintech serving 40+ enterprise clients, needed to reposition for regional expansion. Their website messaging was misaligned with their evolved product, causing wrong prospect expectations and low enterprise credibility. ",
         "year": "2023",
-        "skills": ["Product Strategy", "UX Design", "Frontend Development"],
+        "skills": ["Product Strategy", "UX Design", "Full-Stack Development"],
         "approach": [
           "Led user research with enterprise clients to redefine positioning strategy",
           "Designed UX/UI and information architecture for enterprise audience",
@@ -65,14 +65,6 @@
               "Iterated designs based on feedback"
             ]
           }
-        },
-        "impact": {
-          "items": [
-            "Improved seller and operations team efficiency",
-            "Reduced onboarding friction and support tickets",
-            "Enabled self-service management at scale for EFE Group expansion",
-            "Platform adopted by hundreds of sellers across Peru with significantly improved satisfaction"
-          ]
         }
       }
     },
